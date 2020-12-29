@@ -245,7 +245,7 @@ void setLights(glm::mat4 P, glm::mat4 V) {
 
     shaders.setLight("ulightG",lightG);
 
-    for(int i=0; i<NLF; i++) {
+    for (int i=0; i<NLF; i++) {
         // Luz
         Light lFaro = lightF[i];
 
