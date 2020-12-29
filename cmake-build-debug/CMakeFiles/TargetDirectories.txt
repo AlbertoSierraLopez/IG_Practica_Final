@@ -1,0 +1,3 @@
+C:/Users/a.sierralo/CLionProjects/practicafinal/cmake-build-debug/CMakeFiles/practicafinal.dir
+C:/Users/a.sierralo/CLionProjects/practicafinal/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/a.sierralo/CLionProjects/practicafinal/cmake-build-debug/CMakeFiles/rebuild_cache.dir
