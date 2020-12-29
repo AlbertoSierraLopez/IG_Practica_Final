@@ -55,8 +55,8 @@ Material  wPlastic;
 Material  pSilver;
 
 // Viewport
-int w = 500;
-int h = 500;
+int w = 800;
+int h = 600;
 
 // Animaciones
 float fovy   = 60.0;
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(w,h);
     glutInitWindowPosition(50,50);
-    glutCreateWindow("Informática Gráfica: Práctica Final");
+    glutCreateWindow("Informatica Grafica: Practica Final");
 
     // Inicializamos GLEW
     glewExperimental = GL_TRUE;

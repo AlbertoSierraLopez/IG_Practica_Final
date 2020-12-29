@@ -6,5 +6,5 @@ CXX_FLAGS = -g   -std=gnu++14
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = @CMakeFiles/practicafinal.dir/includes_CXX.rsp
+CXX_INCLUDES = @CMakeFiles/IG_Practica_Final.dir/includes_CXX.rsp
 

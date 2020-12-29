@@ -47,10 +47,10 @@ RM = "C:\Program Files\JetBrains\CLion 2020.1\bin\cmake\win\bin\cmake.exe" -E re
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\a.sierralo\CLionProjects\practicafinal
+CMAKE_SOURCE_DIR = C:\Users\a.sierralo\CLionProjects\IG_Practica_Final
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\a.sierralo\CLionProjects\practicafinal\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -79,9 +79,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\a.sierralo\CLionProjects\practicafinal\cmake-build-debug\CMakeFiles C:\Users\a.sierralo\CLionProjects\practicafinal\cmake-build-debug\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles\progress.marks
 	$(MAKE) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\a.sierralo\CLionProjects\practicafinal\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -106,22 +106,22 @@ preinstall/fast:
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -P C:\Users\a.sierralo\CLionProjects\practicafinal\cmake-build-debug\CMakeFiles\VerifyGlobs.cmake
+	$(CMAKE_COMMAND) -P C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles\VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 1
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named practicafinal
+# Target rules for targets named IG_Practica_Final
 
 # Build rule for target.
-practicafinal: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 practicafinal
-.PHONY : practicafinal
+IG_Practica_Final: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 IG_Practica_Final
+.PHONY : IG_Practica_Final
 
 # fast build rule for target.
-practicafinal/fast:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/build
-.PHONY : practicafinal/fast
+IG_Practica_Final/fast:
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/build
+.PHONY : IG_Practica_Final/fast
 
 src/Model.obj: src/Model.cpp.obj
 
@@ -129,7 +129,7 @@ src/Model.obj: src/Model.cpp.obj
 
 # target to build an object file
 src/Model.cpp.obj:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/Model.cpp.obj
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Model.cpp.obj
 .PHONY : src/Model.cpp.obj
 
 src/Model.i: src/Model.cpp.i
@@ -138,7 +138,7 @@ src/Model.i: src/Model.cpp.i
 
 # target to preprocess a source file
 src/Model.cpp.i:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/Model.cpp.i
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Model.cpp.i
 .PHONY : src/Model.cpp.i
 
 src/Model.s: src/Model.cpp.s
@@ -147,7 +147,7 @@ src/Model.s: src/Model.cpp.s
 
 # target to generate assembly for a file
 src/Model.cpp.s:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/Model.cpp.s
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Model.cpp.s
 .PHONY : src/Model.cpp.s
 
 src/Shaders.obj: src/Shaders.cpp.obj
@@ -156,7 +156,7 @@ src/Shaders.obj: src/Shaders.cpp.obj
 
 # target to build an object file
 src/Shaders.cpp.obj:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/Shaders.cpp.obj
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj
 .PHONY : src/Shaders.cpp.obj
 
 src/Shaders.i: src/Shaders.cpp.i
@@ -165,7 +165,7 @@ src/Shaders.i: src/Shaders.cpp.i
 
 # target to preprocess a source file
 src/Shaders.cpp.i:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/Shaders.cpp.i
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.i
 .PHONY : src/Shaders.cpp.i
 
 src/Shaders.s: src/Shaders.cpp.s
@@ -174,7 +174,7 @@ src/Shaders.s: src/Shaders.cpp.s
 
 # target to generate assembly for a file
 src/Shaders.cpp.s:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/Shaders.cpp.s
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.s
 .PHONY : src/Shaders.cpp.s
 
 src/main.obj: src/main.cpp.obj
@@ -183,7 +183,7 @@ src/main.obj: src/main.cpp.obj
 
 # target to build an object file
 src/main.cpp.obj:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/main.cpp.obj
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj
 .PHONY : src/main.cpp.obj
 
 src/main.i: src/main.cpp.i
@@ -192,7 +192,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/main.cpp.i
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -201,7 +201,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) -f CMakeFiles\practicafinal.dir\build.make CMakeFiles/practicafinal.dir/src/main.cpp.s
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -210,7 +210,7 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
-	@echo ... practicafinal
+	@echo ... IG_Practica_Final
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... src/Model.obj
@@ -233,7 +233,7 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -P C:\Users\a.sierralo\CLionProjects\practicafinal\cmake-build-debug\CMakeFiles\VerifyGlobs.cmake
+	$(CMAKE_COMMAND) -P C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles\VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-set(PROJECT_NAME practicafinal)
+set(PROJECT_NAME IG_Practica_Final)
 project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD 14)
 
