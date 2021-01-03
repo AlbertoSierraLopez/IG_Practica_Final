@@ -118,7 +118,7 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 CMAKE_GNUtoMS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/practicafinal
+CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/IG_Practica_Final
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/MinGW/bin/ld.exe
@@ -252,12 +252,6 @@ IG_Practica_Final_BINARY_DIR:STATIC=C:/Users/a.sierralo/CLionProjects/IG_Practic
 
 //Value Computed by CMake
 IG_Practica_Final_SOURCE_DIR:STATIC=C:/Users/a.sierralo/CLionProjects/IG_Practica_Final
-
-//Value Computed by CMake
-practicafinal_BINARY_DIR:STATIC=C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug
-
-//Value Computed by CMake
-practicafinal_SOURCE_DIR:STATIC=C:/Users/a.sierralo/CLionProjects/IG_Practica_Final
 
 
 ########################

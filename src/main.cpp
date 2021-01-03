@@ -21,9 +21,11 @@ void funSpecial(int key, int x, int y);
 void funKeyboard(unsigned char key, int x, int y);
 void funMouse(int button, int state, int x, int y);
 void funMotion(int x, int y);
+void funTimer(int value);
 
 void setLights(glm::mat4 P, glm::mat4 V);
 
+void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAuto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M);
@@ -44,11 +46,15 @@ Model cylinder;
 Model cube;
 
 // Luces y materiales
+#define   NLP 2
 #define   NLF 2
 Light     lightG;
+Light     lightP[NLP];
 Light     lightF[NLF];
 Material  mluz;
 Material  mluzR;
+Material  mSol;
+Material  mLuna;
 Material  ruby;
 Material  obsidian;
 Material  wPlastic;
@@ -63,6 +69,9 @@ float fovy   = 60.0;
 float rotY   =  0.0;
 float faroX  =  0.0;
 float faroZ  =  0.0;
+float rotAstro =0.0;
+bool  dia    = true;
+int   speed  = 1000;
 float alphaX =  0.0;
 float alphaY =  0.0;
 
@@ -99,6 +108,7 @@ int main(int argc, char** argv) {
     glutKeyboardFunc(funKeyboard);
     glutMouseFunc(funMouse);
     glutMotionFunc(funMotion);
+    glutTimerFunc(speed, funTimer, 0);
 
     // Bucle principal
     glutMainLoop();
@@ -121,10 +131,29 @@ void funInit() {
     cube.initModel("resources/models/cube.obj");
 
 
-    // Luz ambiental global
+ // Luces Globales
     lightG.ambient        = glm::vec3(0.9, 0.9, 0.9);
 
-    // Luces focales
+ // Luces Posicionales
+    // Sol
+    lightP[0].position  = glm::vec3(8.0, 0.0, 0.0);
+    lightP[0].ambient   = glm::vec3( 5.0, 0.2, 0.2);
+    lightP[0].diffuse   = glm::vec3( 5.0, 0.2, 0.2);
+    lightP[0].specular  = glm::vec3( 0.7, 0.7, 0.7);
+    lightP[0].c0 = 1.0;
+    lightP[0].c1 = 0.22;
+    lightP[0].c2 = 0.20;
+    // Luna
+    lightP[1].position  = glm::vec3(-8.0, 0.0, 0.0);
+    lightP[1].ambient   = glm::vec3( 0.2, 0.2, 5.0);
+    lightP[1].diffuse   = glm::vec3( 0.2, 0.2, 5.0);
+    lightP[1].specular  = glm::vec3( 0.7, 0.7, 0.7);
+    lightP[1].c0 = 1.0;
+    lightP[1].c1 = 0.22;
+    lightP[1].c2 = 0.20;
+
+ // Luces Focales
+    // Faro Derecho
     lightF[0].position    = glm::vec3(0.3,  0.3,  -0.8);
     lightF[0].direction   = glm::vec3( 0.0, -0.575, -3.0);
     lightF[0].ambient     = glm::vec3( 0.0,  0.0,  0.0);
@@ -135,7 +164,7 @@ void funInit() {
     lightF[0].c0          = 1.000;
     lightF[0].c1          = 0.090;
     lightF[0].c2          = 0.032;
-
+    // Faro Izquierdo
     lightF[1].position    = glm::vec3(-0.3,  0.3,  -0.8);
     lightF[1].direction   = glm::vec3( 0.0, -0.575, -3.0);
     lightF[1].ambient     = glm::vec3( 0.0,  0.0,  0.0);
@@ -159,6 +188,18 @@ void funInit() {
     mluzR.specular  = glm::vec4(0.0, 0.0, 0.0, 1.0);
     mluzR.emissive  = glm::vec4(1.0, 0.0, 0.0, 1.0);
     mluzR.shininess = 1.0;
+
+    mSol.ambient   = glm::vec4(0.0, 0.0, 0.0, 1.0);
+    mSol.diffuse   = glm::vec4(0.0, 0.0, 0.0, 1.0);
+    mSol.specular  = glm::vec4(0.0, 0.0, 0.0, 1.0);
+    mSol.emissive  = glm::vec4( 5.0, 0.2, 0.2, 1.0);
+    mSol.shininess = 1.0;
+
+    mLuna.ambient   = glm::vec4(0.0, 0.0, 0.0, 1.0);
+    mLuna.diffuse   = glm::vec4(0.0, 0.0, 0.0, 1.0);
+    mLuna.specular  = glm::vec4(0.0, 0.0, 0.0, 1.0);
+    mLuna.emissive  = glm::vec4( 0.2, 0.2, 5.0, 1.0);
+    mLuna.shininess = 1.0;
 
     // Ruby
     ruby.ambient   = glm::vec4(0.174500, 0.011750, 0.011750, 0.55);
@@ -217,9 +258,9 @@ void funDisplay() {
     glm::mat4 P  = glm::perspective(glm::radians(fovy), aspect, nplane, fplane);
 
     // Matriz V
-    float x = 10.0f*glm::cos(glm::radians(alphaY))*glm::sin(glm::radians(alphaX));
-    float y = 10.0f*glm::sin(glm::radians(alphaY));
-    float z = 10.0f*glm::cos(glm::radians(alphaY))*glm::cos(glm::radians(alphaX));
+    float x = 15.0f*glm::cos(glm::radians(alphaY))*glm::sin(glm::radians(alphaX));
+    float y = 15.0f*glm::sin(glm::radians(alphaY)) + 10.0;
+    float z = 15.0f*glm::cos(glm::radians(alphaY))*glm::cos(glm::radians(alphaX));
     glm::vec3 pos   (  x,   y,   z);
     glm::vec3 lookat(0.0, 0.0, 0.0);
     glm::vec3 up    (0.0, 1.0, 0.0);
@@ -230,6 +271,7 @@ void funDisplay() {
     setLights(P,V);
 
     // Dibujamos la escena
+    drawAstro(P, V, I);
     drawAsfalto(P,V,I);
 
     glm::mat4 T = glm::translate(I,glm::vec3(faroX, 0.0, faroZ));
@@ -243,23 +285,60 @@ void funDisplay() {
 
 void setLights(glm::mat4 P, glm::mat4 V) {
 
+ // Lucz Globales
     shaders.setLight("ulightG",lightG);
 
+ // Luz Posicional
+    // Luz
+    Light lAstro;
+    if (dia) {
+        lAstro = lightP[0];
+    } else {
+        lAstro = lightP[1];
+    }
+    // Posicion
+    glm::mat4 rotLuz = glm::rotate(I, glm::radians(rotAstro), glm::vec3(0, 0, 1));
+    glm::vec4 posLuz = glm::vec4(lAstro.position, 1.0);
+    lAstro.position = rotLuz * posLuz;
+
+    shaders.setLight("ulightP", lAstro);
+
+ // Luces Focales
     for (int i=0; i<NLF; i++) {
         // Luz
         Light lFaro = lightF[i];
-
         // Posicion
         lFaro.position =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.position, 1.0);
         lFaro.position.x += faroX;
         lFaro.position.z += faroZ;
-
         // Direccion
         lFaro.direction =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.direction, 1.0);
 
         shaders.setLight("ulightF["+toString(i)+"]",lFaro);
     }
 
+}
+
+void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    Light lAstro;
+    Material mAstro;
+    float scale = 0.0;
+
+    if (dia) {
+        lAstro = lightP[0];
+        mAstro = mSol;
+        scale = 0.3;
+    } else {
+        lAstro = lightP[1];
+        mAstro = mLuna;
+        scale = 0.15;
+    }
+
+    glm::mat4 S = glm::scale(I, glm::vec3(scale));
+    glm::mat4 T = glm::translate(I, lAstro.position);
+    glm::mat4 R = glm::rotate(I, glm::radians(rotAstro), glm::vec3(0, 0, 1));
+    drawObject(sphere, mAstro, P, V, M*R*T*S);
 }
 
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -395,5 +474,21 @@ void funMotion(int x, int y) {
     if(alphaY<-limY) alphaY = -limY;
     if(alphaY> limY) alphaY =  limY;
     glutPostRedisplay();
+
+}
+
+void funTimer(int value) {
+
+    rotAstro += 5.0;
+    if (rotAstro > 360.0) rotAstro = 0.0;
+
+    if (rotAstro < 181.0) {
+        dia = true;
+    } else {
+        dia = false;
+    }
+
+    glutPostRedisplay();
+    glutTimerFunc(speed, funTimer, 0);
 
 }

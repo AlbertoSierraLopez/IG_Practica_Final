@@ -1078,10 +1078,6 @@ OpenGL/glu.h
 GL/glu.h
 -
 
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.cpp
-Model.h
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.h
-
 C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.h
 iostream
 -
@@ -1099,10 +1095,6 @@ assimp/scene.h
 -
 assimp/postprocess.h
 -
-
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.cpp
-Shaders.h
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h
 
 C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h
 iostream
