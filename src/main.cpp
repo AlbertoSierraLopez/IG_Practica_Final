@@ -420,7 +420,7 @@ void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cube,pSilver,P,V,M*TFaro1*SFaro);
     glm::mat4 TFaro2 = translate(I, glm::vec3(-0.3,0.3,-0.75));
     drawObject(cube,pSilver,P,V,M*TFaro2*SFaro);
-
+    //cabina base
     glm::mat4 SCB1 = scale(I, glm::vec3(0.4,0.02,0.6));
     glm::mat4 TCB1 = translate(I, glm::vec3(0,0.26,0.02));
     drawObject(cube,pSilver,P,V,M*TCB1*SCB1);
@@ -428,7 +428,7 @@ void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 SCB2 = scale(I, glm::vec3(0.4,0.02,0.58));
     glm::mat4 TCB2 = translate(I, glm::vec3(0,0.28,0.03));
     drawObject(cube,pSilver,P,V,M*TCB2*SCB2);
-
+    //cabina
     glm::mat4 SC1 = scale(I, glm::vec3(0.4,0.02,0.55));
     glm::mat4 TC1 = translate(I, glm::vec3(0,0.3,0.04));
     drawObject(cube,pSilver,P,V,M*TC1*SC1);
@@ -452,11 +452,11 @@ void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 SC6 = scale(I, glm::vec3(0.3,0.02,0.45));
     glm::mat4 TC6 = translate(I, glm::vec3(0,0.4,0.04));
     drawObject(cube,pSilver,P,V,M*TC6*SC6);
-
+    //aleron base
     glm::mat4 SA = scale(I, glm::vec3(0.42,0.005,0.05));
     glm::mat4 TA = translate(I, glm::vec3(0,0.45,0.75));
     drawObject(cube,pSilver,P,V,M*TA*SA);
-
+    //aleron lados
     glm::mat4 SAT = scale(I, glm::vec3(0.005,0.02,0.04));
     glm::mat4 TAD1 = translate(I, glm::vec3(0.3,0.43,0.74));
     drawObject(cube,pSilver,P,V,M*TAD1*SAT);
