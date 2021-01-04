@@ -130,8 +130,8 @@ CMakeFiles/IG_Practica_Final.dir/src/Model.cpp.obj
  ../../libraries/includes/glm/vec4.hpp
  ../../libraries/includes/glm/vector_relational.hpp
  ../../libraries/includes/ogl/glew.h
- C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.cpp
- C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.h
+ C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.cpp
+ C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.h
 CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj
  ../../libraries/includes/glm/common.hpp
  ../../libraries/includes/glm/detail/_fixes.hpp
@@ -235,8 +235,8 @@ CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj
  ../../libraries/includes/glm/vec4.hpp
  ../../libraries/includes/glm/vector_relational.hpp
  ../../libraries/includes/ogl/glew.h
- C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.cpp
- C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h
+ C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.cpp
+ C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj
  ../../libraries/includes/assimp/Compiler/poppack1.h
  ../../libraries/includes/assimp/Compiler/pstdint.h
@@ -371,6 +371,6 @@ CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj
  ../../libraries/includes/ogl/freeglut_ext.h
  ../../libraries/includes/ogl/freeglut_std.h
  ../../libraries/includes/ogl/glew.h
- C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.h
- C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h
- C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/main.cpp
+ C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.h
+ C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.h
+ C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/main.cpp

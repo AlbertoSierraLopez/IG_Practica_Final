@@ -377,33 +377,168 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    //base turismo y todoterreno
+    /*glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
+    glm::mat4 T = translate(I, glm::vec3(0,0.04,0));
+    drawObject(cube,pSilver,P,V,M*T*S);*/
 
-    glm::mat4 S = scale(I, glm::vec3(0.4,0.15,0.8));
-    glm::mat4 T = translate(I, glm::vec3(0,0.3,0));
-    drawObject(cube,pSilver,P,V,M*T*S);
+    //base coche deportivo
+    glm::mat4 S1 = scale(I, glm::vec3(0.4,0.02,0.78));
+    glm::mat4 T1 = translate(I, glm::vec3(0,0.10,-0.15));
+    drawObject(cube,pSilver,P,V,M*T1*S1);
 
-    glm::mat4 Scab = scale(I, glm::vec3(0.38,0.15,0.55));
+    glm::mat4 S2 = scale(I, glm::vec3(0.4,0.02,0.82));
+    glm::mat4 T2 = translate(I, glm::vec3(0,0.12,-0.15));
+    drawObject(cube,pSilver,P,V,M*T2*S2);
+
+    glm::mat4 S3 = scale(I, glm::vec3(0.4,0.02,0.84));
+    glm::mat4 T3 = translate(I, glm::vec3(0,0.14,-0.15));
+    drawObject(cube,pSilver,P,V,M*T3*S3);
+
+    glm::mat4 S4 = scale(I, glm::vec3(0.4,0.02,0.88));
+    glm::mat4 T4 = translate(I, glm::vec3(0,0.16,-0.15));
+    drawObject(cube,pSilver,P,V,M*T4*S4);
+
+    glm::mat4 S5 = scale(I, glm::vec3(0.4,0.02,0.88));
+    glm::mat4 T5 = translate(I, glm::vec3(0,0.18,-0.15));
+    drawObject(cube,pSilver,P,V,M*T5*S5);
+
+    glm::mat4 S6 = scale(I, glm::vec3(0.4,0.02,0.88));
+    glm::mat4 T6 = translate(I, glm::vec3(0,0.2,-0.15));
+    drawObject(cube,pSilver,P,V,M*T6*S6);
+
+    glm::mat4 S7 = scale(I, glm::vec3(0.4,0.02,0.84));
+    glm::mat4 T7 = translate(I, glm::vec3(0,0.22,-0.15));
+    drawObject(cube,pSilver,P,V,M*T7*S7);
+
+    glm::mat4 S8 = scale(I, glm::vec3(0.4,0.02,0.80));
+    glm::mat4 T8 = translate(I, glm::vec3(0,0.24,-0.15));
+    drawObject(cube,pSilver,P,V,M*T8*S8);
+
+    glm::mat4 SFaro = scale(I, glm::vec3(0.05,0.05,0.05));
+    glm::mat4 TFaro1 = translate(I, glm::vec3(0.3,0.3,-0.75));
+    drawObject(cube,pSilver,P,V,M*TFaro1*SFaro);
+    glm::mat4 TFaro2 = translate(I, glm::vec3(-0.3,0.3,-0.75));
+    drawObject(cube,pSilver,P,V,M*TFaro2*SFaro);
+
+    glm::mat4 SCB1 = scale(I, glm::vec3(0.4,0.02,0.6));
+    glm::mat4 TCB1 = translate(I, glm::vec3(0,0.26,0.02));
+    drawObject(cube,pSilver,P,V,M*TCB1*SCB1);
+
+    glm::mat4 SCB2 = scale(I, glm::vec3(0.4,0.02,0.58));
+    glm::mat4 TCB2 = translate(I, glm::vec3(0,0.28,0.03));
+    drawObject(cube,pSilver,P,V,M*TCB2*SCB2);
+
+    glm::mat4 SC1 = scale(I, glm::vec3(0.4,0.02,0.55));
+    glm::mat4 TC1 = translate(I, glm::vec3(0,0.3,0.04));
+    drawObject(cube,pSilver,P,V,M*TC1*SC1);
+
+    glm::mat4 SC2 = scale(I, glm::vec3(0.38,0.02,0.53));
+    glm::mat4 TC2 = translate(I, glm::vec3(0,0.32,0.04));
+    drawObject(cube,pSilver,P,V,M*TC2*SC2);
+
+    glm::mat4 SC3 = scale(I, glm::vec3(0.36,0.02,0.51));
+    glm::mat4 TC3 = translate(I, glm::vec3(0,0.34,0.04));
+    drawObject(cube,pSilver,P,V,M*TC3*SC3);
+
+    glm::mat4 SC4 = scale(I, glm::vec3(0.34,0.02,0.49));
+    glm::mat4 TC4 = translate(I, glm::vec3(0,0.36,0.04));
+    drawObject(cube,pSilver,P,V,M*TC4*SC4);
+
+    glm::mat4 SC5 = scale(I, glm::vec3(0.32,0.02,0.47));
+    glm::mat4 TC5 = translate(I, glm::vec3(0,0.38,0.04));
+    drawObject(cube,pSilver,P,V,M*TC5*SC5);
+
+    glm::mat4 SC6 = scale(I, glm::vec3(0.3,0.02,0.45));
+    glm::mat4 TC6 = translate(I, glm::vec3(0,0.4,0.04));
+    drawObject(cube,pSilver,P,V,M*TC6*SC6);
+
+    glm::mat4 SA = scale(I, glm::vec3(0.42,0.005,0.05));
+    glm::mat4 TA = translate(I, glm::vec3(0,0.45,0.75));
+    drawObject(cube,pSilver,P,V,M*TA*SA);
+
+    glm::mat4 SAT = scale(I, glm::vec3(0.005,0.02,0.04));
+    glm::mat4 TAD1 = translate(I, glm::vec3(0.3,0.43,0.74));
+    drawObject(cube,pSilver,P,V,M*TAD1*SAT);
+    glm::mat4 TAD2 = translate(I, glm::vec3(0.3,0.41,0.72));
+    drawObject(cube,pSilver,P,V,M*TAD2*SAT);
+    glm::mat4 TAD3 = translate(I, glm::vec3(0.3,0.39,0.70));
+    drawObject(cube,pSilver,P,V,M*TAD3*SAT);
+    glm::mat4 TAD4 = translate(I, glm::vec3(0.3,0.37,0.68));
+    drawObject(cube,pSilver,P,V,M*TAD4*SAT);
+    glm::mat4 TAD5 = translate(I, glm::vec3(0.3,0.35,0.66));
+    drawObject(cube,pSilver,P,V,M*TAD5*SAT);
+    glm::mat4 TAD6 = translate(I, glm::vec3(0.3,0.33,0.64));
+    drawObject(cube,pSilver,P,V,M*TAD6*SAT);
+    glm::mat4 TAD7 = translate(I, glm::vec3(0.3,0.31,0.62));
+    drawObject(cube,pSilver,P,V,M*TAD7*SAT);
+    glm::mat4 TAD8 = translate(I, glm::vec3(0.3,0.29,0.6));
+    drawObject(cube,pSilver,P,V,M*TAD8*SAT);
+    glm::mat4 TAI1 = translate(I, glm::vec3(-0.3,0.43,0.74));
+    drawObject(cube,pSilver,P,V,M*TAI1*SAT);
+    glm::mat4 TAI2 = translate(I, glm::vec3(-0.3,0.41,0.72));
+    drawObject(cube,pSilver,P,V,M*TAI2*SAT);
+    glm::mat4 TAI3 = translate(I, glm::vec3(-0.3,0.39,0.70));
+    drawObject(cube,pSilver,P,V,M*TAI3*SAT);
+    glm::mat4 TAI4 = translate(I, glm::vec3(-0.3,0.37,0.68));
+    drawObject(cube,pSilver,P,V,M*TAI4*SAT);
+    glm::mat4 TAI5 = translate(I, glm::vec3(-0.3,0.35,0.66));
+    drawObject(cube,pSilver,P,V,M*TAI5*SAT);
+    glm::mat4 TAI6 = translate(I, glm::vec3(-0.3,0.33,0.64));
+    drawObject(cube,pSilver,P,V,M*TAI6*SAT);
+    glm::mat4 TAI7 = translate(I, glm::vec3(-0.3,0.31,0.62));
+    drawObject(cube,pSilver,P,V,M*TAI7*SAT);
+    glm::mat4 TAI8 = translate(I, glm::vec3(-0.3,0.29,0.6));
+    drawObject(cube,pSilver,P,V,M*TAI8*SAT);
+    //coche normal familiar
+    /*glm::mat4 Scab = scale(I, glm::vec3(0.38,0.15,0.55));
     glm::mat4 Tcab = translate(I, glm::vec3(0,0.6,0.2));
+    drawObject(cube,pSilver,P,V,M*Tcab*Scab);*/
+
+    //coche todoterreno
+    /*glm::mat4 Scab = scale(I, glm::vec3(0.4,0.30,0.55));
+    glm::mat4 Tcab = translate(I, glm::vec3(0,0.6,0.25));
     drawObject(cube,pSilver,P,V,M*Tcab*Scab);
 
+    glm::mat4 SR = scale(I, glm::vec3(0.4/2.0,0.15/2.0,0.4/2.0));
+    glm::mat4 RR = rotate(I, glm::radians(90.0f), glm::vec3(1, 0, 0));
+    glm::mat4 TR = translate(I, glm::vec3(0,0.55,0.9));
+    drawObject(cylinder, obsidian, P, V, M * TR * RR * SR);*/
 }
 
 void drawLucesPosicion(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 Sf = scale(I, glm::vec3(0.1/2.0,0.08/2.0,0.01/2.0));
-    glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.35,0.8));
-    glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.35,0.8));
+    //luces traseras deportivo
+    glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.18,0.73));
+    glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.18,0.73));
+
+    //luces traseras turismo
+    /*glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.35,0.8));
+    glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.35,0.8));*/
     drawObject(cube, mluzR, P, V, M * Tf1 * Sf);
     drawObject(cube, mluzR, P, V, M * Tf2 * Sf);
 
 }
 
 void drawRuedas (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
-    glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.15,0.6));
+    //ruedas turismo
+    /*glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.15,0.6));
     glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.15,0.6));
     glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.15,-0.4));
+    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.15,-0.4));*/
+
+    //ruedas deportivo
+    glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.15,0.5));
+    glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.15,0.5));
+    glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.15,-0.4));
     glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.15,-0.4));
+
+    //ruedas todoterreno
+    /*glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.2,0.6));
+    glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.2,0.6));
+    glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.2,-0.4));
+    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.2,-0.4));*/
 
     drawRueda(P, V, M * Tru1);
     drawRueda(P, V, M * Tru2);
@@ -415,6 +550,9 @@ void drawRuedas (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 void drawRueda(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S = scale(I, glm::vec3(0.3/2.0,0.15/2.0,0.3/2.0));
+
+    //ruedas todoterreno
+   // glm::mat4 S = scale(I, glm::vec3(0.4/2.0,0.15/2.0,0.4/2.0));
     glm::mat4 R = rotate(I, glm::radians(90.0f), glm::vec3(0, 0, -1));
     drawObject(cylinder, obsidian, P, V, M * R * S);
 
