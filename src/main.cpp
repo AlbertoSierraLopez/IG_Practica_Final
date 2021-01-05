@@ -26,16 +26,27 @@ void funTimer(int value);
 void setLights(glm::mat4 P, glm::mat4 V);
 
 void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
+void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
+void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawColumnas(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawColumna(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
 void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
 void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
 void drawChasisUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawChasisTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawChasisDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
 void drawLucesPosicion(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawLucesPosicionDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
 void drawRuedasUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawRuedasTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawRuedasDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
@@ -285,9 +296,17 @@ void funDisplay() {
 
     // Dibujamos la escena
     drawAstro(P, V, I);
+
+    // Dibujar Carreteras
+    //glm::mat4 S = glm::scale(I, glm::vec3(1.0));
+    drawCarretera(P,V,I);
     drawAsfalto(P,V,I);
 
-    glm::mat4 T = glm::translate(I,glm::vec3(faroX, 0.0, faroZ));
+    // Dibujar Edificios
+    drawEdificio(P,V,I);
+
+    // Dibujar Coches
+    glm::mat4 T = glm::translate(I,glm::vec3(faroX, 0.05, faroZ));
     glm::mat4 R = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0));
 
     // Dibujar el coche seleccionado
@@ -361,10 +380,102 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(sphere, mAstro, P, V, M*R*T*S);
 }
 
+void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 S = glm::scale(I, glm::vec3(1.0, 0.025, 8.0));
+    glm::mat4 T = glm::translate(I, glm::vec3(0.0, 0.025, 0.0));
+    glm::mat4 R = glm::rotate(I, glm::radians(90.0f), glm::vec3(0, 1, 0));
+
+    glm::mat4 Tizquierda = glm::translate(I, glm::vec3(7.0, 0.0, 0.0));
+    glm::mat4 Tderecha    = glm::translate(I, glm::vec3(-7.0, 0.0, 0.0));
+    glm::mat4 Tarriba     = glm::translate(I, glm::vec3(0.0, 0.0, 7.0));
+    glm::mat4 Tabajo      = glm::translate(I, glm::vec3(0.0, 0.0, -7.0));
+
+    drawObject(cube, wPlastic, P, V, M * T * S);
+    drawObject(cube, wPlastic, P, V, M * Tizquierda * T * S);
+    drawObject(cube, wPlastic, P, V, M * Tderecha * T * S);
+
+    drawObject(cube, wPlastic, P, V, M * R * T * S);
+    drawObject(cube, wPlastic, P, V, M * Tarriba * R * T * S);
+    drawObject(cube, wPlastic, P, V, M * Tabajo * R * T * S);
+
+}
+
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S = glm::scale(I, glm::vec3(6.0, 1.0, 6.0));
-    drawObject(plane, wPlastic, P, V, S);
+    drawObject(plane, obsidian, P, V, M * S);
+
+}
+
+void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.2, 2.0));
+    glm::mat4 T   = glm::translate(I, glm::vec3(3.5, 0.2, 3.5));
+
+    glm::mat4 TP1 = glm::translate(I, glm::vec3(3.5, 1.2, 3.5));
+    glm::mat4 TP2 = glm::translate(I, glm::vec3(3.5, 2.2, 3.5));
+    glm::mat4 TP3 = glm::translate(I, glm::vec3(3.5, 3.2, 3.5));
+    glm::mat4 TP4 = glm::translate(I, glm::vec3(3.5, 4.2, 3.5));
+    glm::mat4 TP5 = glm::translate(I, glm::vec3(3.5, 5.2, 3.5));
+
+    drawObject(cube, ruby, P, V, M * T * S);
+
+    drawObject(cube, ruby, P, V, M * TP1 * S);
+    drawObject(cube, ruby, P, V, M * TP2 * S);
+    drawObject(cube, ruby, P, V, M * TP3 * S);
+    drawObject(cube, ruby, P, V, M * TP4 * S);
+    drawObject(cube, ruby, P, V, M * TP5 * S);
+
+    // Dibujar las columnas
+    glm::mat4 TC = glm::translate(I, glm::vec3(3.5, 0.0, 3.5));
+    drawColumnas(P,V, M * TC);
+
+    glm::mat4 SInterior = glm::scale(I, glm::vec3(1.9, 2.6, 1.9));
+    glm::mat4 TInterior = glm::translate(I, glm::vec3(3.5, 2.7, 3.5));
+    drawObject(cube, mluz, P, V, M * TInterior * SInterior);
+
+}
+
+void drawColumnas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    // Esquinas
+    glm::mat4 TColumna1 = glm::translate(I, glm::vec3((3.5 + 0.1)/2, 0.0, (3.5 + 0.1)/2));
+    glm::mat4 TColumna2 = glm::translate(I, glm::vec3(-(3.5 + 0.1)/2, 0.0, (3.5 + 0.1)/2));
+    glm::mat4 TColumna3 = glm::translate(I, glm::vec3((3.5 + 0.1)/2, 0.0, -(3.5 + 0.1)/2));
+    glm::mat4 TColumna4 = glm::translate(I, glm::vec3(-(3.5 + 0.1)/2, 0.0, -(3.5 + 0.1)/2));
+    drawColumna(P, V, M * TColumna1);
+    drawColumna(P, V, M * TColumna2);
+    drawColumna(P, V, M * TColumna3);
+    drawColumna(P, V, M * TColumna4);
+
+    // Lados
+    glm::mat4 TColumna11 = glm::translate(I, glm::vec3((3.5 + 0.1)/2 - 1.0, 0.0, (3.5 + 0.1)/2));
+    glm::mat4 TColumna22 = glm::translate(I, glm::vec3(-(3.5 + 0.1)/2, 0.0, (3.5 + 0.1)/2 - 1.0));
+    glm::mat4 TColumna33 = glm::translate(I, glm::vec3((3.5 + 0.1)/2, 0.0, -(3.5 + 0.1)/2 + 1.0));
+    glm::mat4 TColumna44 = glm::translate(I, glm::vec3(-(3.5 + 0.1)/2 + 1.0, 0.0, -(3.5 + 0.1)/2));
+    drawColumna(P, V, M * TColumna11);
+    drawColumna(P, V, M * TColumna22);
+    drawColumna(P, V, M * TColumna33);
+    drawColumna(P, V, M * TColumna44);
+
+    glm::mat4 TColumna111 = glm::translate(I, glm::vec3((3.5 + 0.1)/2, 0.0, (3.5 + 0.1)/2 - 1.0));
+    glm::mat4 TColumna222 = glm::translate(I, glm::vec3(-(3.5 + 0.1)/2 + 1.0, 0.0, (3.5 + 0.1)/2));
+    glm::mat4 TColumna333 = glm::translate(I, glm::vec3((3.5 + 0.1)/2 - 1.0, 0.0, -(3.5 + 0.1)/2));
+    glm::mat4 TColumna444 = glm::translate(I, glm::vec3(-(3.5 + 0.1)/2, 0.0, -(3.5 + 0.1)/2 + 1.0));
+    drawColumna(P, V, M * TColumna111);
+    drawColumna(P, V, M * TColumna222);
+    drawColumna(P, V, M * TColumna333);
+    drawColumna(P, V, M * TColumna444);
+
+}
+
+void drawColumna(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 S   = glm::scale(I, glm::vec3(0.2, 2.7, 0.2));
+    glm::mat4 T   = glm::translate(I, glm::vec3(0.0, 2.7, 0.0));
+
+    drawObject(cube, ruby, P, V, M * T * S);
 
 }
 
@@ -443,7 +554,7 @@ void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     //base turismo y todoterreno
     glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
-    glm::mat4 T = translate(I, glm::vec3(0,0.3,0));
+    glm::mat4 T = translate(I, glm::vec3(0,0.4,0));
     drawObject(cube,pSilver,P,V,M*T*S);
 
     //coche todoterreno
