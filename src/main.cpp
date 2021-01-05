@@ -429,8 +429,8 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     //base turismo y todoterreno
-    glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
-    glm::mat4 T = translate(I, glm::vec3(0,0.04,0));
+    glm::mat4 S = scale(I, glm::vec3(0.4,0.15,0.8));
+    glm::mat4 T = translate(I, glm::vec3(0,0.3,0));
     drawObject(cube,pSilver,P,V,M*T*S);
 
     //coche normal familiar
@@ -443,7 +443,7 @@ void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     //base turismo y todoterreno
     glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
-    glm::mat4 T = translate(I, glm::vec3(0,0.04,0));
+    glm::mat4 T = translate(I, glm::vec3(0,0.3,0));
     drawObject(cube,pSilver,P,V,M*T*S);
 
     //coche todoterreno
@@ -621,21 +621,21 @@ void drawRuedasUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 void drawRuedasTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     //ruedas todoterreno
-    glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.2,0.6));
-    glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.2,0.6));
-    glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.2,-0.4));
-    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.2,-0.4));
+    glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.21,0.55));
+    glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.21,0.55));
+    glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.21,-0.4));
+    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.21,-0.4));
 
     // Rueda gorda
-    glm::mat4 S = scale(I, glm::vec3(0.4/2.0,0.15/2.0,0.4/2.0));
+    glm::mat4 S = scale(I, glm::vec3(1.15,1.4,1.4));
 
     // Hacer girar las ruedas al moverse el coche
     glm::mat4 R = glm::rotate(I, glm::radians(rotRueda), glm::vec3(1, 0, 0));
 
-    drawRueda(P, V, M * Tru1 * S * R);
-    drawRueda(P, V, M * Tru2 * S * R);
-    drawRueda(P, V, M * Tru3 * S * R);
-    drawRueda(P, V, M * Tru4 * S * R);
+    drawRueda(P, V, M * Tru1 * R * S);
+    drawRueda(P, V, M * Tru2 * R * S);
+    drawRueda(P, V, M * Tru3 * R * S);
+    drawRueda(P, V, M * Tru4 * R * S);
 
 }
 
