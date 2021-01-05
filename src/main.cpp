@@ -346,12 +346,20 @@ void setLights(glm::mat4 P, glm::mat4 V) {
     for (int i=0; i<NLF; i++) {
         // Luz
         Light lFaro = lightF[i];
+
         // Posicion
         lFaro.position =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.position, 1.0);
         lFaro.position.x += faroX;
         lFaro.position.z += faroZ;
+
         // Direccion
         lFaro.direction =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.direction, 1.0);
+
+        // Intensidad
+        if (dia) {
+            lFaro.diffuse  = glm::vec3(0.0);
+            lFaro.specular = glm::vec3(0.0);
+        }
 
         shaders.setLight("ulightF["+toString(i)+"]",lFaro);
     }
@@ -431,9 +439,17 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 TC = glm::translate(I, glm::vec3(3.5, 0.0, 3.5));
     drawColumnas(P,V, M * TC);
 
+    // Dibjar ventanas
     glm::mat4 SInterior = glm::scale(I, glm::vec3(1.9, 2.6, 1.9));
     glm::mat4 TInterior = glm::translate(I, glm::vec3(3.5, 2.7, 3.5));
-    drawObject(cube, mluz, P, V, M * TInterior * SInterior);
+    Material ventana = mluz;
+
+    if (dia) {
+        ventana.emissive = glm::vec4(0.3);
+        drawObject(cube, ventana, P, V, M * TInterior * SInterior);
+    } else {
+        drawObject(cube, ventana, P, V, M * TInterior * SInterior);
+    }
 
 }
 
@@ -531,7 +547,11 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Rini = glm::rotate(I, glm::radians(90.0f), glm::vec3(-1, 0, 0));
 
     Material mFaro = mluz;
-    mFaro.emissive = glm::vec4(lightF[index].diffuse, 1.0);
+    if (dia) {
+        mFaro.emissive = glm::vec4(lightF[index].diffuse.x * 0.6, lightF[index].diffuse.y * 0.6, lightF[index].diffuse.z * 0.6, 1.0);
+    } else {
+        mFaro.emissive = glm::vec4(lightF[index].diffuse, 1.0);
+    }
 
     drawObject(cylinder,mFaro,P,V,M*T*S*Rini);
 
@@ -693,8 +713,13 @@ void drawLucesPosicion (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.35,0.8));
     glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.35,0.8));
 
-    drawObject(cube, mluzR, P, V, M * Tf1 * Sf);
-    drawObject(cube, mluzR, P, V, M * Tf2 * Sf);
+    Material luzP = mluzR;
+    if (dia) {
+        luzP.emissive = glm::vec4(luzP.emissive.x * 0.6, luzP.emissive.y * 0.6, luzP.emissive.z * 0.6, 1.0);
+    }
+
+    drawObject(cube, luzP, P, V, M * Tf1 * Sf);
+    drawObject(cube, luzP, P, V, M * Tf2 * Sf);
 
 }
 
@@ -706,8 +731,13 @@ void drawLucesPosicionDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.18,0.73));
     glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.18,0.73));
 
-    drawObject(cube, mluzR, P, V, M * Tf1 * Sf);
-    drawObject(cube, mluzR, P, V, M * Tf2 * Sf);
+    Material luzP = mluzR;
+    if (dia) {
+        luzP.emissive = glm::vec4(luzP.emissive.x * 0.6, luzP.emissive.y * 0.6, luzP.emissive.z * 0.6, 1.0);
+    }
+
+    drawObject(cube, luzP, P, V, M * Tf1 * Sf);
+    drawObject(cube, luzP, P, V, M * Tf2 * Sf);
 
 }
 
