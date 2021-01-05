@@ -27,11 +27,18 @@ void setLights(glm::mat4 P, glm::mat4 V);
 
 void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
-void drawAuto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M);
-void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawChasisUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawChasisTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawChasisDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawLucesPosicion(glm::mat4 P, glm::mat4 V, glm::mat4 M);
-void drawRuedas(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawLucesPosicionDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawRuedasUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawRuedasTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawRuedasDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawRueda(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawObject(Model model, Material material, glm::mat4 P, glm::mat4 V, glm::mat4 M);
@@ -69,11 +76,17 @@ float fovy   = 60.0;
 float rotY   =  0.0;
 float faroX  =  0.0;
 float faroZ  =  0.0;
-float rotAstro =0.0;
-bool  dia    = true;
+float rotRueda = 0.0;
+float rotAstro = 0.0;
 int   speed  = 1000;
 float alphaX =  0.0;
 float alphaY =  0.0;
+
+// Controles y Mundo
+#define     NCOCHES 3
+std::string coches[NCOCHES] = {"Utilitario", "Todoterreno", "Deportivo"};
+int cocheSeleccionado = 0;
+bool  dia   = true;
 
 int main(int argc, char** argv) {
 
@@ -276,7 +289,14 @@ void funDisplay() {
 
     glm::mat4 T = glm::translate(I,glm::vec3(faroX, 0.0, faroZ));
     glm::mat4 R = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0));
-    drawAuto(P,V,T*R);
+
+    // Dibujar el coche seleccionado
+    switch (cocheSeleccionado) {
+        case 0:  drawUtilitario(P,V,T*R);  break;
+        case 1:  drawTodoterreno(P,V,T*R); break;
+        case 2:  drawDeportivo(P,V,T*R);   break;
+        default: drawUtilitario(P,V,T*R);
+    }
 
     // Intercambiamos los buffers
     glutSwapBuffers();
@@ -348,13 +368,43 @@ void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 }
 
-void drawAuto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
-    drawRuedas(P,V,M);
+    drawRuedasUtilitario(P,V,M);
 
-    drawChasis(P,V,M);
+    drawChasisUtilitario(P,V,M);
 
     drawLucesPosicion(P,V,M);
+
+    glm::mat4 der = translate(I, glm::vec3(0.3,0.0,-0.8));
+    glm::mat4 izq = translate(I, glm::vec3(-0.3,0.0,-0.8));
+    drawFaro(0,P,V,M*der);
+    drawFaro(1,P,V,M*izq);
+
+}
+
+void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    drawRuedasTodoterreno(P,V,M);
+
+    drawChasisTodoterreno(P,V,M);
+
+    drawLucesPosicion(P,V,M);
+
+    glm::mat4 der = translate(I, glm::vec3(0.3,0.0,-0.8));
+    glm::mat4 izq = translate(I, glm::vec3(-0.3,0.0,-0.8));
+    drawFaro(0,P,V,M*der);
+    drawFaro(1,P,V,M*izq);
+
+}
+
+void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    drawRuedasDeportivo(P,V,M);
+
+    drawChasisDeportivo(P,V,M);
+
+    drawLucesPosicionDeportivo(P,V,M);
 
     glm::mat4 der = translate(I, glm::vec3(0.3,0.0,-0.8));
     glm::mat4 izq = translate(I, glm::vec3(-0.3,0.0,-0.8));
@@ -367,7 +417,7 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 T = glm::translate(I,glm::vec3(0.0, lightF[index].position.y, 0.0));
     glm::mat4 S = glm::scale(I,glm::vec3(0.1/2.0, 0.1/2.0, 0.01/2.0));
-    glm::mat4 Rini = glm::rotate(I, glm::radians(90.0f), glm::vec3(-1, 0, 0));;
+    glm::mat4 Rini = glm::rotate(I, glm::radians(90.0f), glm::vec3(-1, 0, 0));
 
     Material mFaro = mluz;
     mFaro.emissive = glm::vec4(lightF[index].diffuse, 1.0);
@@ -376,11 +426,38 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 }
 
-void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
     //base turismo y todoterreno
-    /*glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
+    glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
     glm::mat4 T = translate(I, glm::vec3(0,0.04,0));
-    drawObject(cube,pSilver,P,V,M*T*S);*/
+    drawObject(cube,pSilver,P,V,M*T*S);
+
+    //coche normal familiar
+    glm::mat4 Scab = scale(I, glm::vec3(0.38,0.15,0.55));
+    glm::mat4 Tcab = translate(I, glm::vec3(0,0.6,0.2));
+    drawObject(cube,pSilver,P,V,M*Tcab*Scab);
+}
+
+void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    //base turismo y todoterreno
+    glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
+    glm::mat4 T = translate(I, glm::vec3(0,0.04,0));
+    drawObject(cube,pSilver,P,V,M*T*S);
+
+    //coche todoterreno
+    glm::mat4 Scab = scale(I, glm::vec3(0.4,0.30,0.55));
+    glm::mat4 Tcab = translate(I, glm::vec3(0,0.6,0.25));
+    drawObject(cube,pSilver,P,V,M*Tcab*Scab);
+
+    glm::mat4 SR = scale(I, glm::vec3(0.4/2.0,0.15/2.0,0.4/2.0));
+    glm::mat4 RR = rotate(I, glm::radians(90.0f), glm::vec3(1, 0, 0));
+    glm::mat4 TR = translate(I, glm::vec3(0,0.55,0.9));
+    drawObject(cylinder, obsidian, P, V, M * TR * RR * SR);
+}
+
+void drawChasisDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     //base coche deportivo
     glm::mat4 S1 = scale(I, glm::vec3(0.4,0.02,0.78));
@@ -420,6 +497,7 @@ void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cube,pSilver,P,V,M*TFaro1*SFaro);
     glm::mat4 TFaro2 = translate(I, glm::vec3(-0.3,0.3,-0.75));
     drawObject(cube,pSilver,P,V,M*TFaro2*SFaro);
+
     //cabina base
     glm::mat4 SCB1 = scale(I, glm::vec3(0.4,0.02,0.6));
     glm::mat4 TCB1 = translate(I, glm::vec3(0,0.26,0.02));
@@ -428,6 +506,7 @@ void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 SCB2 = scale(I, glm::vec3(0.4,0.02,0.58));
     glm::mat4 TCB2 = translate(I, glm::vec3(0,0.28,0.03));
     drawObject(cube,pSilver,P,V,M*TCB2*SCB2);
+
     //cabina
     glm::mat4 SC1 = scale(I, glm::vec3(0.4,0.02,0.55));
     glm::mat4 TC1 = translate(I, glm::vec3(0,0.3,0.04));
@@ -452,10 +531,12 @@ void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 SC6 = scale(I, glm::vec3(0.3,0.02,0.45));
     glm::mat4 TC6 = translate(I, glm::vec3(0,0.4,0.04));
     drawObject(cube,pSilver,P,V,M*TC6*SC6);
+
     //aleron base
     glm::mat4 SA = scale(I, glm::vec3(0.42,0.005,0.05));
     glm::mat4 TA = translate(I, glm::vec3(0,0.45,0.75));
     drawObject(cube,pSilver,P,V,M*TA*SA);
+
     //aleron lados
     glm::mat4 SAT = scale(I, glm::vec3(0.005,0.02,0.04));
     glm::mat4 TAD1 = translate(I, glm::vec3(0.3,0.43,0.74));
@@ -490,43 +571,75 @@ void drawChasis(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cube,pSilver,P,V,M*TAI7*SAT);
     glm::mat4 TAI8 = translate(I, glm::vec3(-0.3,0.29,0.6));
     drawObject(cube,pSilver,P,V,M*TAI8*SAT);
-    //coche normal familiar
-    /*glm::mat4 Scab = scale(I, glm::vec3(0.38,0.15,0.55));
-    glm::mat4 Tcab = translate(I, glm::vec3(0,0.6,0.2));
-    drawObject(cube,pSilver,P,V,M*Tcab*Scab);*/
 
-    //coche todoterreno
-    /*glm::mat4 Scab = scale(I, glm::vec3(0.4,0.30,0.55));
-    glm::mat4 Tcab = translate(I, glm::vec3(0,0.6,0.25));
-    drawObject(cube,pSilver,P,V,M*Tcab*Scab);
-
-    glm::mat4 SR = scale(I, glm::vec3(0.4/2.0,0.15/2.0,0.4/2.0));
-    glm::mat4 RR = rotate(I, glm::radians(90.0f), glm::vec3(1, 0, 0));
-    glm::mat4 TR = translate(I, glm::vec3(0,0.55,0.9));
-    drawObject(cylinder, obsidian, P, V, M * TR * RR * SR);*/
 }
 
-void drawLucesPosicion(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawLucesPosicion (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 Sf = scale(I, glm::vec3(0.1/2.0,0.08/2.0,0.01/2.0));
-    //luces traseras deportivo
-    glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.18,0.73));
-    glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.18,0.73));
 
     //luces traseras turismo
-    /*glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.35,0.8));
-    glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.35,0.8));*/
+    glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.35,0.8));
+    glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.35,0.8));
+
     drawObject(cube, mluzR, P, V, M * Tf1 * Sf);
     drawObject(cube, mluzR, P, V, M * Tf2 * Sf);
 
 }
 
-void drawRuedas (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawLucesPosicionDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 Sf = scale(I, glm::vec3(0.1/2.0,0.08/2.0,0.01/2.0));
+
+    //luces traseras deportivo
+    glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.18,0.73));
+    glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.18,0.73));
+
+    drawObject(cube, mluzR, P, V, M * Tf1 * Sf);
+    drawObject(cube, mluzR, P, V, M * Tf2 * Sf);
+
+}
+
+void drawRuedasUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
     //ruedas turismo
-    /*glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.15,0.6));
+    glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.15,0.6));
     glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.15,0.6));
     glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.15,-0.4));
-    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.15,-0.4));*/
+    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.15,-0.4));
+
+    // Hacer girar las ruedas al moverse el coche
+    glm::mat4 R = glm::rotate(I, glm::radians(rotRueda), glm::vec3(1, 0, 0));
+
+    drawRueda(P, V, M * Tru1 * R);
+    drawRueda(P, V, M * Tru2 * R);
+    drawRueda(P, V, M * Tru3 * R);
+    drawRueda(P, V, M * Tru4 * R);
+
+}
+
+void drawRuedasTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    //ruedas todoterreno
+    glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.2,0.6));
+    glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.2,0.6));
+    glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.2,-0.4));
+    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.2,-0.4));
+
+    // Rueda gorda
+    glm::mat4 S = scale(I, glm::vec3(0.4/2.0,0.15/2.0,0.4/2.0));
+
+    // Hacer girar las ruedas al moverse el coche
+    glm::mat4 R = glm::rotate(I, glm::radians(rotRueda), glm::vec3(1, 0, 0));
+
+    drawRueda(P, V, M * Tru1 * S * R);
+    drawRueda(P, V, M * Tru2 * S * R);
+    drawRueda(P, V, M * Tru3 * S * R);
+    drawRueda(P, V, M * Tru4 * S * R);
+
+}
+
+void drawRuedasDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     //ruedas deportivo
     glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.15,0.5));
@@ -534,16 +647,13 @@ void drawRuedas (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.15,-0.4));
     glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.15,-0.4));
 
-    //ruedas todoterreno
-    /*glm::mat4 Tru1 = translate(I, glm::vec3(0.4,0.2,0.6));
-    glm::mat4 Tru2 = translate(I, glm::vec3(-0.4,0.2,0.6));
-    glm::mat4 Tru3 = translate(I, glm::vec3(-0.4,0.2,-0.4));
-    glm::mat4 Tru4 = translate(I, glm::vec3(0.4,0.2,-0.4));*/
+    // Hacer girar las ruedas al moverse el coche
+    glm::mat4 R = glm::rotate(I, glm::radians(rotRueda), glm::vec3(1, 0, 0));
 
-    drawRueda(P, V, M * Tru1);
-    drawRueda(P, V, M * Tru2);
-    drawRueda(P, V, M * Tru3);
-    drawRueda(P, V, M * Tru4);
+    drawRueda(P, V, M * Tru1 * R);
+    drawRueda(P, V, M * Tru2 * R);
+    drawRueda(P, V, M * Tru3 * R);
+    drawRueda(P, V, M * Tru4 * R);
 
 }
 
@@ -551,8 +661,6 @@ void drawRueda(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S = scale(I, glm::vec3(0.3/2.0,0.15/2.0,0.3/2.0));
 
-    //ruedas todoterreno
-   // glm::mat4 S = scale(I, glm::vec3(0.4/2.0,0.15/2.0,0.4/2.0));
     glm::mat4 R = rotate(I, glm::radians(90.0f), glm::vec3(0, 0, -1));
     drawObject(cylinder, obsidian, P, V, M * R * S);
 
@@ -575,11 +683,14 @@ void funSpecial(int key, int x, int y) {
         case GLUT_KEY_RIGHT: rotY -= 5.0f;   break;
         case GLUT_KEY_UP:    faroX -= 0.1 * sinf(glm::radians(rotY));
                              faroZ -= 0.1 * cosf(glm::radians(rotY));
+                             rotRueda += 10.0;
                              break;
         case GLUT_KEY_DOWN:  faroX += 0.1 * sinf(glm::radians(rotY));
                              faroZ += 0.1 * cosf(glm::radians(rotY));
+                             rotRueda -= 10.0;
                              break;
     }
+
     glutPostRedisplay();
 
 }
@@ -587,9 +698,14 @@ void funSpecial(int key, int x, int y) {
 void funKeyboard(unsigned char key, int x, int y) {
 
     switch(key) {
-        case ' ': rotY = 0.0f;
+        case ' ': cocheSeleccionado++;
                   break;
     }
+
+    if (cocheSeleccionado > 2) {
+        cocheSeleccionado = 0;
+    }
+
     glutPostRedisplay();
 
 }
