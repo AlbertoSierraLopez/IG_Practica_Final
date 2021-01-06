@@ -160,21 +160,21 @@ void funInit() {
 
  // Luces Posicionales
     // Sol
-    lightP[0].position  = glm::vec3(8.0, 0.0, 0.0);
-    lightP[0].ambient   = glm::vec3( 5.0, 0.2, 0.2);
-    lightP[0].diffuse   = glm::vec3( 5.0, 0.2, 0.2);
-    lightP[0].specular  = glm::vec3( 0.7, 0.7, 0.7);
+    lightP[0].position  = glm::vec3(16.0,0.0, 0.0);
+    lightP[0].ambient   = glm::vec3(2.53,2.04,1.08);
+    lightP[0].diffuse   = glm::vec3(2.53,2.04,1.08);
+    lightP[0].specular  = glm::vec3(0.7,0.7,  0.7);
     lightP[0].c0 = 1.0;
-    lightP[0].c1 = 0.22;
-    lightP[0].c2 = 0.20;
+    lightP[0].c1 = 0.06;
+    lightP[0].c2 = 0.02;
     // Luna
-    lightP[1].position  = glm::vec3(-8.0, 0.0, 0.0);
-    lightP[1].ambient   = glm::vec3( 0.2, 0.2, 5.0);
-    lightP[1].diffuse   = glm::vec3( 0.2, 0.2, 5.0);
-    lightP[1].specular  = glm::vec3( 0.7, 0.7, 0.7);
+    lightP[1].position  = glm::vec3(-16.0,0.0, 0.0);
+    lightP[1].ambient   = glm::vec3(1.94, 1.97,2.04);
+    lightP[1].diffuse   = glm::vec3(1.94, 1.97,2.04);
+    lightP[1].specular  = glm::vec3(0.5,  0.5, 0.5);
     lightP[1].c0 = 1.0;
-    lightP[1].c1 = 0.22;
-    lightP[1].c2 = 0.20;
+    lightP[1].c1 = 0.18;
+    lightP[1].c2 = 0.08;
 
  // Luces Focales
     // Faro Derecho
@@ -216,13 +216,13 @@ void funInit() {
     mSol.ambient   = glm::vec4(0.0, 0.0, 0.0, 1.0);
     mSol.diffuse   = glm::vec4(0.0, 0.0, 0.0, 1.0);
     mSol.specular  = glm::vec4(0.0, 0.0, 0.0, 1.0);
-    mSol.emissive  = glm::vec4( 5.0, 0.2, 0.2, 1.0);
+    mSol.emissive  = glm::vec4(253.0/255.0,204.0/255.0,108.0/255.0,1.0);
     mSol.shininess = 1.0;
 
     mLuna.ambient   = glm::vec4(0.0, 0.0, 0.0, 1.0);
     mLuna.diffuse   = glm::vec4(0.0, 0.0, 0.0, 1.0);
     mLuna.specular  = glm::vec4(0.0, 0.0, 0.0, 1.0);
-    mLuna.emissive  = glm::vec4( 0.2, 0.2, 5.0, 1.0);
+    mLuna.emissive  = glm::vec4(194.0/255.0,197.0/255.0,204.0/255.0,1.0);
     mLuna.shininess = 1.0;
 
     // Ruby
@@ -277,7 +277,7 @@ void funDisplay() {
 
     // Matriz P
     float nplane =  0.1;
-    float fplane = 25.0;
+    float fplane = 50.0;
     float aspect = (float)w/(float)h;
     glm::mat4 P  = glm::perspective(glm::radians(fovy), aspect, nplane, fplane);
 
@@ -375,11 +375,11 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     if (dia) {
         lAstro = lightP[0];
         mAstro = mSol;
-        scale = 0.3;
+        scale = 1.0;
     } else {
         lAstro = lightP[1];
         mAstro = mLuna;
-        scale = 0.15;
+        scale = 0.25;
     }
 
     glm::mat4 S = glm::scale(I, glm::vec3(scale));
@@ -713,13 +713,13 @@ void drawLucesPosicion (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tf1 =  translate(I, glm::vec3(0.3,0.35,0.8));
     glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.35,0.8));
 
-    Material luzP = mluzR;
+    Material luzPos = mluzR;
     if (dia) {
-        luzP.emissive = glm::vec4(luzP.emissive.x * 0.6, luzP.emissive.y * 0.6, luzP.emissive.z * 0.6, 1.0);
+        luzPos.emissive = glm::vec4(luzPos.emissive.x * 0.6, luzPos.emissive.y * 0.6, luzPos.emissive.z * 0.6, 1.0);
     }
 
-    drawObject(cube, luzP, P, V, M * Tf1 * Sf);
-    drawObject(cube, luzP, P, V, M * Tf2 * Sf);
+    drawObject(cube, luzPos, P, V, M * Tf1 * Sf);
+    drawObject(cube, luzPos, P, V, M * Tf2 * Sf);
 
 }
 
