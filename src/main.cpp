@@ -84,12 +84,21 @@ int h = 600;
 
 // Animaciones
 float fovy   = 60.0;
-float rotY   =  0.0;
-float faroX  =  0.0;
-float faroZ  =  0.0;
+
+float rotY     = 0.0;
+float faroX    = 0.0;
+float faroZ    = 0.0;
 float rotRueda = 0.0;
+
 float rotAstro = 0.0;
-int   speed  = 1000;
+int   speed    = 1000;
+
+int npcDir     = 0;     // Indice del array npcControl[]
+float npcTimer = 0.0;   // Temporizador, va anclado a la longitud de las carreteras (7)
+float npcRot   = 90.0;
+float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
+//                      X    Z   -X   -Z
+
 float alphaX =  0.0;
 float alphaY =  0.0;
 
@@ -306,16 +315,21 @@ void funDisplay() {
     drawEdificio(P,V,I);
 
     // Dibujar Coches
-    glm::mat4 T = glm::translate(I,glm::vec3(faroX, 0.05, faroZ));
-    glm::mat4 R = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0));
+    glm::mat4 Tcoche = glm::translate(I,glm::vec3(faroX, 0.05, faroZ));
+    glm::mat4 Rcoche = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0));
 
-    // Dibujar el coche seleccionado
+    // Coche Seleccionado
     switch (cocheSeleccionado) {
-        case 0:  drawUtilitario(P,V,T*R);  break;
-        case 1:  drawTodoterreno(P,V,T*R); break;
-        case 2:  drawDeportivo(P,V,T*R);   break;
-        default: drawUtilitario(P,V,T*R);
+        case 0:  drawUtilitario(P,V,Tcoche*Rcoche);  break;
+        case 1:  drawTodoterreno(P,V,Tcoche*Rcoche); break;
+        case 2:  drawDeportivo(P,V,Tcoche*Rcoche);   break;
+        default: drawUtilitario(P,V,Tcoche*Rcoche);
     }
+
+    // Coche npc
+    glm::mat4 Tnpc = glm::translate(I,glm::vec3(npcControl[0]-npcControl[2], 0.05, npcControl[1]-npcControl[3]));
+    glm::mat4 Rnpc = glm::rotate(I, glm::radians(npcRot), glm::vec3(0, -1, 0));
+    drawUtilitario(P,V,Tnpc*Rnpc);
 
     // Intercambiamos los buffers
     glutSwapBuffers();
@@ -873,6 +887,21 @@ void funMotion(int x, int y) {
 }
 
 void funTimer(int value) {
+
+    npcTimer += 1.0;
+    if (npcTimer > 7.0) {   // Toca girar
+        npcTimer = 0.0;
+        npcRot += 90.0;
+        npcDir += 1;
+        if (npcDir > 3) {   // Se ha hecho un giro completo
+            npcDir = 0;
+            // Reiniciar npcControl
+            for (int i = 0; i < 4; i++) {
+                npcControl[i] = 0.0;
+            }
+        }
+    }
+    npcControl[npcDir] = npcTimer;
 
     rotAstro += 5.0;
     if (rotAstro > 360.0) rotAstro = 0.0;
