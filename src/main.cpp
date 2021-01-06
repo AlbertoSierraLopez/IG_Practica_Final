@@ -65,10 +65,11 @@ Model cube;
 
 // Luces y materiales
 #define   NLP 2
-#define   NLF 2
+#define   NCOCHES 2
+
 Light     lightG;
 Light     lightP[NLP];
-Light     lightF[NLF];
+Light     lightF[NCOCHES*2];
 Material  mluz;
 Material  mluzR;
 Material  mSol;
@@ -357,7 +358,8 @@ void setLights(glm::mat4 P, glm::mat4 V) {
     shaders.setLight("ulightP", lAstro);
 
  // Luces Focales
-    for (int i=0; i<NLF; i++) {
+    // Focos coche principal
+    for (int i=0; i<2; i++) {
         // Luz
         Light lFaro = lightF[i];
 
@@ -368,6 +370,34 @@ void setLights(glm::mat4 P, glm::mat4 V) {
 
         // Direccion
         lFaro.direction =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.direction, 1.0);
+
+        // Intensidad
+        if (dia) {
+            lFaro.diffuse  = glm::vec3(0.0);
+            lFaro.specular = glm::vec3(0.0);
+        }
+
+        shaders.setLight("ulightF["+toString(i)+"]",lFaro);
+    }
+
+    // Focos coches npc
+    for (int i=2; i<NCOCHES*2; i++) {
+        // Luz
+        Light lFaro;
+        if (i % 2 == 0) {
+            lFaro = lightF[0];  // Faro derecho
+        } else {
+            lFaro = lightF[1];  // Faro izquierdo
+        }
+
+
+        // Posicion
+        lFaro.position   = glm::rotate(I, glm::radians(npcRot), glm::vec3(0, -1, 0)) * glm::vec4(lFaro.position, 1.0);
+        lFaro.position.x += npcControl[0] - npcControl[2];
+        lFaro.position.z += npcControl[1] - npcControl[3];
+
+        // Direccion
+        lFaro.direction =  glm::rotate(I, glm::radians(npcRot), glm::vec3(0, -1, 0)) * glm::vec4(lFaro.direction, 1.0);
 
         // Intensidad
         if (dia) {
