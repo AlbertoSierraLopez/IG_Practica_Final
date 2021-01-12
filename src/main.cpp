@@ -29,11 +29,15 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
 
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawColumnas(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawColumna(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
@@ -76,9 +80,11 @@ Material  mluzR;
 Material  mSol;
 Material  mLuna;
 Material  ruby;
+Material xgreen;
 Material  obsidian;
 Material  wPlastic;
 Material  pSilver;
+
 
 // Viewport
 int w = 800;
@@ -106,8 +112,8 @@ float alphaX =  0.0;
 float alphaY =  0.0;
 
 // Controles y Mundo
-#define     NCOCHES 3
-std::string coches[NCOCHES] = {"Utilitario", "Todoterreno", "Deportivo"};
+#define     NCOCHEST 3
+std::string coches[NCOCHEST] = {"Utilitario", "Todoterreno", "Deportivo"};
 int cocheSeleccionado = 0;
 bool  dia   = true;
 
@@ -243,6 +249,12 @@ void funInit() {
     ruby.specular  = glm::vec4(0.727811, 0.626959, 0.626959, 0.55);
     ruby.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
     ruby.shininess = 76.8;
+    // X
+    xgreen.ambient   = glm::vec4(0.011750,0.174500 , 0.011750, 0.55);
+    xgreen.diffuse   = glm::vec4(0.041360,0.614240 , 0.041360, 0.55);
+    xgreen.specular  = glm::vec4(0.626959, 0.727811, 0.626959, 0.55);
+    xgreen .emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
+    xgreen .shininess = 56.8;
 
     // Obsidian
     obsidian.ambient   = glm::vec4(0.05375f, 0.05f, 0.06625f, 0.82f);
@@ -313,11 +325,14 @@ void funDisplay() {
     //glm::mat4 S = glm::scale(I, glm::vec3(1.0));
     drawCarretera(P,V,I);
     drawAsfalto(P,V,I);
+    drawFarolas(P,V,I);
 
     // Dibujar Edificios
     drawEdificio(P,V,I);
     glm::mat4 TOficina = glm::translate(I,glm::vec3(-3.5,0,-3.5));
     drawOficina(P,V,I * TOficina);
+    glm::mat4 TParque = glm::translate(I,glm::vec3(3.5,0,-3.5));
+    drawParque(P,V,I * TParque);
 
     // Dibujar Coches
     glm::mat4 Tcoche = glm::translate(I,glm::vec3(faroX, 0.05, faroZ));
@@ -456,7 +471,39 @@ void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cube, wPlastic, P, V, M * Tabajo * R * T * S);
 
 }
-
+void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
+    glm::mat4 S = glm::scale(I, glm::vec3(2.5, 0.025, 2.5));
+    glm::mat4 T = glm::translate(I, glm::vec3(0.0, 0.025, 0.0));
+    drawObject(cube,xgreen,P,V,M*T*S);
+}
+void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    glm::mat4 TOficina = glm::translate(I, glm::vec3(-1.0, 0.0, -1.0));
+    glm::mat4 TOficina2 = glm::translate(I, glm::vec3(-1.0, 0.0, -6.0));
+    glm::mat4 TOficina3 = glm::translate(I, glm::vec3(-6.0, 0.0, -1.0));
+    glm::mat4 THotel    = glm::translate(I, glm::vec3(1.0, 0.0, 1.0));
+    glm::mat4 THotel2    = glm::translate(I, glm::vec3(1.0, 0.0, 6.0));
+    glm::mat4 THotel3    = glm::translate(I, glm::vec3(6.0, 0.0, 1.0));
+    glm::mat4 TParque    = glm::translate(I, glm::vec3(1.0, 0.0, -1.0));
+    glm::mat4 TParque2   = glm::translate(I, glm::vec3(1.0, 0.0, -6.0));
+    glm::mat4 TParque3   = glm::translate(I, glm::vec3(6.0, 0.0, -1.0));
+    glm::mat4 TParque4   = glm::translate(I, glm::vec3(3.5, 0.0, -3.5));
+    glm::mat4 TRestaurante      = glm::translate(I, glm::vec3(-1.0, 0.0, 1.0));
+    glm::mat4 TRestaurante2      = glm::translate(I, glm::vec3(-1.0, 0.0, 6.0));
+    glm::mat4 TRestaurante3      = glm::translate(I, glm::vec3(-6.0, 0.0, 1.0));
+    drawFarola(P,V,M * TOficina);
+    drawFarola(P,V,M * TOficina2);
+    drawFarola(P,V,M * TOficina3);
+    drawFarola(P,V,M * THotel);
+    drawFarola(P,V,M * THotel2);
+    drawFarola(P,V,M * THotel3);
+    drawFarola(P,V,M * TParque);
+    drawFarola(P,V,M * TParque2);
+    drawFarola(P,V,M * TParque3);
+    drawFarola(P,V,M * TParque4);
+    drawFarola(P,V,M * TRestaurante);
+    drawFarola(P,V,M * TRestaurante2);
+    drawFarola(P,V,M * TRestaurante3);
+}
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S = glm::scale(I, glm::vec3(6.0, 1.0, 6.0));
@@ -598,6 +645,39 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     } else {
         drawObject(cube, ventana, P, V, M * TInterior * SInterior);
     }
+
+}
+void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    glm::mat4 Spie   = glm::scale(I, glm::vec3(0.07, 0.1, 0.07));
+    glm::mat4 Tpie = glm::translate(I, glm::vec3(0, 0.1, 0));
+    drawObject(cylinder,obsidian,P,V,M*Tpie*Spie);
+    glm::mat4 Sbase   = glm::scale(I, glm::vec3(0.05, 0.6, 0.05));
+    glm::mat4 Tbase  = glm::translate(I, glm::vec3(0, 0.6, 0));
+    drawObject(cylinder,obsidian,P,V,M*Tbase*Sbase);
+    glm::mat4 Stronco   = glm::scale(I, glm::vec3(0.025, 1.2, 0.025));
+    glm::mat4 Ttronco  = glm::translate(I, glm::vec3(0, 1.2, 0));
+    drawObject(cylinder,obsidian,P,V,M*Ttronco*Stronco);
+    glm::mat4 SbaseF   = glm::scale(I, glm::vec3(0.05, 0.01, 0.05));
+    glm::mat4 TbaseF  = glm::translate(I, glm::vec3(0, 2.41, 0));
+    drawObject(cube,obsidian,P,V,M*TbaseF*SbaseF);
+    glm::mat4 SbaseF2   = glm::scale(I, glm::vec3(0.07, 0.01, 0.07));
+    glm::mat4 TbaseF2  = glm::translate(I, glm::vec3(0, 2.51, 0));
+    drawObject(cube,obsidian,P,V,M*TbaseF2*SbaseF);
+    glm::mat4 Sf  = glm::scale(I, glm::vec3(0.001, 0.05, 0.001));
+    glm::mat4 Tf1  = glm::translate(I, glm::vec3(0.0495, 2.46, 0.0495));
+    glm::mat4 Tf2  = glm::translate(I, glm::vec3(-0.0495, 2.46, 0.0495));
+    glm::mat4 Tf3  = glm::translate(I, glm::vec3(0.0495, 2.46, -0.0495));
+    glm::mat4 Tf4  = glm::translate(I, glm::vec3(-0.0495, 2.46, -0.0495));
+    drawObject(cylinder,obsidian,P,V,M*Tf1*Sf);
+    drawObject(cylinder,obsidian,P,V,M*Tf2*Sf);
+    drawObject(cylinder,obsidian,P,V,M*Tf3*Sf);
+    drawObject(cylinder,obsidian,P,V,M*Tf4*Sf);
+    glm::mat4 Sfarol  = glm::scale(I, glm::vec3(0.049, 0.05, 0.049));
+    glm::mat4 Tfarol  = glm::translate(I, glm::vec3(0.0, 2.46, 0.0));
+    Material farola = mluz;
+    if (dia) {farola.emissive *= 0.3;}
+    drawObject(cube,farola,P,V,M*Tfarol*Sfarol);
+
 
 }
 
