@@ -100,7 +100,8 @@ float npcTimer = 0.0;   // Temporizador, va anclado a la longitud de las carrete
 float npcRot   = 90.0;
 float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
 //                      X    Z   -X   -Z
-
+//temporizador ventana
+int mater = 0;
 float alphaX =  0.0;
 float alphaY =  0.0;
 
@@ -525,6 +526,7 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 SPuerta   = glm::scale(I, glm::vec3(0.4, 0.5, 0.2));
     glm::mat4 TPuerta = glm::translate(I, glm::vec3(2.0 - 2.0, 0.7, 2.0 - 0.2));
     drawObject(cube, obsidian, P, V, M * TPuerta * SPuerta);
+
     //ventanas
     glm::mat4 SVentanaa   = glm::scale(I, glm::vec3(0.5, 0.5, 0.2));
     glm::mat4 SVentanal   = glm::scale(I, glm::vec3(0.2, 0.5, 0.5));
@@ -542,22 +544,26 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 TVentana44l = glm::translate(I, glm::vec3(-2.0 + 0.2, 0.7, -2.0 + 0.9));
     glm::mat4 TVentana33a = glm::translate(I, glm::vec3(2.0 - 0.9, 0.7, -2.0 + 0.2));
     glm::mat4 TVentana44a = glm::translate(I, glm::vec3(-2.0 + 0.9, 0.7, -2.0 + 0.2));
-    drawObject(cube, mluz, P, V, M * TVentana1a * SVentanaa);
-    drawObject(cube, mluz, P, V, M * TVentana2a * SVentanaa);
-    drawObject(cube, mluz, P, V, M * TVentana3a * SVentanaa);
-    drawObject(cube, mluz, P, V, M * TVentana4a * SVentanaa);
-    drawObject(cube, mluz, P, V, M * TVentana1l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana2l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana3l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana4l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana11l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana22l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana33l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana44l * SVentanal);
-    drawObject(cube, mluz, P, V, M * TVentana33a * SVentanaa);
-    drawObject(cube, mluz, P, V, M * TVentana44a * SVentanaa);
+    Material ventana = mluz;
+    if (dia) {ventana.emissive = glm::vec4(0.3);}
+    Material materialesv[]={ventana,wPlastic};
 
+    drawObject(cube, materialesv[mater], P, V, M * TVentana1a * SVentanaa);
+    drawObject(cube,  materialesv[mater], P, V, M * TVentana2a * SVentanaa);
+    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana3a * SVentanaa);
+    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana4a * SVentanaa);
+    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana1l * SVentanal);
+    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana2l * SVentanal);
+    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana3l * SVentanal);
+    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana4l * SVentanal);
+    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana11l * SVentanal);
+    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana22l * SVentanal);
+    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana33l * SVentanal);
+    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana44l * SVentanal);
+    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana33a * SVentanaa);
+    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana44a * SVentanaa);
 }
+
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.2, 2.0));
@@ -1028,6 +1034,9 @@ void funTimer(int value) {
                 npcControl[i] = 0.0;
             }
         }
+    }
+    if (npcTimer == 0){
+        mater = rand() % 2;
     }
     npcControl[npcDir] = npcTimer;
 
