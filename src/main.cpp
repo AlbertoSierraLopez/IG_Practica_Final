@@ -30,6 +30,7 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
+void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawColumnas(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawColumna(glm::mat4 P, glm::mat4 V, glm::mat4 M);
@@ -314,6 +315,8 @@ void funDisplay() {
 
     // Dibujar Edificios
     drawEdificio(P,V,I);
+    glm::mat4 TOficina = glm::translate(I,glm::vec3(-3.5,0,-3.5));
+    drawOficina(P,V,I * TOficina);
 
     // Dibujar Coches
     glm::mat4 Tcoche = glm::translate(I,glm::vec3(faroX, 0.05, faroZ));
@@ -459,7 +462,102 @@ void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(plane, obsidian, P, V, M * S);
 
 }
+void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
+    glm::mat4 T   = glm::translate(I, glm::vec3(0, 0.1, 0));
+    glm::mat4 TP1 = glm::translate(I, glm::vec3(0, 1.3, 0));
+    glm::mat4 TP2 = glm::translate(I, glm::vec3(0, 2.5, 0));
+    drawObject(cube, ruby, P, V, M * T * S);
+    drawObject(cube, ruby, P, V, M * TP1 * S);
+    drawObject(cube, ruby, P, V, M * TP2 * S);
 
+
+
+    glm::mat4 SColumna   = glm::scale(I, glm::vec3(0.2, 1.2, 0.2));
+    glm::mat4 TColumna1 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, 2.0 - 0.2));
+    glm::mat4 TColumna2 = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, 2.0 - 0.2));
+    glm::mat4 TColumna3 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, -2.0+ 0.2));
+    glm::mat4 TColumna4 = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, -2.0+ 0.2));
+
+    drawObject(cube, ruby, P, V, M * TColumna1 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna2 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna3 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna4 * SColumna);
+
+    glm::mat4 TColumna11 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, 2.0 - 1.6));
+    glm::mat4 TColumna22 = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, 2.0 - 1.6));
+    glm::mat4 TColumna33 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, -2.0+ 1.6));
+    glm::mat4 TColumna44 = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, -2.0+ 1.6));
+    glm::mat4 TColumna33c = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, -2.0+ 1.8));
+    glm::mat4 TColumna44c = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, -2.0+ 1.8));
+    glm::mat4 SColumnac   = glm::scale(I, glm::vec3(0.2, 1.2, 0.4));
+
+    drawObject(cube, ruby, P, V, M * TColumna11 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna22 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna33 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna44 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna33c * SColumnac);
+    drawObject(cube, ruby, P, V, M * TColumna44c * SColumnac);
+
+    glm::mat4 TColumna111 = glm::translate(I, glm::vec3(2.0 - 1.6, 1.9, 2.0 - 0.2));
+    glm::mat4 TColumna222 = glm::translate(I, glm::vec3(-2.0 + 1.6, 1.9, 2.0 - 0.2));
+    glm::mat4 TColumna333 = glm::translate(I, glm::vec3(2.0 - 1.6, 1.2, -2.0+ 0.2));
+    glm::mat4 TColumna444 = glm::translate(I, glm::vec3(-2.0 + 1.6, 1.2, -2.0+ 0.2));
+    glm::mat4 TColumna333c = glm::translate(I, glm::vec3(2.0 - 1.8, 1.2, -2.0+ 0.2));
+    glm::mat4 TColumna111ac = glm::translate(I, glm::vec3(2.0 - 1.8, 1.9, 2.0 - 0.2));
+    glm::mat4 TColumna111D = glm::translate(I, glm::vec3(2.0 - 1.0, 0.7, 2.0 - 0.2));
+    glm::mat4 TColumna222D = glm::translate(I, glm::vec3(-2.0 + 1.0, 0.7, 2.0 - 0.2));
+    glm::mat4 SColumnac2   = glm::scale(I, glm::vec3(0.4, 1.2, 0.2));
+    glm::mat4 SColumnaA   = glm::scale(I, glm::vec3(0.2, 0.6, 0.2));
+    glm::mat4 SColumnaAc   = glm::scale(I, glm::vec3(0.4, 0.6, 0.2));
+    glm::mat4 SColumnaD   = glm::scale(I, glm::vec3(0.6, 0.6, 0.2));
+
+    drawObject(cube, ruby, P, V, M * TColumna111 * SColumnaA);
+    drawObject(cube, ruby, P, V, M * TColumna222 * SColumnaA);
+    drawObject(cube, ruby, P, V, M * TColumna333 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna444 * SColumna);
+    drawObject(cube, ruby, P, V, M * TColumna333c * SColumnac2);
+    drawObject(cube, ruby, P, V, M * TColumna111ac * SColumnaAc);
+    drawObject(cube, ruby, P, V, M * TColumna111D * SColumnaD);
+    drawObject(cube, ruby, P, V, M * TColumna222D * SColumnaD);
+
+    //puerta
+    glm::mat4 SPuerta   = glm::scale(I, glm::vec3(0.4, 0.5, 0.2));
+    glm::mat4 TPuerta = glm::translate(I, glm::vec3(2.0 - 2.0, 0.7, 2.0 - 0.2));
+    drawObject(cube, obsidian, P, V, M * TPuerta * SPuerta);
+    //ventanas
+    glm::mat4 SVentanaa   = glm::scale(I, glm::vec3(0.5, 0.5, 0.2));
+    glm::mat4 SVentanal   = glm::scale(I, glm::vec3(0.2, 0.5, 0.5));
+    glm::mat4 TVentana1a = glm::translate(I, glm::vec3(2.0 - 0.9, 1.9, 2.0 - 0.2));
+    glm::mat4 TVentana2a = glm::translate(I, glm::vec3(-2.0 + 0.9, 1.9, 2.0 - 0.2));
+    glm::mat4 TVentana3a = glm::translate(I, glm::vec3(2.0 - 0.9, 1.9, -2.0 + 0.2));
+    glm::mat4 TVentana4a = glm::translate(I, glm::vec3(-2.0 + 0.9, 1.9, -2.0 + 0.2));
+    glm::mat4 TVentana1l = glm::translate(I, glm::vec3(2.0 - 0.2, 1.9, 2.0 - 0.9));
+    glm::mat4 TVentana2l = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.9, 2.0 - 0.9));
+    glm::mat4 TVentana3l = glm::translate(I, glm::vec3(2.0 - 0.2, 1.9, -2.0+ 0.9));
+    glm::mat4 TVentana4l = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.9, -2.0+ 0.9));
+    glm::mat4 TVentana11l = glm::translate(I, glm::vec3(2.0 - 0.2, 0.7, 2.0 - 0.9));
+    glm::mat4 TVentana22l = glm::translate(I, glm::vec3(-2.0 + 0.2, 0.7, 2.0 - 0.9));
+    glm::mat4 TVentana33l = glm::translate(I, glm::vec3(2.0 - 0.2, 0.7, -2.0 + 0.9));
+    glm::mat4 TVentana44l = glm::translate(I, glm::vec3(-2.0 + 0.2, 0.7, -2.0 + 0.9));
+    glm::mat4 TVentana33a = glm::translate(I, glm::vec3(2.0 - 0.9, 0.7, -2.0 + 0.2));
+    glm::mat4 TVentana44a = glm::translate(I, glm::vec3(-2.0 + 0.9, 0.7, -2.0 + 0.2));
+    drawObject(cube, mluz, P, V, M * TVentana1a * SVentanaa);
+    drawObject(cube, mluz, P, V, M * TVentana2a * SVentanaa);
+    drawObject(cube, mluz, P, V, M * TVentana3a * SVentanaa);
+    drawObject(cube, mluz, P, V, M * TVentana4a * SVentanaa);
+    drawObject(cube, mluz, P, V, M * TVentana1l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana2l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana3l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana4l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana11l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana22l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana33l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana44l * SVentanal);
+    drawObject(cube, mluz, P, V, M * TVentana33a * SVentanaa);
+    drawObject(cube, mluz, P, V, M * TVentana44a * SVentanaa);
+
+}
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.2, 2.0));
