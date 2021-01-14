@@ -1,3 +1,3 @@
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/rebuild_cache.dir
