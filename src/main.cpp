@@ -485,6 +485,7 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     drawObject(cube,xgreen,P,V,M*T*S);
 }
 void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
     glm::mat4 TOficina = glm::translate(I, glm::vec3(-1.0, 0.0, -1.0));
     glm::mat4 TOficina2 = glm::translate(I, glm::vec3(-1.0, 0.0, -6.0));
     glm::mat4 TOficina3 = glm::translate(I, glm::vec3(-6.0, 0.0, -1.0));
@@ -613,16 +614,16 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cube, materialesv[randomBooleanArray[1]] , P, V, M * TVentana2a * SVentanaa);
     drawObject(cube, materialesv[randomBooleanArray[2]] , P, V, M * TVentana3a * SVentanaa);
     drawObject(cube, materialesv[randomBooleanArray[3]] , P, V, M * TVentana4a * SVentanaa);
-    drawObject(cube, materialesv[randomBooleanArray[4]] , P, V, M * TVentana1l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[5]] , P, V, M * TVentana2l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[6]] , P, V, M * TVentana3l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[7]] , P, V, M * TVentana4l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[8]] , P, V, M * TVentana11l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[9]] , P, V, M * TVentana22l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[10]], P, V, M * TVentana33l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[11]], P, V, M * TVentana44l * SVentanal);
-    drawObject(cube, materialesv[randomBooleanArray[12]], P, V, M * TVentana33a * SVentanaa);
-    drawObject(cube, materialesv[randomBooleanArray[13]], P, V, M * TVentana44a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[0]] , P, V, M * TVentana1l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[1]] , P, V, M * TVentana2l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[2]] , P, V, M * TVentana3l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[3]] , P, V, M * TVentana4l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[4]] , P, V, M * TVentana11l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[5]] , P, V, M * TVentana22l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[6]], P, V, M * TVentana33l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[7]], P, V, M * TVentana44l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[6]], P, V, M * TVentana33a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[7]], P, V, M * TVentana44a * SVentanaa);
 }
 
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -687,8 +688,10 @@ void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cylinder,obsidian,P,V,M*Tf2*Sf);
     drawObject(cylinder,obsidian,P,V,M*Tf3*Sf);
     drawObject(cylinder,obsidian,P,V,M*Tf4*Sf);
+
     glm::mat4 Sfarol  = glm::scale(I, glm::vec3(0.049, 0.05, 0.049));
     glm::mat4 Tfarol  = glm::translate(I, glm::vec3(0.0, 2.46, 0.0));
+
     Material farola = mluz;
     if (dia) {farola.emissive *= 0.3;}
     drawObject(cube,farola,P,V,M*Tfarol*Sfarol);

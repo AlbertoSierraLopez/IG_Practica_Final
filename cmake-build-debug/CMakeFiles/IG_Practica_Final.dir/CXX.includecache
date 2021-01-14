@@ -1078,7 +1078,7 @@ OpenGL/glu.h
 GL/glu.h
 -
 
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.h
+C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/src/Model.h
 iostream
 -
 vector
@@ -1096,7 +1096,7 @@ assimp/scene.h
 assimp/postprocess.h
 -
 
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h
+C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/src/Shaders.h
 iostream
 -
 fstream
@@ -1110,7 +1110,7 @@ glm/gtc/type_ptr.hpp
 glm/gtc/matrix_transform.hpp
 -
 
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/main.cpp
+C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/src/main.cpp
 iostream
 -
 ogl/glew.h
@@ -1118,9 +1118,9 @@ ogl/glew.h
 ogl/freeglut.h
 -
 Shaders.h
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h
+C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/src/Shaders.h
 Model.h
-C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.h
+C:/Users/a.sierralo/CLionProjects/IG_Practica_Final(14-01-2021)/src/Model.h
 sstream
 -
 
