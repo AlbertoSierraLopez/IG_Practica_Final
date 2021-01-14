@@ -43,10 +43,10 @@ RM = "C:\Program Files\JetBrains\CLion 2020.1\bin\cmake\win\bin\cmake.exe" -E re
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\gm.nogales\CLionProjects\IG_Practica_Final
+CMAKE_SOURCE_DIR = C:\Users\a.sierralo\CLionProjects\IG_Practica_Final
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\gm.nogales\CLionProjects\IG_Practica_Final\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -73,14 +73,14 @@ clean: CMakeFiles/IG_Practica_Final.dir/clean
 CMakeFiles/IG_Practica_Final.dir/all:
 	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/depend
 	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\gm.nogales\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4 "Built target IG_Practica_Final"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles --progress-num=1,2,3,4 "Built target IG_Practica_Final"
 .PHONY : CMakeFiles/IG_Practica_Final.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/IG_Practica_Final.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\gm.nogales\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles 4
 	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/IG_Practica_Final.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\gm.nogales\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/IG_Practica_Final.dir/rule
 
 # Convenience name for target.
@@ -100,7 +100,7 @@ CMakeFiles/IG_Practica_Final.dir/clean:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -P C:\Users\gm.nogales\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles\VerifyGlobs.cmake
+	$(CMAKE_COMMAND) -P C:\Users\a.sierralo\CLionProjects\IG_Practica_Final\cmake-build-debug\CMakeFiles\VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles\Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -107,7 +107,7 @@ float npcRot   = 90.0;
 float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
 //                      X    Z   -X   -Z
 //temporizador ventana
-int mater = 0;
+int   randomBoolean = 0;
 float alphaX =  0.0;
 float alphaY =  0.0;
 
@@ -506,8 +506,14 @@ void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
-    glm::mat4 S = glm::scale(I, glm::vec3(6.0, 1.0, 6.0));
-    drawObject(plane, obsidian, P, V, M * S);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+        glm::mat4 S = glm::scale(I, glm::vec3(6.0, 1.0, 6.0));
+        drawObject(plane, obsidian, P, V, M * S);
+
+        glm::mat4 R = glm::rotate   (I, glm::radians(180.0f), glm::vec3(1, 0, 0));
+        drawObject(plane, obsidian, P, V, M * S * R);
+    glDisable(GL_CULL_FACE);
 
 }
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -591,24 +597,25 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 TVentana44l = glm::translate(I, glm::vec3(-2.0 + 0.2, 0.7, -2.0 + 0.9));
     glm::mat4 TVentana33a = glm::translate(I, glm::vec3(2.0 - 0.9, 0.7, -2.0 + 0.2));
     glm::mat4 TVentana44a = glm::translate(I, glm::vec3(-2.0 + 0.9, 0.7, -2.0 + 0.2));
-    Material ventana = mluz;
-    if (dia) {ventana.emissive = glm::vec4(0.3);}
-    Material materialesv[]={ventana,wPlastic};
 
-    drawObject(cube, materialesv[mater], P, V, M * TVentana1a * SVentanaa);
-    drawObject(cube,  materialesv[mater], P, V, M * TVentana2a * SVentanaa);
-    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana3a * SVentanaa);
-    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana4a * SVentanaa);
-    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana1l * SVentanal);
-    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana2l * SVentanal);
-    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana3l * SVentanal);
-    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana4l * SVentanal);
-    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana11l * SVentanal);
-    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana22l * SVentanal);
-    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana33l * SVentanal);
-    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana44l * SVentanal);
-    drawObject(cube,  materialesv[!mater]  , P, V, M * TVentana33a * SVentanaa);
-    drawObject(cube,  materialesv[mater]  , P, V, M * TVentana44a * SVentanaa);
+    Material ventana = mluz;
+    if (dia) {ventana.emissive *= glm::vec4(0.3);}
+    Material materialesv[] = {ventana,wPlastic};
+
+    drawObject(cube, materialesv[randomBoolean], P, V, M * TVentana1a * SVentanaa);
+    drawObject(cube, materialesv[randomBoolean], P, V, M * TVentana2a * SVentanaa);
+    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana3a * SVentanaa);
+    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana4a * SVentanaa);
+    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana1l * SVentanal);
+    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana2l * SVentanal);
+    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana3l * SVentanal);
+    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana4l * SVentanal);
+    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana11l * SVentanal);
+    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana22l * SVentanal);
+    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana33l * SVentanal);
+    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana44l * SVentanal);
+    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana33a * SVentanaa);
+    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana44a * SVentanaa);
 }
 
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -648,6 +655,7 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 }
 void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
     glm::mat4 Spie   = glm::scale(I, glm::vec3(0.07, 0.1, 0.07));
     glm::mat4 Tpie = glm::translate(I, glm::vec3(0, 0.1, 0));
     drawObject(cylinder,obsidian,P,V,M*Tpie*Spie);
@@ -1067,6 +1075,12 @@ void funSpecial(int key, int x, int y) {
 void funKeyboard(unsigned char key, int x, int y) {
 
     switch(key) {
+        case 'n': rotAstro = 180.0;
+                  dia = false;
+                  break;
+        case 'm': rotAstro = 0.0;
+                  dia = true;
+                  break;
         case ' ': cocheSeleccionado++;
                   break;
     }
@@ -1115,15 +1129,16 @@ void funTimer(int value) {
             }
         }
     }
-    if (npcTimer == 0){
-        mater = rand() % 2;
-    }
     npcControl[npcDir] = npcTimer;
+
+    if (npcTimer == 0){
+        randomBoolean = rand() % 2;
+    }
 
     rotAstro += 5.0;
     if (rotAstro > 360.0) rotAstro = 0.0;
 
-    if (rotAstro < 181.0) {
+    if (rotAstro < 180.0) {
         dia = true;
     } else {
         dia = false;
