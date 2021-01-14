@@ -106,8 +106,11 @@ float npcTimer = 0.0;   // Temporizador, va anclado a la longitud de las carrete
 float npcRot   = 90.0;
 float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
 //                      X    Z   -X   -Z
-//temporizador ventana
-int   randomBoolean = 0;
+
+// Ventanas aleatoriamente iluminadas
+#define     NVENTANAS 14
+int randomBooleanArray[NVENTANAS];
+
 float alphaX =  0.0;
 float alphaY =  0.0;
 
@@ -276,6 +279,11 @@ void funInit() {
     pSilver.specular  = glm::vec4(0.773911f, 0.773911f, 0.773911f, 1.0f);
     pSilver.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.0f);
     pSilver.shininess = 89.6f ;
+
+    // Inicializar array de booleanos aleatorios para las ventanas
+    for (int i = 0; i < NVENTANAS; i++) {
+        randomBooleanArray[i] = rand() % 2;
+    }
 
 }
 
@@ -517,6 +525,7 @@ void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 }
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
     glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
     glm::mat4 T   = glm::translate(I, glm::vec3(0, 0.1, 0));
     glm::mat4 TP1 = glm::translate(I, glm::vec3(0, 1.3, 0));
@@ -524,8 +533,6 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cube, ruby, P, V, M * T * S);
     drawObject(cube, ruby, P, V, M * TP1 * S);
     drawObject(cube, ruby, P, V, M * TP2 * S);
-
-
 
     glm::mat4 SColumna   = glm::scale(I, glm::vec3(0.2, 1.2, 0.2));
     glm::mat4 TColumna1 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, 2.0 - 0.2));
@@ -602,20 +609,20 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     if (dia) {ventana.emissive *= glm::vec4(0.3);}
     Material materialesv[] = {ventana,wPlastic};
 
-    drawObject(cube, materialesv[randomBoolean], P, V, M * TVentana1a * SVentanaa);
-    drawObject(cube, materialesv[randomBoolean], P, V, M * TVentana2a * SVentanaa);
-    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana3a * SVentanaa);
-    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana4a * SVentanaa);
-    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana1l * SVentanal);
-    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana2l * SVentanal);
-    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana3l * SVentanal);
-    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana4l * SVentanal);
-    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana11l * SVentanal);
-    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana22l * SVentanal);
-    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana33l * SVentanal);
-    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana44l * SVentanal);
-    drawObject(cube, materialesv[!randomBoolean]  , P, V, M * TVentana33a * SVentanaa);
-    drawObject(cube, materialesv[randomBoolean]  , P, V, M * TVentana44a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[0]] , P, V, M * TVentana1a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[1]] , P, V, M * TVentana2a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[2]] , P, V, M * TVentana3a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[3]] , P, V, M * TVentana4a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[4]] , P, V, M * TVentana1l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[5]] , P, V, M * TVentana2l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[6]] , P, V, M * TVentana3l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[7]] , P, V, M * TVentana4l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[8]] , P, V, M * TVentana11l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[9]] , P, V, M * TVentana22l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[10]], P, V, M * TVentana33l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[11]], P, V, M * TVentana44l * SVentanal);
+    drawObject(cube, materialesv[randomBooleanArray[12]], P, V, M * TVentana33a * SVentanaa);
+    drawObject(cube, materialesv[randomBooleanArray[13]], P, V, M * TVentana44a * SVentanaa);
 }
 
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -1132,7 +1139,9 @@ void funTimer(int value) {
     npcControl[npcDir] = npcTimer;
 
     if (npcTimer == 0){
-        randomBoolean = rand() % 2;
+        for (int i = 0; i < NVENTANAS; i++) {
+            randomBooleanArray[i] = rand() % 2;
+        }
     }
 
     rotAstro += 5.0;
