@@ -21,12 +21,12 @@ struct Material {
     float shininess;
 };
 
-#define NLP 1
-#define NCOCHES 2
+#define NFAROLAS 13
+#define NCOCHES  2
 
 uniform vec3     ucpos;
 uniform Light    ulightG;
-uniform Light    ulightP;
+uniform Light    ulightP[1+NFAROLAS];
 uniform Light    ulightF[NCOCHES*2];
 uniform Material umaterial;
 
@@ -44,7 +44,7 @@ void main() {
     vec3 V = normalize(ucpos - vpos);
 
     vec3 color = umaterial.emissive.rgb + ulightG.ambient * umaterial.ambient.rgb;
-    color += funPositional(ulightP,umaterial,N,V);
+    for(int i=0; i<NFAROLAS+1; i++)color += funPositional (ulightP[i],umaterial,N,V);
     for(int i=0; i<NCOCHES*2; i++) color += funFocal      (ulightF[i],umaterial,N,V);
 
     outColor = vec4(color, umaterial.diffuse.a);

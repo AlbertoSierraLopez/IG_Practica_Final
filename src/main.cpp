@@ -70,19 +70,22 @@ Model cylinder;
 Model cube;
 
 // Luces y materiales
-#define   NLP 2
-#define   NCOCHES 2
+#define   NCOCHES  2
+#define   NFAROLAS 13
 
 Light     lightG;
-Light     lightP[NLP];
+Light     lightP[1+NFAROLAS];
 Light     lightF[NCOCHES*2];
+Light     lightSol;
+Light     lightLuna;
+Light     lightFarola;
 Material  mluz;
 Material  mluzoff;
 Material  mluzR;
 Material  mSol;
 Material  mLuna;
 Material  ruby;
-Material xgreen;
+Material  xgreen;
 Material  obsidian;
 Material  wPlastic;
 Material  pSilver;
@@ -117,8 +120,8 @@ float alphaX =  0.0;
 float alphaY =  0.0;
 
 // Controles y Mundo
-#define     NCOCHEST 3
-std::string coches[NCOCHEST] = {"Utilitario", "Todoterreno", "Deportivo"};
+#define     NCOCHESTIPO 3
+std::string coches[NCOCHESTIPO] = {"Utilitario", "Todoterreno", "Deportivo"};
 int cocheSeleccionado = 0;
 bool  dia   = true;
 
@@ -183,21 +186,57 @@ void funInit() {
 
  // Luces Posicionales
     // Sol
-    lightP[0].position  = glm::vec3(16.0,0.0, 0.0);
-    lightP[0].ambient   = glm::vec3(2.53,2.04,1.08);
-    lightP[0].diffuse   = glm::vec3(2.53,2.04,1.08);
-    lightP[0].specular  = glm::vec3(0.7,0.7,  0.7);
-    lightP[0].c0 = 1.0;
-    lightP[0].c1 = 0.06;
-    lightP[0].c2 = 0.02;
+    lightSol.position  = glm::vec3(16.0,0.0, 0.0);
+    lightSol.ambient   = glm::vec3(2.53,2.04,1.08);
+    lightSol.diffuse   = glm::vec3(2.53,2.04,1.08);
+    lightSol.specular  = glm::vec3(0.7,0.7,  0.7);
+    lightSol.c0 = 1.0;
+    lightSol.c1 = 0.06;
+    lightSol.c2 = 0.02;
     // Luna
-    lightP[1].position  = glm::vec3(-16.0,0.0, 0.0);
-    lightP[1].ambient   = glm::vec3(1.94, 1.97,2.04);
-    lightP[1].diffuse   = glm::vec3(1.94, 1.97,2.04);
-    lightP[1].specular  = glm::vec3(0.5,  0.5, 0.5);
-    lightP[1].c0 = 1.0;
-    lightP[1].c1 = 0.18;
-    lightP[1].c2 = 0.08;
+    lightLuna.position  = glm::vec3(-16.0,0.0, 0.0);
+    lightLuna.ambient   = glm::vec3(1.94, 1.97,2.04);
+    lightLuna.diffuse   = glm::vec3(1.94, 1.97,2.04);
+    lightLuna.specular  = glm::vec3(0.5,  0.5, 0.5);
+    lightLuna.c0 = 1.0;
+    lightLuna.c1 = 0.18;
+    lightLuna.c2 = 0.08;
+
+    // Farola
+    lightFarola.position  = glm::vec3(0.0, 2.46, 0.0);
+    lightFarola.ambient   = glm::vec3(1.23, 1.025, 0.695);
+    lightFarola.diffuse   = glm::vec3(1.23, 1.025, 0.695);
+    lightFarola.specular  = glm::vec3(0.7, 0.7, 0.7);
+    lightFarola.c0 = 2.8;
+    lightFarola.c1 = 1.4;
+    lightFarola.c2 = 1.0;
+
+    lightP[1] = lightFarola;
+        lightP[1].position = glm::vec3(-1.0, 2.46, -1.0);
+    lightP[2] = lightFarola;
+        lightP[2].position = glm::vec3(-1.0, 2.46, -6.0);
+    lightP[3] = lightFarola;
+        lightP[3].position = glm::vec3(-6.0, 2.46, -1.0);
+    lightP[4] = lightFarola;
+        lightP[4].position = glm::vec3(1.0, 2.46, 1.0);
+    lightP[5] = lightFarola;
+        lightP[5].position = glm::vec3(1.0, 2.46, 6.0);
+    lightP[6] = lightFarola;
+        lightP[6].position = glm::vec3(6.0, 2.46, 1.0);
+    lightP[7] = lightFarola;
+        lightP[7].position = glm::vec3(1.0, 2.46, -1.0);
+    lightP[8] = lightFarola;
+        lightP[8].position = glm::vec3(1.0, 2.46, -6.0);
+    lightP[9] = lightFarola;
+        lightP[9].position = glm::vec3(6.0, 2.46, -1.0);
+    lightP[10] = lightFarola;
+        lightP[10].position = glm::vec3(3.5, 2.46, -3.5);
+    lightP[11] = lightFarola;
+        lightP[11].position = glm::vec3(-1.0, 2.46, 1.0);
+    lightP[12] = lightFarola;
+        lightP[12].position = glm::vec3(-1.0, 2.46, 6.0);
+    lightP[13] = lightFarola;
+        lightP[13].position = glm::vec3(-6.0, 2.46, 1.0);
 
  // Luces Focales
     // Faro Derecho
@@ -375,23 +414,36 @@ void funDisplay() {
 
 void setLights(glm::mat4 P, glm::mat4 V) {
 
- // Lucz Globales
+ // Luz Globales
     shaders.setLight("ulightG",lightG);
 
- // Luz Posicional
-    // Luz
-    Light lAstro;
-    if (dia) {
-        lAstro = lightP[0];
-    } else {
-        lAstro = lightP[1];
-    }
-    // Posicion
-    glm::mat4 rotLuz = glm::rotate(I, glm::radians(rotAstro), glm::vec3(0, 0, 1));
-    glm::vec4 posLuz = glm::vec4(lAstro.position, 1.0);
-    lAstro.position = rotLuz * posLuz;
+ // Luces Posicionales
+    for (int i = 0; i < 1; i++) {   // Primero los astros
+        // Luz
+        Light lAstro;
+        if (dia) {
+            lAstro = lightSol;
+        } else {
+            lAstro = lightLuna;
+        }
+        // Posicion
+        glm::mat4 rotLuz = glm::rotate(I, glm::radians(rotAstro), glm::vec3(0, 0, 1));
+        glm::vec4 posLuz = glm::vec4(lAstro.position, 1.0);
+        lAstro.position = rotLuz * posLuz;
 
-    shaders.setLight("ulightP", lAstro);
+        shaders.setLight("ulightP["+toString(i)+"]", lAstro);
+    }
+    for (int i = 1; i < NFAROLAS+1; i++) {  // Ahora las farolas
+        // Luz
+        Light lFarola = lightP[i];
+        if (dia) {
+            lFarola.ambient = glm::vec3(0.0);
+            lFarola.diffuse = glm::vec3(0.0);
+            lFarola.specular = glm::vec3(0.0);
+        }
+
+        shaders.setLight("ulightP["+toString(i)+"]", lFarola);
+    }
 
  // Luces Focales
     // Focos coche principal
@@ -426,7 +478,6 @@ void setLights(glm::mat4 P, glm::mat4 V) {
             lFaro = lightF[1];  // Faro izquierdo
         }
 
-
         // Posicion
         lFaro.position   = glm::rotate(I, glm::radians(npcRot), glm::vec3(0, -1, 0)) * glm::vec4(lFaro.position, 1.0);
         lFaro.position.x += npcControl[0] - npcControl[2];
@@ -453,11 +504,11 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     float scale = 0.0;
 
     if (dia) {
-        lAstro = lightP[0];
+        lAstro = lightSol;
         mAstro = mSol;
         scale = 1.0;
     } else {
-        lAstro = lightP[1];
+        lAstro = lightLuna;
         mAstro = mLuna;
         scale = 0.25;
     }
@@ -521,7 +572,45 @@ void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawFarola(P,V,M * TRestaurante);
     drawFarola(P,V,M * TRestaurante2);
     drawFarola(P,V,M * TRestaurante3);
+
 }
+
+void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 Spie   = glm::scale(I, glm::vec3(0.07, 0.1, 0.07));
+    glm::mat4 Tpie = glm::translate(I, glm::vec3(0, 0.1, 0));
+    drawObject(cylinder,obsidian,P,V,M*Tpie*Spie);
+    glm::mat4 Sbase   = glm::scale(I, glm::vec3(0.05, 0.6, 0.05));
+    glm::mat4 Tbase  = glm::translate(I, glm::vec3(0, 0.6, 0));
+    drawObject(cylinder,obsidian,P,V,M*Tbase*Sbase);
+    glm::mat4 Stronco   = glm::scale(I, glm::vec3(0.025, 1.2, 0.025));
+    glm::mat4 Ttronco  = glm::translate(I, glm::vec3(0, 1.2, 0));
+    drawObject(cylinder,obsidian,P,V,M*Ttronco*Stronco);
+    glm::mat4 SbaseF   = glm::scale(I, glm::vec3(0.05, 0.01, 0.05));
+    glm::mat4 TbaseF  = glm::translate(I, glm::vec3(0, 2.41, 0));
+    drawObject(cube,obsidian,P,V,M*TbaseF*SbaseF);
+    glm::mat4 SbaseF2   = glm::scale(I, glm::vec3(0.07, 0.01, 0.07));
+    glm::mat4 TbaseF2  = glm::translate(I, glm::vec3(0, 2.51, 0));
+    drawObject(cube,obsidian,P,V,M*TbaseF2*SbaseF);
+    glm::mat4 Sf  = glm::scale(I, glm::vec3(0.005, 0.05, 0.005));
+    glm::mat4 Tf1  = glm::translate(I, glm::vec3(0.0495, 2.46, 0.0495));
+    glm::mat4 Tf2  = glm::translate(I, glm::vec3(-0.0495, 2.46, 0.0495));
+    glm::mat4 Tf3  = glm::translate(I, glm::vec3(0.0495, 2.46, -0.0495));
+    glm::mat4 Tf4  = glm::translate(I, glm::vec3(-0.0495, 2.46, -0.0495));
+    drawObject(cylinder,obsidian,P,V,M*Tf1*Sf);
+    drawObject(cylinder,obsidian,P,V,M*Tf2*Sf);
+    drawObject(cylinder,obsidian,P,V,M*Tf3*Sf);
+    drawObject(cylinder,obsidian,P,V,M*Tf4*Sf);
+
+    glm::mat4 Sfarol  = glm::scale(I, glm::vec3(0.045, 0.05, 0.045));
+    glm::mat4 Tfarol  = glm::translate(I, glm::vec3(0.0, 2.46, 0.0));
+
+    Material farola = mluz;
+    if (dia) {farola.emissive *= 0.3;}
+    drawObject(cube,farola,P,V,M*Tfarol*Sfarol);
+
+}
+
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glEnable(GL_CULL_FACE);
@@ -534,6 +623,7 @@ void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glDisable(GL_CULL_FACE);
 
 }
+
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
@@ -677,7 +767,6 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObject(cube, ruby, P, V, M * TColumna33 * Scol);
     drawObject(cube, ruby, P, V, M * TColumna44 * Scol);
 
-
     glm::mat4 TColumna111 = glm::translate(I, glm::vec3(1.8, 3.25 , 1.8 - 1.0));
     glm::mat4 TColumna222 = glm::translate(I, glm::vec3(-1.8 + 1.0, 3.25 , 1.8));
     glm::mat4 TColumna333 = glm::translate(I, glm::vec3(1.8 - 1.0, 3.25 , -1.8));
@@ -780,43 +869,6 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     }
 
 }
-void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
-    glm::mat4 Spie   = glm::scale(I, glm::vec3(0.07, 0.1, 0.07));
-    glm::mat4 Tpie = glm::translate(I, glm::vec3(0, 0.1, 0));
-    drawObject(cylinder,obsidian,P,V,M*Tpie*Spie);
-    glm::mat4 Sbase   = glm::scale(I, glm::vec3(0.05, 0.6, 0.05));
-    glm::mat4 Tbase  = glm::translate(I, glm::vec3(0, 0.6, 0));
-    drawObject(cylinder,obsidian,P,V,M*Tbase*Sbase);
-    glm::mat4 Stronco   = glm::scale(I, glm::vec3(0.025, 1.2, 0.025));
-    glm::mat4 Ttronco  = glm::translate(I, glm::vec3(0, 1.2, 0));
-    drawObject(cylinder,obsidian,P,V,M*Ttronco*Stronco);
-    glm::mat4 SbaseF   = glm::scale(I, glm::vec3(0.05, 0.01, 0.05));
-    glm::mat4 TbaseF  = glm::translate(I, glm::vec3(0, 2.41, 0));
-    drawObject(cube,obsidian,P,V,M*TbaseF*SbaseF);
-    glm::mat4 SbaseF2   = glm::scale(I, glm::vec3(0.07, 0.01, 0.07));
-    glm::mat4 TbaseF2  = glm::translate(I, glm::vec3(0, 2.51, 0));
-    drawObject(cube,obsidian,P,V,M*TbaseF2*SbaseF);
-    glm::mat4 Sf  = glm::scale(I, glm::vec3(0.001, 0.05, 0.001));
-    glm::mat4 Tf1  = glm::translate(I, glm::vec3(0.0495, 2.46, 0.0495));
-    glm::mat4 Tf2  = glm::translate(I, glm::vec3(-0.0495, 2.46, 0.0495));
-    glm::mat4 Tf3  = glm::translate(I, glm::vec3(0.0495, 2.46, -0.0495));
-    glm::mat4 Tf4  = glm::translate(I, glm::vec3(-0.0495, 2.46, -0.0495));
-    drawObject(cylinder,obsidian,P,V,M*Tf1*Sf);
-    drawObject(cylinder,obsidian,P,V,M*Tf2*Sf);
-    drawObject(cylinder,obsidian,P,V,M*Tf3*Sf);
-    drawObject(cylinder,obsidian,P,V,M*Tf4*Sf);
-
-    glm::mat4 Sfarol  = glm::scale(I, glm::vec3(0.049, 0.05, 0.049));
-    glm::mat4 Tfarol  = glm::translate(I, glm::vec3(0.0, 2.46, 0.0));
-
-    Material farola = mluz;
-    if (dia) {farola.emissive *= 0.3;}
-    drawObject(cube,farola,P,V,M*Tfarol*Sfarol);
-
-
-}
-
 
 void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
@@ -1154,6 +1206,11 @@ void funSpecial(int key, int x, int y) {
                              rotRueda -= 10.0;
                              break;
     }
+
+    if (faroX >  7.0) faroX =  7.0;
+    if (faroX < -7.0) faroX = -7.0;
+    if (faroZ >  7.0) faroZ =  7.0;
+    if (faroZ < -7.0) faroZ = -7.0;
 
     glutPostRedisplay();
 
