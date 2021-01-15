@@ -8,24 +8,24 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
+				<Option working_dir="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="IG_Practica_Final">
-				<Option output="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/binary/IG_Practica_Final.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
+				<Option output="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/binary/IG_Practica_Final.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src"/>
-					<Add directory="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/../libraries/includes"/>
+					<Add directory="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src"/>
+					<Add directory="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/../libraries/includes"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
@@ -35,21 +35,21 @@
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 IG_Practica_Final"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 IG_Practica_Final"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="IG_Practica_Final/fast">
-				<Option output="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/binary/IG_Practica_Final.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
+				<Option output="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/binary/IG_Practica_Final.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src"/>
-					<Add directory="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/../libraries/includes"/>
+					<Add directory="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src"/>
+					<Add directory="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/../libraries/includes"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
@@ -59,49 +59,49 @@
 					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 IG_Practica_Final/fast"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 IG_Practica_Final/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
+				<Option working_dir="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
+				<Option working_dir="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.cpp">
+		<Unit filename="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.cpp">
 			<Option target="IG_Practica_Final"/>
 		</Unit>
-		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Model.h">
+		<Unit filename="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.h">
 			<Option target="IG_Practica_Final"/>
 		</Unit>
-		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.cpp">
+		<Unit filename="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.cpp">
 			<Option target="IG_Practica_Final"/>
 		</Unit>
-		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h">
+		<Unit filename="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.h">
 			<Option target="IG_Practica_Final"/>
 		</Unit>
-		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/main.cpp">
+		<Unit filename="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/main.cpp">
 			<Option target="IG_Practica_Final"/>
 		</Unit>
-		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/CMakeLists.txt">
+		<Unit filename="C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
