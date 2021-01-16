@@ -21,6 +21,14 @@ struct Material {
     float shininess;
 };
 
+struct Textures {
+    sampler2D diffuse;
+    sampler2D specular;
+    sampler2D emissive;
+    sampler2D normal;
+    float     shininess;
+};
+
 #define NFAROLAS 13
 #define NCOCHES  2
 
@@ -28,10 +36,16 @@ uniform vec3     ucpos;
 uniform Light    ulightG;
 uniform Light    ulightP[1+NFAROLAS];
 uniform Light    ulightF[NCOCHES*2];
+
 uniform Material umaterial;
+uniform Textures utextures;
+uniform bool     uWithMaterials;
+uniform bool     uWithNormals;
 
 in  vec3 vnor;
 in  vec3 vpos;
+in  vec2 vtex;
+
 out vec4 outColor;
 
 vec3 funDirectional(Light light, Material material, vec3 N, vec3 V);
@@ -43,11 +57,30 @@ void main() {
     vec3 N = normalize(vnor);
     vec3 V = normalize(ucpos - vpos);
 
-    vec3 color = umaterial.emissive.rgb + ulightG.ambient * umaterial.ambient.rgb;
-    for(int i=0; i<NFAROLAS+1; i++)color += funPositional (ulightP[i],umaterial,N,V);
-    for(int i=0; i<NCOCHES*2; i++) color += funFocal      (ulightF[i],umaterial,N,V);
+    Material material;
 
-    outColor = vec4(color, umaterial.diffuse.a);
+    if(uWithMaterials) {
+        material.ambient   = umaterial.ambient;
+        material.diffuse   = umaterial.diffuse;
+        material.specular  = umaterial.specular;
+        material.emissive  = umaterial.emissive;
+        material.shininess = umaterial.shininess;
+    }
+    else {
+        material.ambient   = texture(utextures.diffuse ,vtex)*0.3;
+        material.diffuse   = texture(utextures.diffuse ,vtex);
+        material.specular  = texture(utextures.specular,vtex);
+        material.emissive  = texture(utextures.emissive,vtex);
+        material.shininess = utextures.shininess;
+        if(uWithNormals) N = normalize(texture(utextures.normal,vtex).rgb - 0.5);
+    }
+
+    vec3 color = material.emissive.rgb + ulightG.ambient * material.ambient.rgb;
+//  for(int i=0; i<NLD; i++) color += funDirectional(ulightD[i],material,N,V);
+    for(int i=0; i<1+NFAROLAS; i++) color += funPositional (ulightP[i],material,N,V);
+    for(int i=0; i<NCOCHES*2; i++) color += funFocal      (ulightF[i],material,N,V);
+
+    outColor = vec4(color, material.diffuse.a);
 
 }
 
@@ -56,8 +89,10 @@ vec3 funDirectional(Light light, Material material, vec3 N, vec3 V) {
     vec3  L = normalize(-light.direction);
     vec3  R = normalize(reflect(-L,N));
 
-    float dotLN = max(dot(L,N), 0.0);
-    float dotRV = max(dot(R,V), 0.0);
+    float dotLN = dot(L,N);
+    float dotRV = 0.0;
+    if(dotLN<0.0) dotLN = 0.0;
+    else          dotRV = max(dot(R,V), 0.0);
 
     vec3  ambient  = light.ambient  * material.ambient.rgb;
     vec3  diffuse  = light.diffuse  * material.diffuse.rgb  * dotLN;
@@ -74,8 +109,10 @@ vec3 funPositional(Light light, Material material, vec3 N, vec3 V) {
     vec3  L = normalize(light.position - vpos);
     vec3  R = normalize(reflect(-L,N));
 
-    float dotLN = max(dot(L,N), 0.0);
-    float dotRV = max(dot(R,V), 0.0);
+    float dotLN = dot(L,N);
+    float dotRV = 0.0;
+    if(dotLN<0.0) dotLN = 0.0;
+    else          dotRV = max(dot(R,V), 0.0);
 
     vec3  ambient  = light.ambient  * material.ambient.rgb;
     vec3  diffuse  = light.diffuse  * material.diffuse.rgb  * dotLN;
@@ -95,8 +132,10 @@ vec3 funFocal(Light light, Material material, vec3 N, vec3 V) {
     vec3  L = normalize(light.position - vpos);
     vec3  R = normalize(reflect(-L,N));
 
-    float dotLN = max(dot(L,N), 0.0);
-    float dotRV = max(dot(R,V), 0.0);
+    float dotLN = dot(L,N);
+    float dotRV = 0.0;
+    if(dotLN<0.0) dotLN = 0.0;
+    else          dotRV = max(dot(R,V), 0.0);
 
     vec3  ambient  = light.ambient  * material.ambient.rgb;
     vec3  diffuse  = light.diffuse  * material.diffuse.rgb  * dotLN;
