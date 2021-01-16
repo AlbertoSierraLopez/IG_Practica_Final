@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/IG_Practica_Final.dir/src/Model.cpp.obj"
   "CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj"
+  "CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj"
   "CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj"
   "binary/IG_Practica_Final.exe"
   "binary/IG_Practica_Final.exe.manifest"

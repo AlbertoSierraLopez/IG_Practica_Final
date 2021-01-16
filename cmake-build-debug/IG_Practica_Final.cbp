@@ -98,6 +98,12 @@
 		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Shaders.h">
 			<Option target="IG_Practica_Final"/>
 		</Unit>
+		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Texture.cpp">
+			<Option target="IG_Practica_Final"/>
+		</Unit>
+		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/Texture.h">
+			<Option target="IG_Practica_Final"/>
+		</Unit>
 		<Unit filename="C:/Users/a.sierralo/CLionProjects/IG_Practica_Final/src/main.cpp">
 			<Option target="IG_Practica_Final"/>
 		</Unit>

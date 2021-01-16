@@ -177,6 +177,33 @@ src/Shaders.cpp.s:
 	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.s
 .PHONY : src/Shaders.cpp.s
 
+src/Texture.obj: src/Texture.cpp.obj
+
+.PHONY : src/Texture.obj
+
+# target to build an object file
+src/Texture.cpp.obj:
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj
+.PHONY : src/Texture.cpp.obj
+
+src/Texture.i: src/Texture.cpp.i
+
+.PHONY : src/Texture.i
+
+# target to preprocess a source file
+src/Texture.cpp.i:
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.i
+.PHONY : src/Texture.cpp.i
+
+src/Texture.s: src/Texture.cpp.s
+
+.PHONY : src/Texture.s
+
+# target to generate assembly for a file
+src/Texture.cpp.s:
+	$(MAKE) -f CMakeFiles\IG_Practica_Final.dir\build.make CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.s
+.PHONY : src/Texture.cpp.s
+
 src/main.obj: src/main.cpp.obj
 
 .PHONY : src/main.obj
@@ -219,6 +246,9 @@ help:
 	@echo ... src/Shaders.obj
 	@echo ... src/Shaders.i
 	@echo ... src/Shaders.s
+	@echo ... src/Texture.obj
+	@echo ... src/Texture.i
+	@echo ... src/Texture.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s

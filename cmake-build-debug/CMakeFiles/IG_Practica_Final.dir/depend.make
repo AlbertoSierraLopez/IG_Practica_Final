@@ -237,6 +237,11 @@ CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj: ../../libraries/includes/o
 CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj: ../src/Shaders.cpp
 CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj: ../src/Shaders.h
 
+CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj: ../../libraries/includes/freeimage/freeImage.h
+CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj: ../../libraries/includes/ogl/glew.h
+CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj: ../src/Texture.cpp
+CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj: ../src/Texture.h
+
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/assimp/Compiler/poppack1.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/assimp/Compiler/pstdint.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/assimp/Compiler/pushpack1.h
@@ -265,6 +270,7 @@ CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/assi
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/assimp/vector2.inl
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/assimp/vector3.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/assimp/vector3.inl
+CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/freeimage/freeImage.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/glm/common.hpp
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/glm/detail/_fixes.hpp
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/glm/detail/_swizzle.hpp
@@ -372,5 +378,6 @@ CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/ogl/
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../../libraries/includes/ogl/glew.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../src/Model.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../src/Shaders.h
+CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../src/Texture.h
 CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj: ../src/main.cpp
 
