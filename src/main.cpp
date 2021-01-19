@@ -110,6 +110,7 @@ Texture   blueMetal;
 Texture   decoratedIron;
 Texture   tire;
 Texture   tireNormal;
+Texture   window;
 
 // Luces y materiales
 #define   NCOCHES  2
@@ -124,6 +125,7 @@ Light     lightFarola;
 
 Material  mluz;
 Material  mluzoff;
+Material  mluzVentana;
 Material  mluzRed;
 Material  mSol;
 Material  mLuna;
@@ -294,6 +296,7 @@ void funInit() {
     decoratedIron.initTexture("resources/textures/decoratedIron.tif");
     tire.initTexture("resources/textures/tire.tif");
     tireNormal.initTexture("resources/textures/tireNormal.tif");
+    window.initTexture("resources/textures/window.png");
 
 
     // Luces Globales
@@ -378,11 +381,17 @@ void funInit() {
     lightF[1].c2          = 0.032;
 
  // Materiales
-    mluz.ambient   = glm::vec4(0.0, 0.0, 0.0, 1.0);
-    mluz.diffuse   = glm::vec4(0.0, 0.0, 0.0, 1.0);
-    mluz.specular  = glm::vec4(0.0, 0.0, 0.0, 1.0);
+    mluz.ambient   = glm::vec4(0.0, 0.0, 0.0, 0.3);
+    mluz.diffuse   = glm::vec4(0.0, 0.0, 0.0, 0.3);
+    mluz.specular  = glm::vec4(0.0, 0.0, 0.0, 0.3);
     mluz.emissive  = glm::vec4(1.0, 1.0, 1.0, 1.0);
     mluz.shininess = 1.0;
+
+    mluzVentana.ambient   = glm::vec4(0.0, 0.0, 0.0, 0.3);
+    mluzVentana.diffuse   = glm::vec4(0.0, 0.0, 0.0, 0.3);
+    mluzVentana.specular  = glm::vec4(0.0, 0.0, 0.0, 0.3);
+    mluzVentana.emissive  = glm::vec4(0.9921, 0.8000, 0.4235, 1.0);
+    mluzVentana.shininess = 1.0;
 
     mluzoff.ambient   = glm::vec4(0.0, 0.0, 0.0, 0.3);
     mluzoff.diffuse   = glm::vec4(0.0, 0.0, 0.0, 0.3);
@@ -1016,7 +1025,6 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectTex(cube, texDoor, P, V, M * TPuerta * SPuerta);
 
     // Ventanas
-    //glenable
     glm::mat4 SVentanaa   = glm::scale(I, glm::vec3(0.5, 0.5, 0.2));
     glm::mat4 SVentanal   = glm::scale(I, glm::vec3(0.2, 0.5, 0.5));
     glm::mat4 TVentana1a = glm::translate(I, glm::vec3(2.0 - 0.9, 1.9, 2.0 - 0.3));
@@ -1034,9 +1042,13 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 TVentana33a = glm::translate(I, glm::vec3(2.0 - 0.9, 0.7, -2.0 + 0.3));
     glm::mat4 TVentana44a = glm::translate(I, glm::vec3(-2.0 + 0.9, 0.7, -2.0 + 0.3));
 
-    Material ventana = mluz;
-    if (dia) {ventana.emissive *= glm::vec4(0.3);}
+    Material ventana = mluzVentana;
+    if (dia) {ventana.emissive = glm::vec4(0.3, 0.3, 0.3, 1.0);}
     Material materialesv[] = {ventana,mluzoff};
+
+    glEnable(GL_BLEND);
+    glDepthMask(GL_FALSE);
+    glEnable(GL_CULL_FACE);
 
     drawObjectMat(cube, materialesv[randomBooleanArray[0]] , P, V, M * TVentana1a * SVentanaa);
     drawObjectMat(cube, materialesv[randomBooleanArray[1]] , P, V, M * TVentana2a * SVentanaa);
@@ -1052,6 +1064,11 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectMat(cube, materialesv[randomBooleanArray[7]], P, V, M * TVentana44l * SVentanal);
     drawObjectMat(cube, materialesv[randomBooleanArray[6]], P, V, M * TVentana33a * SVentanaa);
     drawObjectMat(cube, materialesv[randomBooleanArray[7]], P, V, M * TVentana44a * SVentanaa);
+
+    glDisable(GL_CULL_FACE);
+    glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND);
+
 }
 
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
