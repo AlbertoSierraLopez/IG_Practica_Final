@@ -1,1 +1,1 @@
-  -LC:/Users/a.sierralo/CLionProjects/IG_Practica_Final/../libraries/libs  -lopengl32 -lglu32 -lglew32 -lfreeglut -lassimp -lfreeimage -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
+  -LC:/Users/Aussar/CLionProjects/IG_Practica_Final/../libraries/libs  -lopengl32 -lglu32 -lglew32 -lfreeglut -lassimp -lfreeimage -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
