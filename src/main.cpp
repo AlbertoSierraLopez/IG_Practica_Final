@@ -820,9 +820,12 @@ void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tarriba     = glm::translate(I, glm::vec3(0.0, 0.0, 7.0));
     glm::mat4 Tabajo      = glm::translate(I, glm::vec3(0.0, 0.0, -7.0));
 
-    drawObjectTex(cube, texRoad, P, V, M * T * S);
-    drawObjectTex(cube, texRoad, P, V, M * Tarriba * T * S);
-    drawObjectTex(cube, texRoad, P, V, M * Tabajo * T * S);
+    // Offset para que no se solapen las texturas del asfalto
+    glEnable(GL_POLYGON_OFFSET_FILL);
+        drawObjectTex(cube, texRoad, P, V, M * T * S);
+        drawObjectTex(cube, texRoad, P, V, M * Tarriba * T * S);
+        drawObjectTex(cube, texRoad, P, V, M * Tabajo * T * S);
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     drawObjectTex(cube, texRoad, P, V, M * R * T * S);
     drawObjectTex(cube, texRoad, P, V, M * Tizquierda * R * T * S);
@@ -1040,6 +1043,7 @@ void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
+    // Offset a la planta de madera para que no se solapen la madera y la piedra
     glEnable(GL_POLYGON_OFFSET_FILL);
         glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
         glm::mat4 T   = glm::translate(I, glm::vec3(0, 0.1, 0));
@@ -1111,8 +1115,6 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 SPuerta   = glm::scale(I, glm::vec3(0.4, 0.5, 0.2));
     glm::mat4 TPuerta = glm::translate(I, glm::vec3(2.0 - 2.0, 0.7, 2.0 - 0.2));
     drawObjectTex(cube, texDoor, P, V, M * TPuerta * SPuerta);
-
-
 
 }
 void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
