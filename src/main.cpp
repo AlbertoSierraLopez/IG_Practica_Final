@@ -936,6 +936,7 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
 
 }
 void drawParqueT(glm::mat4 P, glm::mat4 V, glm::mat4 M){
+
     // Cristales
     glm::mat4 RTecho = glm::rotate(I, glm::radians(180.0f), glm::vec3(1, 0, 0));
     glEnable(GL_BLEND);
@@ -953,6 +954,7 @@ void drawParqueT(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+
 }
 void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
@@ -1038,13 +1040,15 @@ void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
-    glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
-    glm::mat4 T   = glm::translate(I, glm::vec3(0, 0.1, 0));
-    glm::mat4 TP1 = glm::translate(I, glm::vec3(0, 1.3, 0));
-    glm::mat4 TP2 = glm::translate(I, glm::vec3(0, 2.5, 0));
-    drawObjectTex(cube, texWood, P, V, M * T * S);
-    drawObjectTex(cube, texWood, P, V, M * TP1 * S);
-    drawObjectTex(cube, texWood, P, V, M * TP2 * S);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+        glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
+        glm::mat4 T   = glm::translate(I, glm::vec3(0, 0.1, 0));
+        glm::mat4 TP1 = glm::translate(I, glm::vec3(0, 1.3, 0));
+        glm::mat4 TP2 = glm::translate(I, glm::vec3(0, 2.5, 0));
+        drawObjectTex(cube, texWood, P, V, M * T * S);
+        drawObjectTex(cube, texWood, P, V, M * TP1 * S);
+        drawObjectTex(cube, texWood, P, V, M * TP2 * S);
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     glm::mat4 SColumna   = glm::scale(I, glm::vec3(0.2, 1.2, 0.2));
     glm::mat4 TColumna1 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, 2.0 - 0.2));
@@ -1059,22 +1063,16 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 TColumna11 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, 2.0 - 1.6));
     glm::mat4 TColumna22 = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, 2.0 - 1.6));
-    glm::mat4 TColumna33 = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, -2.0+ 1.6));
-    glm::mat4 TColumna44 = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, -2.0+ 1.6));
     glm::mat4 TColumna33c = glm::translate(I, glm::vec3(2.0 - 0.2, 1.2, -2.0+ 1.8));
     glm::mat4 TColumna44c = glm::translate(I, glm::vec3(-2.0 + 0.2, 1.2, -2.0+ 1.8));
     glm::mat4 SColumnac   = glm::scale(I, glm::vec3(0.2, 1.2, 0.4));
 
     drawObjectTex(cube, texStone, P, V, M * TColumna11 * SColumna);
     drawObjectTex(cube, texStone, P, V, M * TColumna22 * SColumna);
-    drawObjectTex(cube, texStone, P, V, M * TColumna33 * SColumna);
-    drawObjectTex(cube, texStone, P, V, M * TColumna44 * SColumna);
     drawObjectTex(cube, texStone, P, V, M * TColumna33c * SColumnac);
     drawObjectTex(cube, texStone, P, V, M * TColumna44c * SColumnac);
 
-    glm::mat4 TColumna111 = glm::translate(I, glm::vec3(2.0 - 1.6, 1.9, 2.0 - 0.2));
     glm::mat4 TColumna222 = glm::translate(I, glm::vec3(-2.0 + 1.6, 1.9, 2.0 - 0.2));
-    glm::mat4 TColumna333 = glm::translate(I, glm::vec3(2.0 - 1.6, 1.2, -2.0+ 0.2));
     glm::mat4 TColumna444 = glm::translate(I, glm::vec3(-2.0 + 1.6, 1.2, -2.0+ 0.2));
     glm::mat4 TColumna333c = glm::translate(I, glm::vec3(2.0 - 1.8, 1.2, -2.0+ 0.2));
     glm::mat4 TColumna111ac = glm::translate(I, glm::vec3(2.0 - 1.8, 1.9, 2.0 - 0.2));
@@ -1085,9 +1083,7 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 SColumnaAc   = glm::scale(I, glm::vec3(0.4, 0.6, 0.2));
     glm::mat4 SColumnaD   = glm::scale(I, glm::vec3(0.6, 0.6, 0.2));
 
-    drawObjectTex(cube, texStone, P, V, M * TColumna111 * SColumnaA);
     drawObjectTex(cube, texStone, P, V, M * TColumna222 * SColumnaA);
-    drawObjectTex(cube, texStone, P, V, M * TColumna333 * SColumna);
     drawObjectTex(cube, texStone, P, V, M * TColumna444 * SColumna);
     drawObjectTex(cube, texStone, P, V, M * TColumna333c * SColumnac2);
     drawObjectTex(cube, texStone, P, V, M * TColumna111ac * SColumnaAc);
