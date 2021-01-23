@@ -198,7 +198,8 @@ float alphaY =  0.0;
 #define     NCOCHESTIPO 3
 std::string coches[NCOCHESTIPO] = {"Utilitario", "Todoterreno", "Deportivo"};
 int cocheSeleccionado = 0;
-bool  dia   = true;
+bool  dia      = true;
+bool  cocheOn  = true;
 
 int main(int argc, char** argv) {
 
@@ -749,7 +750,7 @@ void setLights(glm::mat4 P, glm::mat4 V) {
         lFaro.direction =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.direction, 1.0);
 
         // Intensidad
-        if (dia) {
+        if (cocheOn) {
             lFaro.diffuse  = glm::vec3(0.0);
             lFaro.specular = glm::vec3(0.0);
         }
@@ -1518,7 +1519,16 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
     glm::mat4 Rini = glm::rotate(I, glm::radians(90.0f), glm::vec3(-1, 0, 0));
 
     Material mFaro = mluz;
-    if (dia) {
+
+    bool condicion;
+    // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
+    if (pc) {
+        condicion = cocheOn;
+    } else {
+        condicion = dia;
+    }
+
+    if (condicion) {
         mFaro.emissive = glm::vec4(lightF[index].diffuse.x * 0.6, lightF[index].diffuse.y * 0.6, lightF[index].diffuse.z * 0.6, 1.0);
     } else {
         mFaro.emissive = glm::vec4(lightF[index].diffuse, 1.0);
@@ -1689,7 +1699,16 @@ void drawLucesPosicion (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
     glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.35,0.8));
 
     Material luzPos = mluzRed;
-    if (dia) {
+
+    bool condicion;
+    // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
+    if (pc) {
+        condicion = cocheOn;
+    } else {
+        condicion = dia;
+    }
+
+    if (condicion) {
         luzPos.emissive = glm::vec4(luzPos.emissive.x * 0.6, luzPos.emissive.y * 0.6, luzPos.emissive.z * 0.6, 1.0);
     }
 
@@ -1707,7 +1726,16 @@ void drawLucesPosicionDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc)
     glm::mat4 Tf2 =  translate(I, glm::vec3(-0.3,0.18,0.73));
 
     Material luzP = mluzRed;
-    if (dia) {
+
+    bool condicion;
+    // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
+    if (pc) {
+        condicion = cocheOn;
+    } else {
+        condicion = dia;
+    }
+
+    if (condicion) {
         luzP.emissive = glm::vec4(luzP.emissive.x * 0.6, luzP.emissive.y * 0.6, luzP.emissive.z * 0.6, 1.0);
     }
 
@@ -1869,6 +1897,8 @@ void funKeyboard(unsigned char key, int x, int y) {
                   break;
         case 'm': rotAstro = 0.0;
                   dia = true;
+                  break;
+        case 'p': cocheOn = !cocheOn;
                   break;
         case ' ': cocheSeleccionado++;
                   break;
