@@ -117,6 +117,7 @@ Texture   decoratedIron;
 Texture   tireRubber;
 Texture   tireNormal;
 Texture   window;
+Texture   soil;
 
 // Luces y materiales
 #define   NCOCHES  2
@@ -165,6 +166,7 @@ Textures  texWood;
 Textures  texBlueMetal;
 Textures  texDecoratedIron;
 Textures  texTire;
+Textures  texSoil;
 
 // Viewport
 int w = 800;
@@ -311,6 +313,7 @@ void funInit() {
     tireRubber.initTexture("resources/textures/tire.tif");
     tireNormal.initTexture("resources/textures/tireNormal.tif");
     window.initTexture("resources/textures/window.png");
+    soil.initTexture("resources/textures/soil.tif");
 
 
     // Luces Globales
@@ -615,6 +618,12 @@ void funInit() {
     texTire.emissive = none.getTexture();
     texTire.normal   = tireNormal.getTexture();
     texTire.shininess= 10.0;
+
+    texSoil.diffuse  = soil.getTexture();
+    texSoil.specular = none.getTexture();
+    texSoil.emissive = none.getTexture();
+    texSoil.normal   = 0;
+    texSoil.shininess= 10.0;
 
 }
 
@@ -1055,16 +1064,9 @@ void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-        glm::mat4 S = glm::scale(I, glm::vec3(6.0, 1.0, 6.0));
-        drawObjectMat(plane, obsidian, P, V, M * S);
-
-        glEnable(GL_POLYGON_OFFSET_FILL);
-            glm::mat4 R = glm::rotate   (I, glm::radians(180.0f), glm::vec3(1, 0, 0));
-            drawObjectMat(plane, obsidian, P, V, M * S * R);
-        glDisable(GL_POLYGON_OFFSET_FILL);
-    glDisable(GL_CULL_FACE);
+        glm::mat4 Sc = glm::scale(I, glm::vec3(8.0, 0.1, 8.0));
+        glm::mat4 Tc = glm::translate(I, glm::vec3(0.0, -0.1, 0.0));
+        drawObjectTex(cube, texSoil, P, V, M * Tc * Sc);
 
 }
 
