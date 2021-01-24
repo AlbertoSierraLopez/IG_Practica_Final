@@ -1344,9 +1344,11 @@ void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tbase   = glm::translate(I, glm::vec3(0, 0.1, 0));
     drawObjectMat(cube,ruby,P,V,M*Tbase*Sbase);
 
-    glm::mat4 Stecho  = glm::scale(I, glm::vec3(2.0, 0.1, 2.2));
-    glm::mat4 Ttecho   = glm::translate(I, glm::vec3(0, 2.1, 0.1));
-    drawObjectMat(cube,ruby,P,V,M*Ttecho*Stecho);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+        glm::mat4 Stecho  = glm::scale(I, glm::vec3(2.0, 0.1, 2.2));
+        glm::mat4 Ttecho   = glm::translate(I, glm::vec3(0, 2.1, 0.1));
+        drawObjectMat(cube,ruby,P,V,M*Ttecho*Stecho);
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     //columnas
     glm::mat4 SColumna   = glm::scale(I, glm::vec3(0.08, 1.0, 0.08));
