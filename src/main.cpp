@@ -191,15 +191,21 @@ float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
 #define     NVENTANAS 14
 int randomBooleanArray[NVENTANAS];
 
+// Cámara
+// Diorama
 float alphaX =  0.0;
 float alphaY =  0.0;
+// 1ª Persona
+glm::vec4 iniCamPos = glm::vec4(0.0, 0.5, -0.75, 1.0);
+glm::vec4 iniCamDir = glm::vec4(0.0, 0.5, -50.0, 1.0);
 
 // Controles y Mundo
 #define     NCOCHESTIPO 3
 std::string coches[NCOCHESTIPO] = {"Utilitario", "Todoterreno", "Deportivo"};
 int cocheSeleccionado = 0;
 bool  dia      = true;
-bool  cocheOn  = true;
+bool  cocheOff  = true;
+bool  camMode = true;
 
 int main(int argc, char** argv) {
 
@@ -638,13 +644,35 @@ void funDisplay() {
     float aspect = (float)w/(float)h;
     glm::mat4 P  = glm::perspective(glm::radians(fovy), aspect, nplane, fplane);
 
+    glm::vec3 pos;
+    glm::vec3 lookat;
+    glm::vec3 up;
+
+    if (camMode) {
+        // Vista Diorama
+        float x = 15.0f*glm::cos(glm::radians(alphaY))*glm::sin(glm::radians(alphaX));
+        float y = 15.0f*glm::sin(glm::radians(alphaY)) + 10.0;
+        float z = 15.0f*glm::cos(glm::radians(alphaY))*glm::cos(glm::radians(alphaX));
+
+        pos = glm::vec3(  x,   y,   z);
+        lookat = glm::vec3(0.0, 0.0, 0.0);
+        up = glm::vec3(0.0, 1.0, 0.0);
+    } else {
+        // Vista 1ª Persona
+        glm::vec4 camPos = iniCamPos;
+        camPos = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camPos;
+        camPos.x += faroX;
+        camPos.z += faroZ;
+
+        glm::vec4 camDir = iniCamDir;
+        camDir = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camDir;
+
+        pos = glm::vec3(camPos.x, camPos.y, camPos.z);
+        lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
+        up = glm::vec3(0.0, 1.0, 0.0);
+    }
+
     // Matriz V
-    float x = 15.0f*glm::cos(glm::radians(alphaY))*glm::sin(glm::radians(alphaX));
-    float y = 15.0f*glm::sin(glm::radians(alphaY)) + 10.0;
-    float z = 15.0f*glm::cos(glm::radians(alphaY))*glm::cos(glm::radians(alphaX));
-    glm::vec3 pos   (  x,   y,   z);
-    glm::vec3 lookat(0.0, 0.0, 0.0);
-    glm::vec3 up    (0.0, 1.0, 0.0);
     glm::mat4 V = glm::lookAt(pos, lookat, up);
     shaders.setVec3("ucpos",pos);
 
@@ -655,7 +683,6 @@ void funDisplay() {
     drawAstro(P, V, I);
 
     // Dibujar Carreteras
-    //glm::mat4 S = glm::scale(I, glm::vec3(1.0));
     drawCarretera(P,V,I);
     drawAsfalto(P,V,I);
     drawFarolas(P,V,I);
@@ -750,7 +777,7 @@ void setLights(glm::mat4 P, glm::mat4 V) {
         lFaro.direction =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.direction, 1.0);
 
         // Intensidad
-        if (cocheOn) {
+        if (cocheOff) {
             lFaro.diffuse  = glm::vec3(0.0);
             lFaro.specular = glm::vec3(0.0);
         }
@@ -1521,7 +1548,7 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
     bool condicion;
     // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
     if (pc) {
-        condicion = cocheOn;
+        condicion = cocheOff;
     } else {
         condicion = dia;
     }
@@ -1701,7 +1728,7 @@ void drawLucesPosicion (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
     bool condicion;
     // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
     if (pc) {
-        condicion = cocheOn;
+        condicion = cocheOff;
     } else {
         condicion = dia;
     }
@@ -1728,7 +1755,7 @@ void drawLucesPosicionDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc)
     bool condicion;
     // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
     if (pc) {
-        condicion = cocheOn;
+        condicion = cocheOff;
     } else {
         condicion = dia;
     }
@@ -1878,10 +1905,11 @@ void funSpecial(int key, int x, int y) {
                              break;
     }
 
-    if (faroX >  7.0) faroX =  7.0;
-    if (faroX < -7.0) faroX = -7.0;
-    if (faroZ >  7.0) faroZ =  7.0;
-    if (faroZ < -7.0) faroZ = -7.0;
+    // Límites exteriores de la ciudad
+    if (faroX >  7.5) faroX =  7.5;
+    if (faroX < -7.5) faroX = -7.5;
+    if (faroZ >  7.5) faroZ =  7.5;
+    if (faroZ < -7.5) faroZ = -7.5;
 
     glutPostRedisplay();
 
@@ -1890,13 +1918,15 @@ void funSpecial(int key, int x, int y) {
 void funKeyboard(unsigned char key, int x, int y) {
 
     switch(key) {
-        case 'n': rotAstro = 180.0;
+        case 'n': case 'N': rotAstro = 180.0;
                   dia = false;
                   break;
-        case 'm': rotAstro = 0.0;
+        case 'm': case 'M': rotAstro = 0.0;
                   dia = true;
                   break;
-        case 'p': cocheOn = !cocheOn;
+        case 'p': case 'P': cocheOff = !cocheOff;
+                  break;
+        case 'c': case 'C': camMode = !camMode;
                   break;
         case ' ': cocheSeleccionado++;
                   break;
