@@ -181,13 +181,18 @@ float faroZ    = 0.0;
 float rotRueda = 0.0;
 
 float rotAstro = 0.0;
-int   speed    = 1000;
+int   speed    = 100;
 
 int npcDir     = 0;     // Indice del array npcControl[]
 float npcTimer = 0.0;   // Temporizador, va anclado a la longitud de las carreteras (7)
 float npcRot   = 90.0;
 float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
 //                      X    Z   -X   -Z
+
+int npcBusDir     = 0;     // Indice del array npcBusControl[]
+float npcBusRot   = 90.0;
+float npcBusControl[4] = {10.5, 0.0, 0.0, 0.0};
+//                         X    Z   -X   -Z
 
 // Ventanas aleatoriamente iluminadas
 #define     NVENTANAS 14
@@ -205,9 +210,11 @@ glm::vec4 iniCamDir = glm::vec4(0.0, 0.5, -50.0, 1.0);
 #define     NCOCHESTIPO 3
 std::string coches[NCOCHESTIPO] = {"Utilitario", "Todoterreno", "Deportivo"};
 int cocheSeleccionado = 0;
-bool  dia      = true;
+bool  dia       = true;
 bool  cocheOff  = true;
-bool  camMode = true;
+bool  camMode   = true;
+bool  busStart  = false;
+bool  busParada  = false;
 
 int main(int argc, char** argv) {
 
@@ -708,24 +715,30 @@ void funDisplay() {
         default: drawUtilitario(P,V,Tcoche*Rcoche, true);
     }
 
-    //Autobus "npc"
-//  drawAutobus(P,V,I);
-
     // Coche npc
     glm::mat4 Tnpc = glm::translate(I,glm::vec3(npcControl[0]-npcControl[2], 0.05, npcControl[1]-npcControl[3]));
     glm::mat4 Rnpc = glm::rotate(I, glm::radians(npcRot), glm::vec3(0, -1, 0));
     drawUtilitario(P,V,Tnpc*Rnpc, false);
 
+    //Autobus npc
+    glm::mat4 Tbus = glm::translate(I,glm::vec3(npcBusControl[0]-npcBusControl[2]-7.0, 0.05, npcBusControl[1]-npcBusControl[3]-7.0));
+    glm::mat4 Rbus = glm::rotate(I, glm::radians(npcBusRot), glm::vec3(0, -1, 0));
+    drawAutobus(P,V,Tbus*Rbus);
+
     // Dibujar Edificios
     glm::mat4 TEdificio   = glm::translate(I, glm::vec3(3.5, 0.0, 3.8));
     drawEdificio(P,V,I * TEdificio);
+
     glm::mat4 TOficina = glm::translate(I,glm::vec3(-3.5,0,-3.8));
     drawOficina(P,V,I * TOficina);
+
     glm::mat4 TParque = glm::translate(I,glm::vec3(3.5,0,-3.5));
     drawParque(P,V,I * TParque);
 
     glm::mat4 TRestaurante = glm::translate(I,glm::vec3(-3.5,0,3.8));
     drawRestaurante(P,V,I * TRestaurante);
+
+    // Dibujar Transparencias
     glm::mat4 TOficinaT = glm::translate(I,glm::vec3(-3.5,0,-3.8));
     drawOficinaT(P,V,I * TOficina);
     glm::mat4 TParqueT = glm::translate(I,glm::vec3(3.5,0,-3.5));
@@ -1929,9 +1942,11 @@ void funKeyboard(unsigned char key, int x, int y) {
                   dia = true;
                   break;
         case 'p': case 'P': cocheOff = !cocheOff;
-                  break;
+                            break;
         case 'c': case 'C': camMode = !camMode;
-                  break;
+                            break;
+        case 'b': case 'B': if (!busStart) busStart = !busStart;
+                            break;
         case ' ': cocheSeleccionado++;
                   break;
     }
@@ -1967,6 +1982,7 @@ void funMotion(int x, int y) {
 
 void funTimer(int value) {
 
+    // npc
     npcTimer += 1.0;
     if (npcTimer > 7.0) {   // Toca girar
         npcTimer = 0.0;
@@ -1982,9 +1998,36 @@ void funTimer(int value) {
     }
     npcControl[npcDir] = npcTimer;
 
+    // Ventanas aleatorias cada 7 seg
     if (npcTimer == 0){
         for (int i = 0; i < NVENTANAS; i++) {
             randomBooleanArray[i] = rand() % 2;
+        }
+    }
+
+    // bus
+    if (busStart) {
+        npcBusControl[npcBusDir] += 0.5;
+
+        if (npcBusControl[0] == 10.5) {
+            busParada = true;
+        }
+
+        if (npcBusControl[npcBusDir] == 14.0) {   // Toca girar
+            npcBusRot += 90.0;
+            npcBusDir += 1;
+            if (npcBusDir > 3) {   // Se ha hecho un giro completo
+                npcBusDir = 0;
+                // Reiniciar npcControl
+                for (int i = 0; i < 4; i++) {
+                    npcBusControl[i] = 0.0;
+                }
+            }
+        }
+
+        if (busParada) {
+            busParada = false;
+            busStart = !busStart;   // Parar rutina
         }
     }
 
