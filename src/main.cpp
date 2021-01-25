@@ -28,6 +28,8 @@ void setLights(glm::mat4 P, glm::mat4 V);
 
 void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
+void drawBackground(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+
 void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M);
@@ -120,7 +122,7 @@ Texture   window;
 Texture   soil;
 
 // Luces y materiales
-#define   NCOCHES  2
+#define   NCOCHES  3
 #define   NFAROLAS 13
 
 Light     lightG;
@@ -181,7 +183,7 @@ float faroZ    = 0.0;
 float rotRueda = 0.0;
 
 float rotAstro = 0.0;
-int   speed    = 100;
+int   speed    = 500;
 
 int npcDir     = 0;     // Indice del array npcControl[]
 float npcTimer = 0.0;   // Temporizador, va anclado a la longitud de las carreteras (7)
@@ -807,8 +809,8 @@ void setLights(glm::mat4 P, glm::mat4 V) {
         shaders.setLight("ulightF["+toString(i)+"]",lFaro);
     }
 
-    // Focos coches npc
-    for (int i=2; i<NCOCHES*2; i++) {
+    // Focos coche npc
+    for (int i=2; i<4; i++) {
         // Luz
         Light lFaro;
         if (i % 2 == 0) {
@@ -824,6 +826,39 @@ void setLights(glm::mat4 P, glm::mat4 V) {
 
         // Direccion
         lFaro.direction =  glm::rotate(I, glm::radians(npcRot), glm::vec3(0, -1, 0)) * glm::vec4(lFaro.direction, 1.0);
+
+        // Intensidad
+        if (dia) {
+            lFaro.diffuse  = glm::vec3(0.0);
+            lFaro.specular = glm::vec3(0.0);
+        }
+
+        shaders.setLight("ulightF["+toString(i)+"]",lFaro);
+    }
+
+    // Focos autobus npc
+    for (int i=4; i<6; i++) {
+        // Luz
+        Light lFaro;
+        if (i % 2 == 0) {
+            lFaro = lightF[0];  // Faro derecho
+            lFaro.position.x += 0.2;
+            lFaro.position.y += 0.2;
+            lFaro.position.z -= 1.0;
+        } else {
+            lFaro = lightF[1];  // Faro izquierdo
+            lFaro.position.x -= 0.2;
+            lFaro.position.y += 0.2;
+            lFaro.position.z -= 1.0;
+        }
+
+        // Posicion
+        lFaro.position   = glm::rotate(I, glm::radians(npcBusRot), glm::vec3(0, -1, 0)) * glm::vec4(lFaro.position, 1.0);
+        lFaro.position.x += npcBusControl[0] - npcBusControl[2] - 7.0;
+        lFaro.position.z += npcBusControl[1] - npcBusControl[3] - 7.0;
+
+        // Direccion
+        lFaro.direction = glm::rotate(I, glm::radians(npcBusRot), glm::vec3(0, -1, 0)) * glm::vec4(lFaro.direction, 1.0);
 
         // Intensidad
         if (dia) {
@@ -1522,6 +1557,12 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectMat(cube, luzPos, P, V, M * Tdera * Sf);
     drawObjectMat(cube, luzPos, P, V, M * Tizqb * Sf);
     drawObjectMat(cube, luzPos, P, V, M * Tizqa * Sf);
+
+    glm::mat4 der = translate(I, glm::vec3(0.3,0.2,-2.0));
+    glm::mat4 izq = translate(I, glm::vec3(-0.3,0.2,-2.0));
+    glm::mat4 Sfaro = scale(I, glm::vec3(1.5,1.0,1.0));
+    drawFaro(0,P,V,M*Sfaro*der, false);
+    drawFaro(1,P,V,M*Sfaro*izq, false);
 
 }
 void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {

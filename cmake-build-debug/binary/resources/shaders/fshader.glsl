@@ -30,7 +30,7 @@ struct Textures {
 };
 
 #define NFAROLAS 13
-#define NCOCHES  2
+#define NCOCHES  3
 
 uniform vec3     ucpos;
 uniform Light    ulightG;
