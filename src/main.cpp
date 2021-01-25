@@ -123,6 +123,9 @@ Texture   soil;
 Texture   backgroundDay;
 Texture   backgroundNight;
 Texture   backgroundNightEmissive;
+Texture   paintY;
+Texture   paintR;
+Texture   paintSpecular;
 
 // Luces y materiales
 #define   NCOCHES  3
@@ -174,6 +177,7 @@ Textures  texTire;
 Textures  texSoil;
 Textures  texBackgroundDay;
 Textures  texBackgroundNight;
+Textures  texPaint;
 
 // Viewport
 int w = 800;
@@ -331,6 +335,9 @@ void funInit() {
     backgroundDay.initTexture("resources/textures/backgroundDay.jpg");
     backgroundNight.initTexture("resources/textures/backgroundNight.jpg");
     backgroundNightEmissive.initTexture("resources/textures/backgroundNightEmissive.jpg");
+    paintY.initTexture("resources/textures/paintY.tif");
+    paintR.initTexture("resources/textures/paintR.tif");
+    paintSpecular.initTexture("resources/textures/paintSpecular.tif");
 
 
     // Luces Globales
@@ -653,6 +660,12 @@ void funInit() {
     texBackgroundNight.emissive = backgroundNightEmissive.getTexture();
     texBackgroundNight.normal   = 0;
     texBackgroundNight.shininess= 10.0;
+
+    texPaint.diffuse  = paintY.getTexture();
+    texPaint.specular = none.getTexture();
+    texPaint.emissive = none.getTexture();
+    texPaint.normal   = 0;
+    texPaint.shininess= 10.0;
 
 }
 
@@ -1562,7 +1575,7 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S = scale(I, glm::vec3(0.65,0.7,2));
     glm::mat4 T = translate(I, glm::vec3(0,1,0));
-    drawObjectMat(cube,emmerald,P,V,M*T*S);
+    drawObjectTex(cube,texPaint,P,V,M*T*S);
 
     glm::mat4 Sru = scale(I, glm::vec3(1,1.4,1.4));
     glm::mat4 Tru1 = translate(I, glm::vec3(0.7,0.26,1.3));
