@@ -122,6 +122,7 @@ Texture   window;
 Texture   soil;
 Texture   backgroundDay;
 Texture   backgroundNight;
+Texture   backgroundNightEmissive;
 
 // Luces y materiales
 #define   NCOCHES  3
@@ -329,6 +330,7 @@ void funInit() {
     soil.initTexture("resources/textures/soil.tif");
     backgroundDay.initTexture("resources/textures/backgroundDay.jpg");
     backgroundNight.initTexture("resources/textures/backgroundNight.jpg");
+    backgroundNightEmissive.initTexture("resources/textures/backgroundNightEmissive.jpg");
 
 
     // Luces Globales
@@ -648,7 +650,7 @@ void funInit() {
 
     texBackgroundNight.diffuse  = backgroundNight.getTexture();
     texBackgroundNight.specular = none.getTexture();
-    texBackgroundNight.emissive = none.getTexture();
+    texBackgroundNight.emissive = backgroundNightEmissive.getTexture();
     texBackgroundNight.normal   = 0;
     texBackgroundNight.shininess= 10.0;
 
@@ -717,12 +719,13 @@ void funDisplay() {
 
     // Dibujar Fondo
     glm::mat4 SB = glm::scale(I, glm::vec3(10.0));
-    glm::mat4 TB = glm::translate(I, glm::vec3(0.0, 4.0, 0.0));
+    glm::mat4 TB = glm::translate(I, glm::vec3(0.0, 5.0, 0.0));
+    glm::mat4 RB = glm::rotate(I, glm::radians(45.0f), glm::vec3(0, 1, 0));
     if (!camMode) {
         if (dia) {
-            drawObjectTex(sphere, texBackgroundDay, P, V, TB * SB);
+            drawObjectTex(sphere, texBackgroundDay, P, V, TB * SB * RB);
         } else {
-            drawObjectTex(sphere, texBackgroundNight, P, V, TB * SB);
+            drawObjectTex(sphere, texBackgroundNight, P, V, TB * SB * RB);
         }
 
     }
