@@ -120,6 +120,8 @@ Texture   tireRubber;
 Texture   tireNormal;
 Texture   window;
 Texture   soil;
+Texture   backgroundDay;
+Texture   backgroundNight;
 
 // Luces y materiales
 #define   NCOCHES  3
@@ -169,6 +171,8 @@ Textures  texBlueMetal;
 Textures  texDecoratedIron;
 Textures  texTire;
 Textures  texSoil;
+Textures  texBackgroundDay;
+Textures  texBackgroundNight;
 
 // Viewport
 int w = 800;
@@ -323,6 +327,8 @@ void funInit() {
     tireNormal.initTexture("resources/textures/tireNormal.tif");
     window.initTexture("resources/textures/window.png");
     soil.initTexture("resources/textures/soil.tif");
+    backgroundDay.initTexture("resources/textures/backgroundDay.jpg");
+    backgroundNight.initTexture("resources/textures/backgroundNight.jpg");
 
 
     // Luces Globales
@@ -570,7 +576,7 @@ void funInit() {
 
     texSign.diffuse  = sign.getTexture();
     texSign.specular = none.getTexture();
-    texSign.emissive = none.getTexture();
+    texSign.emissive = sign.getTexture();
     texSign.normal   = 0;
     texSign.shininess= 10.0;
 
@@ -634,6 +640,18 @@ void funInit() {
     texSoil.normal   = 0;
     texSoil.shininess= 10.0;
 
+    texBackgroundDay.diffuse  = backgroundDay.getTexture();
+    texBackgroundDay.specular = none.getTexture();
+    texBackgroundDay.emissive = none.getTexture();
+    texBackgroundDay.normal   = 0;
+    texBackgroundDay.shininess= 10.0;
+
+    texBackgroundNight.diffuse  = backgroundNight.getTexture();
+    texBackgroundNight.specular = none.getTexture();
+    texBackgroundNight.emissive = none.getTexture();
+    texBackgroundNight.normal   = 0;
+    texBackgroundNight.shininess= 10.0;
+
 }
 
 void funReshape(int wnew, int hnew) {
@@ -696,6 +714,18 @@ void funDisplay() {
 
     // Fijamos las luces
     setLights(P,V);
+
+    // Dibujar Fondo
+    glm::mat4 SB = glm::scale(I, glm::vec3(10.0));
+    glm::mat4 TB = glm::translate(I, glm::vec3(0.0, 4.0, 0.0));
+    if (!camMode) {
+        if (dia) {
+            drawObjectTex(sphere, texBackgroundDay, P, V, TB * SB);
+        } else {
+            drawObjectTex(sphere, texBackgroundNight, P, V, TB * SB);
+        }
+
+    }
 
     // Dibujamos la escena
     drawAstro(P, V, I);
@@ -988,9 +1018,9 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     drawObjectMat(cube, wPlastic, P, V, M * TDtobogan * Rtobogan * SDtobogan);
     glm::mat4 Stobogan = glm::scale(I, glm::vec3(0.01, 0.1 , 0.7));
     glm::mat4 TDtobogand = glm::translate(I, glm::vec3(-1.71, 0.51, -0.05));
-    drawObjectMat(cube, obsidian, P, V, M * TDtobogand * Rtobogan * Stobogan  );
+    drawObjectTex(cube, texBlueMetal, P, V, M * TDtobogand * Rtobogan * Stobogan  );
     glm::mat4 TDtobogani = glm::translate(I, glm::vec3(-1.29, 0.51, -0.05));
-    drawObjectMat(cube, obsidian, P, V, M * TDtobogani  * Rtobogan * Stobogan);
+    drawObjectTex(cube, texBlueMetal, P, V, M * TDtobogani  * Rtobogan * Stobogan);
 
     //banco
     glm::mat4 SBanbase = glm::scale(I, glm::vec3(0.21, 0.01 , 0.01));
@@ -1014,10 +1044,10 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     drawObjectMat(cylinder, obsidian, P, V, M * TPata4 * SPata);
     glm::mat4 SBancob = glm::scale(I, glm::vec3(0.2, 0.01 , 0.7));
     glm::mat4 TBancob = glm::translate(I, glm::vec3(1.5, 0.41, 0));
-    drawObjectMat(cube, wPlastic, P, V, M * TBancob  * SBancob);
+    drawObjectTex(cube, texWood, P, V, M * TBancob  * SBancob);
     glm::mat4 SBancor = glm::scale(I, glm::vec3(0.01, 0.2 , 0.7));
     glm::mat4 TBancor = glm::translate(I, glm::vec3(1.7, 0.71, 0));
-    drawObjectMat(cube, wPlastic, P, V, M * TBancor  * SBancor);
+    drawObjectTex(cube, texWood, P, V, M * TBancor  * SBancor);
 
 
 
@@ -1390,27 +1420,29 @@ void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 Sbase   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
     glm::mat4 Tbase   = glm::translate(I, glm::vec3(0, 0.1, 0));
-    drawObjectMat(cube,ruby,P,V,M*Tbase*Sbase);
+    drawObjectTex(cube,texConcrete,P,V,M*Tbase*Sbase);
 
     glEnable(GL_POLYGON_OFFSET_FILL);
         glm::mat4 Stecho  = glm::scale(I, glm::vec3(2.0, 0.1, 2.2));
         glm::mat4 Ttecho   = glm::translate(I, glm::vec3(0, 2.1, 0.1));
-        drawObjectMat(cube,ruby,P,V,M*Ttecho*Stecho);
+        drawObjectTex(cube,texConcrete,P,V,M*Ttecho*Stecho);
     glDisable(GL_POLYGON_OFFSET_FILL);
 
     //columnas
     glm::mat4 SColumna   = glm::scale(I, glm::vec3(0.08, 1.0, 0.08));
     glm::mat4 TColumnaD  = glm::translate(I, glm::vec3(1.9, 1.1, -1.9));
-    drawObjectMat(cylinder,obsidian,P,V,M*TColumnaD*SColumna);
+    drawObjectTex(cylinder,texDecoratedIron,P,V,M*TColumnaD*SColumna);
     glm::mat4 TColumnaI  = glm::translate(I, glm::vec3(-1.90, 1.1, -1.9));
-    drawObjectMat(cylinder,obsidian,P,V,M*TColumnaI*SColumna);
+    drawObjectTex(cylinder,texDecoratedIron,P,V,M*TColumnaI*SColumna);
+
     //barra
-    glm::mat4 Sbarra   = glm::scale(I, glm::vec3(1.5, 0.4, 0.1));
+    glm::mat4 Sbarra   = glm::scale(I, glm::vec3(1.3, 0.4, 0.1));
     glm::mat4 Tbarra   = glm::translate(I, glm::vec3(0.5, 0.6, 1.3));
-    drawObjectMat(cube,ruby,P,V,M*Tbarra*Sbarra);
+    drawObjectTex(cube,texConcrete,P,V,M*Tbarra*Sbarra);
+
     glm::mat4 Sasiento   = glm::scale(I, glm::vec3(0.08, 0.05, 0.08));
     glm::mat4 Tasiento   = glm::translate(I, glm::vec3(1.0, 0.65, 1.0));
-    drawObjectMat(cylinder,obsidian,P,V,M*Tasiento*Sasiento);
+    drawObjectMat(cylinder,ruby,P,V,M*Tasiento*Sasiento);
     glm::mat4 Sasoporte   = glm::scale(I, glm::vec3(0.03, 0.2, 0.03));
     glm::mat4 Tasoporte   = glm::translate(I, glm::vec3(1.0, 0.4, 1.0));
     drawObjectMat(cylinder,obsidian,P,V,M*Tasoporte*Sasoporte);
@@ -1418,15 +1450,15 @@ void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tasoporte2   = glm::translate(I, glm::vec3(1.5, 0.4, 1.0));
     glm::mat4 Tasiento3   = glm::translate(I, glm::vec3(0.5, 0.65, 1.0));
     glm::mat4 Tasoporte3  = glm::translate(I, glm::vec3(0.5, 0.4, 1.0));
-    drawObjectMat(cylinder,obsidian,P,V,M*Tasiento2*Sasiento);
-    drawObjectMat(cylinder,obsidian,P,V,M*Tasiento3*Sasiento);
+    drawObjectMat(cylinder,ruby,P,V,M*Tasiento2*Sasiento);
+    drawObjectMat(cylinder,ruby,P,V,M*Tasiento3*Sasiento);
     drawObjectMat(cylinder,obsidian,P,V,M*Tasoporte2*Sasoporte);
     drawObjectMat(cylinder,obsidian,P,V,M*Tasoporte3*Sasoporte);
 
     //mesas y asientos exteriores
     glm::mat4 Smesa1   = glm::scale(I, glm::vec3(0.3, 0.01, 0.6));
     glm::mat4 Tmesa1   = glm::translate(I, glm::vec3(1.0, 0.6, -1.0));
-    drawObjectMat(cylinder,obsidian,P,V,M*Tmesa1*Smesa1);
+    drawObjectTex(cylinder,texWood,P,V,M*Tmesa1*Smesa1);
     glm::mat4 SPataM   = glm::scale(I, glm::vec3(0.05, 0.3, 0.05));
     glm::mat4 TP1mesa1   = glm::translate(I, glm::vec3(1.0, 0.3, -1.3));
     drawObjectMat(cylinder,obsidian,P,V,M*TP1mesa1*SPataM);
@@ -1435,9 +1467,9 @@ void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 SBanco  = glm::scale(I, glm::vec3(0.1, 0.01, 0.6));
     glm::mat4 TB1mesa1   = glm::translate(I, glm::vec3(1.3, 0.4, -1.0));
-    drawObjectMat(cube,obsidian,P,V,M*TB1mesa1*SBanco);
+    drawObjectTex(cube,texWood,P,V,M*TB1mesa1*SBanco);
     glm::mat4 TB2mesa1   = glm::translate(I, glm::vec3(0.7, 0.4, -1.0));
-    drawObjectMat(cube,obsidian,P,V,M*TB2mesa1*SBanco);
+    drawObjectTex(cube,texWood,P,V,M*TB2mesa1*SBanco);
     glm::mat4 SPataB  = glm::scale(I, glm::vec3(0.05, 0.2, 0.05));
     glm::mat4 TP1Banco1m1  = glm::translate(I, glm::vec3(1.3, 0.2, -1.3));
     drawObjectMat(cylinder,obsidian,P,V,M*TP1Banco1m1*SPataB);
@@ -1447,18 +1479,19 @@ void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectMat(cylinder,obsidian,P,V,M*TP1Banco2m1*SPataB);
     glm::mat4 TP2Banco2m1  = glm::translate(I, glm::vec3(0.7, 0.2, -0.7));
     drawObjectMat(cylinder,obsidian,P,V,M*TP2Banco2m1*SPataB);
+
     glm::mat4 Smesa2   = glm::scale(I, glm::vec3(0.3, 0.01, 0.6));
     glm::mat4 Tmesa2   = glm::translate(I, glm::vec3(-1.0, 0.6, -1.0));
-    drawObjectMat(cylinder,obsidian,P,V,M*Tmesa2*Smesa2);
+    drawObjectTex(cylinder,texWood,P,V,M*Tmesa2*Smesa2);
     glm::mat4 TP1mesa2   = glm::translate(I, glm::vec3(-1.0, 0.3, -1.3));
     drawObjectMat(cylinder,obsidian,P,V,M*TP1mesa2*SPataM);
     glm::mat4 TP2mesa2   = glm::translate(I, glm::vec3(-1.0, 0.3, -0.7));
     drawObjectMat(cylinder,obsidian,P,V,M*TP2mesa2*SPataM);
 
     glm::mat4 TB1mesa2   = glm::translate(I, glm::vec3(-0.7, 0.4, -1.0));
-    drawObjectMat(cube,obsidian,P,V,M*TB1mesa2*SBanco);
+    drawObjectTex(cube,texWood,P,V,M*TB1mesa2*SBanco);
     glm::mat4 TB2mesa2   = glm::translate(I, glm::vec3(-1.3, 0.4, -1.0));
-    drawObjectMat(cube,obsidian,P,V,M*TB2mesa2*SBanco);
+    drawObjectTex(cube,texWood,P,V,M*TB2mesa2*SBanco);
     glm::mat4 TP1Banco1m2  = glm::translate(I, glm::vec3(-1.3, 0.2, -1.3));
     drawObjectMat(cylinder,obsidian,P,V,M*TP1Banco1m2*SPataB);
     glm::mat4 TP2Banco1m2  = glm::translate(I, glm::vec3(-1.3, 0.2, -0.7));
@@ -1485,10 +1518,23 @@ void drawRestauranteT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
         glm::mat4 Smurold   = glm::scale(I, glm::vec3(0.1, 1.0, 1.0));
         glm::mat4 Tmurold   = glm::translate(I, glm::vec3(1.9, 1.2, 1.0));
         drawObjectMat(cube,mCristal,P,V,M*Tmurold*Smurold);
+
         glm::mat4 Smuroli   = glm::scale(I, glm::vec3(0.1, 1.0, 1.0));
         glm::mat4 Tmuroli   = glm::translate(I, glm::vec3(-1.9, 1.2, 1.0));
         drawObjectMat(cube,mCristal,P,V,M*Tmuroli*Smuroli);
     glDisable(GL_CULL_FACE);
+
+        glm::mat4 Tcarteli   = glm::translate(I, glm::vec3(-2.0, 1.2, 1.0));
+        glm::mat4 Rcarteli    = glm::rotate(I, glm::radians(90.0f), glm::vec3(0, 0, -1));
+        glm::mat4 Rcarteli2   = glm::rotate(I, glm::radians(180.0f), glm::vec3(0, 1, 0));
+        drawObjectTex(plane,texSign,P,V,M*Tcarteli*Smuroli*Rcarteli2*Rcarteli);
+
+        glm::mat4 Tcarteld    = glm::translate(I, glm::vec3(2.1, 1.2, 1.0));
+        glm::mat4 Scartel     = glm::scale(I, glm::vec3(0.1, 1.0, 0.2));
+        glm::mat4 Rcarteld    = glm::rotate(I, glm::radians(90.0f), glm::vec3(-1, 0, 0));
+        glm::mat4 Rcarteld2   = glm::rotate(I, glm::radians(180.0f), glm::vec3(0, 1, 0));
+        drawObjectTex(plane,texSign,P,V,M*Tcarteld*Scartel*Rcarteld2*Rcarteld);
+
     glDisable(GL_BLEND);
     glDepthMask(GL_TRUE);
 
