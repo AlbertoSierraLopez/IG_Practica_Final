@@ -50,6 +50,9 @@ void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawPatin(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawHelice(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 
@@ -77,6 +80,7 @@ Model sphere;
 Model plane;
 Model cylinder;
 Model cube;
+Model cone;
 Model tire;
 
 // Texturas (imagenes)
@@ -191,6 +195,10 @@ Textures  texPaintPc;
 Textures  texManhole;
 
 
+//  Dimensiones Cono
+float a_cono = 2.75455951691 + 2.09996962547;   // Parte positiva + parte negativa (no está alineado)
+float d_cono = 2.68700575829 * 2; // 2 * radio
+
 // Viewport
 int w = 800;
 int h = 600;
@@ -302,6 +310,7 @@ void funInit() {
     plane.initModel("resources/models/plane.obj");
     cylinder.initModel("resources/models/cylinder.obj");
     cube.initModel("resources/models/cube.obj");
+    cone.initModel("resources/models/cone.obj");
     tire.initModel("resources/models/tire.obj");
 
  // Texturas
@@ -728,7 +737,8 @@ void funDisplay() {
         float z = 15.0f*glm::cos(glm::radians(alphaY))*glm::cos(glm::radians(alphaX));
 
         pos = glm::vec3(  x,   y,   z);
-        lookat = glm::vec3(0.0, 0.0, 0.0);
+        //lookat = glm::vec3(0.0, 0.0, 0.0);
+        lookat = glm::vec3(3.5, 7.5, 3.5);
         up = glm::vec3(0.0, 1.0, 0.0);
     } else {
         // Vista 1ª Persona
@@ -1481,6 +1491,10 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tblateral444 = glm::translate(I, glm::vec3(2.75, 5.6, 0));
     drawObjectMat(cube, obsidian, P, V, M * Tblateral444 * Sblateral444);
 
+
+    glm::mat4 Th = glm::translate(I, glm::vec3(0.0, 7.5, 0.0));
+    drawHelicoptero(P, V, M * Th);
+
 }
 
 void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -1501,6 +1515,55 @@ void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
             ventana.emissive = glm::vec4(0.6, 0.6, 0.6, 1.0);
             drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
         }
+
+}
+
+void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 TCono   = glm::translate(I, glm::vec3(0, 2.09996962547, 0));
+
+    glm::mat4 Sh = glm::scale(I, glm::vec3(0.3, 0.3, 0.5));
+    drawObjectTex(sphere, texBlueMetal, P, V, M * Sh);
+
+    glm::mat4 Srotor = glm::scale(I, glm::vec3(0.2/d_cono, 0.4/a_cono, 0.3/d_cono));
+    glm::mat4 Trotor = glm::translate(I, glm::vec3(0.0, 0.59, 0.1));
+    drawObjectTex(cone,texBlueMetal,P,V,M*Trotor*Srotor*TCono);
+
+    glm::mat4 Scola = glm::scale(I, glm::vec3(0.3/d_cono, 1.5/a_cono, 0.3/d_cono));
+    glm::mat4 Tcola = glm::translate(I, glm::vec3(0.0, 0.18, 0.85));
+    glm::mat4 Rcola = glm::rotate(I, glm::radians(90.0f), glm::vec3(1, 0, 0));
+    drawObjectTex(cone,texBlueMetal,P,V,M*Tcola*Rcola*Scola*TCono);
+
+    glm::mat4 Saleron = glm::scale(I, glm::vec3(0.01, 0.2, 0.05));
+    glm::mat4 Taleron = glm::translate(I, glm::vec3(0.03, 0.25, 2.1));
+    drawObjectTex(cube,texBlueMetal,P,V,M*Taleron*Saleron);
+
+    glm::mat4 Rpatin = glm::rotate(I, glm::radians(30.0f), glm::vec3(0, 0, -1));
+    glm::mat4 Tpatin = glm::translate(I, glm::vec3(-0.6, -0.9, 0.0));
+    drawPatin(P,V, M * Tpatin * Rpatin);
+    drawPatin(P,V, M * glm::scale(I, glm::vec3(-1.0, 1.0, 1.0)) * Tpatin * Rpatin);
+
+    //drawHelice(P,V,I);
+    //drawHelice(P,V,I);
+
+}
+
+void drawPatin(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 Sbarra = glm::scale(I, glm::vec3(0.02, 0.5, 0.02));
+    glm::mat4 Tbarrad = glm::translate(I, glm::vec3(0.0, 0.5, 0.3));
+    drawObjectMat(cylinder,obsidian,P,V,M*Tbarrad*Sbarra);
+
+    glm::mat4 Tbarrat = glm::translate(I, glm::vec3(0.0, 0.5, -0.3));
+    drawObjectMat(cylinder,obsidian,P,V,M*Tbarrat*Sbarra);
+
+    glm::mat4 Sbarrab = glm::scale(I, glm::vec3(0.02, 0.02, 1.0));
+    glm::mat4 Tbarrab = glm::translate(I, glm::vec3(0.0, 0.02, -0.2));
+    drawObjectMat(cylinder,obsidian,P,V,M*Tbarrab*Sbarrab);
+
+}
+
+void drawHelice(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 }
 
