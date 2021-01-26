@@ -1084,7 +1084,7 @@ OpenGL/glu.h
 GL/glu.h
 -
 
-C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Model.h
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.h
 iostream
 -
 vector
@@ -1102,7 +1102,7 @@ assimp/scene.h
 assimp/postprocess.h
 -
 
-C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Shaders.h
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.h
 iostream
 -
 fstream
@@ -1116,7 +1116,7 @@ glm/gtc/type_ptr.hpp
 glm/gtc/matrix_transform.hpp
 -
 
-C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Texture.h
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Texture.h
 iostream
 -
 ogl/glew.h
@@ -1124,7 +1124,7 @@ ogl/glew.h
 freeimage/freeImage.h
 -
 
-C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/main.cpp
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/main.cpp
 iostream
 -
 ogl/glew.h
@@ -1132,11 +1132,11 @@ ogl/glew.h
 ogl/freeglut.h
 -
 Shaders.h
-C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Shaders.h
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.h
 Model.h
-C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Model.h
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.h
 Texture.h
-C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Texture.h
+C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Texture.h
 sstream
 -
 

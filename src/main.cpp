@@ -190,6 +190,8 @@ float rotY     = 0.0;
 float faroX    = 0.0;
 float faroZ    = 0.0;
 float rotRueda = 0.0;
+float rotRuedaBus = 0.0;
+float rotRuedaNpc = 0.0;
 
 float rotAstro = 0.0;
 int   speed    = 500;
@@ -1573,11 +1575,51 @@ void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
 void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
-    glm::mat4 S = scale(I, glm::vec3(0.65,0.7,2));
-    glm::mat4 T = translate(I, glm::vec3(0,1,0));
+    glm::mat4 S = scale(I, glm::vec3(0.65,0.35,2));
+    glm::mat4 T = translate(I, glm::vec3(0,0.7,0));
     drawObjectTex(cube,texPaint,P,V,M*T*S);
-
-    glm::mat4 Sru = scale(I, glm::vec3(1,1.4,1.4));
+    glm::mat4 Slatd = scale(I, glm::vec3(0.05,0.35,1.75));
+    glm::mat4 Tlatd = translate(I, glm::vec3(-0.60,1.35,0.25));
+    drawObjectTex(cube,texPaint,P,V,M*Tlatd*Slatd);
+    glm::mat4 Slati = scale(I, glm::vec3(0.05,0.35,1.75));
+    glm::mat4 Tlati = translate(I, glm::vec3(0.60,1.35,0.25));
+    drawObjectTex(cube,texPaint,P,V,M*Tlati *Slati );
+    glm::mat4 Stecho = scale(I, glm::vec3(0.65,0.05,2));
+    glm::mat4 Ttecho = translate(I, glm::vec3(0.0,1.7,0));
+    drawObjectTex(cube,texPaint,P,V,M*Ttecho *Stecho );
+    //ventanas
+    glEnable(GL_POLYGON_OFFSET_FILL);
+        glm::mat4 Slunat = scale(I, glm::vec3(0.65,0.35,0.05));
+        glm::mat4 Tlunat = translate(I, glm::vec3(0.0,1.35,1.95));
+        drawObjectMat(cube,mCristal,P,V,M*Tlunat *Slunat );
+        glm::mat4 Slunad = scale(I, glm::vec3(0.65,0.35,0.05));
+        glm::mat4 Tlunad = translate(I, glm::vec3(0.0,1.35,-1.95));
+        drawObjectMat(cube,mCristal,P,V,M*Tlunad *Slunad );
+        glm::mat4 Slunal = scale(I, glm::vec3(0.05,0.35,0.25));
+        glm::mat4 Tlunald = translate(I, glm::vec3(-0.6,1.35,-1.75));
+        drawObjectMat(cube,mCristal,P,V,M*Tlunald *Slunal );
+        glm::mat4 Tlunali = translate(I, glm::vec3(0.6,1.35,-1.75));
+        drawObjectMat(cube,mCristal,P,V,M*Tlunali *Slunal );
+    glDisable(GL_POLYGON_OFFSET_FILL);
+    //retrovisores
+    glm::mat4 SSoporte = scale(I, glm::vec3(0.03,0.03,0.2));
+    glm::mat4 TSoported = translate(I, glm::vec3(-0.6,1.725,-2));
+    drawObjectTex(cube,texPaint,P,V,M*TSoported *SSoporte );
+    glm::mat4 TSoportei = translate(I, glm::vec3(0.6,1.725,-2));
+    drawObjectTex(cube,texPaint,P,V,M*TSoportei *SSoporte );
+    glm::mat4 SRetro = scale(I, glm::vec3(0.05,0.13,0.05));
+    glm::mat4 TRetrod = translate(I, glm::vec3(-0.6,1.63,-2.2));
+    drawObjectTex(cube,texPaint,P,V,M*TRetrod *SRetro );
+    glm::mat4 TRetroi = translate(I, glm::vec3(0.6,1.63,-2.2));
+    drawObjectTex(cube,texPaint,P,V,M*TRetroi *SRetro );
+    glm::mat4 SEspejo = scale(I, glm::vec3(0.05,0.1,0.01));
+    glm::mat4 TEspejod = translate(I, glm::vec3(-0.6,1.6,-2.15));
+    drawObjectMat(cube,mCristal,P,V,M*TEspejod *SEspejo );
+    glm::mat4 TEspejoi = translate(I, glm::vec3(0.6,1.6,-2.15));
+    drawObjectMat(cube,mCristal,P,V,M*TEspejoi *SEspejo );
+    //ruedas
+    glm::mat4 Spec = glm::scale(I, glm::vec3(-1.0, 1.0, 1.0));
+    glm::mat4 Sru = scale(I, glm::vec3(1,1.7,1.7));
     glm::mat4 Tru1 = translate(I, glm::vec3(0.7,0.26,1.3));
     glm::mat4 Tru11 = translate(I, glm::vec3(0.55,0.26,1.3));
     glm::mat4 Tru2 = translate(I, glm::vec3(-0.7,0.26,1.3));
@@ -1590,18 +1632,18 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tru55 = translate(I, glm::vec3(-0.55,0.26,0.8));
     glm::mat4 Tru6 = translate(I, glm::vec3(0.7,0.26,0.8));
     glm::mat4 Tru66 = translate(I, glm::vec3(0.55,0.26,0.8));
-    glm::mat4 R= glm::rotate(I, glm::radians(rotRueda), glm::vec3(-1, 0, 0));
+    glm::mat4 R= glm::rotate(I, glm::radians(rotRuedaBus), glm::vec3(-1, 0, 0));
     drawRueda(P, V, M * Tru1 * R * Sru);
-    drawRueda(P, V, M * Tru2 * R * Sru);
+    drawRueda(P, V, M * Tru2 * R * Spec* Sru);
     drawRueda(P, V, M * Tru3 * R * Sru );
-    drawRueda(P, V, M * Tru4 * R * Sru );
+    drawRueda(P, V, M * Tru4 * R * Spec* Sru );
     drawRueda(P, V, M * Tru11 * R * Sru );
-    drawRueda(P, V, M * Tru22 * R * Sru );
+    drawRueda(P, V, M * Tru22 * R * Spec* Sru );
     drawRueda(P, V, M * Tru33 * R * Sru );
-    drawRueda(P, V, M * Tru44 * R * Sru );
-    drawRueda(P, V, M * Tru5 * R * Sru );
-    drawRueda(P, V, M * Tru6 * R * Sru );
-    drawRueda(P, V, M * Tru55 * R * Sru );
+    drawRueda(P, V, M * Tru44 * R * Spec* Sru );
+    drawRueda(P, V, M * Tru5 * R * Spec* Sru );
+    drawRueda(P, V, M * Tru6 * R *  Sru );
+    drawRueda(P, V, M * Tru55 * R * Spec* Sru );
     drawRueda(P, V, M * Tru66 * R * Sru );
 
     glm::mat4 Tderb = translate(I, glm::vec3(0.5,0.55,2));
@@ -1694,6 +1736,14 @@ void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Scab = scale(I, glm::vec3(0.38,0.15,0.55));
     glm::mat4 Tcab = translate(I, glm::vec3(0,0.58,0.2));
     drawObjectMat(cube,pSilver,P,V,M*Tcab*Scab);
+    glm::mat4 Scabt = scale(I, glm::vec3(0.36,0.13,0.01));
+    glm::mat4 Tcabt = translate(I, glm::vec3(0,0.58,-0.36));
+    drawObjectMat(cube,mCristal,P,V,M*Tcabt*Scabt);
+    glm::mat4 Scabl = scale(I, glm::vec3(0.01,0.12,0.15));
+    glm::mat4 Tcabld = translate(I, glm::vec3(0.39,0.58,-0.19));
+    drawObjectMat(cube,mCristal,P,V,M*Tcabld*Scabl);
+    glm::mat4 Tcabli = translate(I, glm::vec3(-0.39,0.58,-0.19));
+    drawObjectMat(cube,mCristal,P,V,M*Tcabli*Scabl);
 }
 
 void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -1701,12 +1751,20 @@ void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     //base turismo y todoterreno
     glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
     glm::mat4 T = translate(I, glm::vec3(0,0.4,0));
-    drawObjectMat(cube,pSilver,P,V,M*T*S);
+    drawObjectMat(cube,ruby,P,V,M*T*S);
 
     //coche todoterreno
-    glm::mat4 Scab = scale(I, glm::vec3(0.4,0.30,0.55));
-    glm::mat4 Tcab = translate(I, glm::vec3(0,0.6,0.25));
-    drawObjectMat(cube,pSilver,P,V,M*Tcab*Scab);
+    glm::mat4 Scab = scale(I, glm::vec3(0.4,0.3,0.55));
+    glm::mat4 Tcab = translate(I, glm::vec3(0,0.7,0.25));
+    drawObjectMat(cube,ruby,P,V,M*Tcab*Scab);
+    glm::mat4 Scabt = scale(I, glm::vec3(0.39,0.19,0.01));
+    glm::mat4 Tcabt = translate(I, glm::vec3(0,0.8,-0.31));
+    drawObjectMat(cube,mCristal,P,V,M*Tcabt*Scabt);
+    glm::mat4 Scabl = scale(I, glm::vec3(0.01,0.15,0.1));
+    glm::mat4 Tcabld = translate(I, glm::vec3(0.41,0.8,-0.18));
+    drawObjectMat(cube,mCristal,P,V,M*Tcabld*Scabl);
+    glm::mat4 Tcabli = translate(I, glm::vec3(-0.41,0.8,-0.18));
+    drawObjectMat(cube,mCristal,P,V,M*Tcabli*Scabl);
 
 
     glm::mat4 TR = translate(I, glm::vec3(0,0.55,0.9));
@@ -1904,10 +1962,11 @@ void drawRuedasUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
         drawRuedaPc(P, V, M * TRtraseras);
         drawRuedaPc(P, V, M * Spec * TRtraseras);
     } else {
-        drawRueda(P, V, M * TRdelanteras);
-        drawRueda(P, V, M * Spec * TRdelanteras);
-        drawRueda(P, V, M * TRtraseras);
-        drawRueda(P, V, M * Spec * TRtraseras);
+        glm::mat4 R= glm::rotate(I, glm::radians(rotRuedaBus), glm::vec3(-1, 0, 0));
+        drawRueda(P, V, M * TRdelanteras*R);
+        drawRueda(P, V, M * Spec * TRdelanteras*R);
+        drawRueda(P, V, M * TRtraseras*R);
+        drawRueda(P, V, M * Spec * TRtraseras*R);
     }
 
 }
@@ -1930,10 +1989,11 @@ void drawRuedasTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
         drawRuedaPc(P, V, M * TRtraseras * S);
         drawRuedaPc(P, V, M * Spec * TRtraseras * S);
     } else {
-        drawRueda(P, V, M * TRdelanteras * S);
-        drawRueda(P, V, M * Spec * TRdelanteras * S);
-        drawRueda(P, V, M * TRtraseras * S);
-        drawRueda(P, V, M * Spec * TRtraseras * S);
+        glm::mat4 R= glm::rotate(I, glm::radians(rotRuedaBus), glm::vec3(-1, 0, 0));
+        drawRueda(P, V, M * TRdelanteras*R * S);
+        drawRueda(P, V, M * Spec * TRdelanteras*R * S);
+        drawRueda(P, V, M * TRtraseras*R * S);
+        drawRueda(P, V, M * Spec * TRtraseras*R * S);
     }
 
 }
@@ -1953,10 +2013,11 @@ void drawRuedasDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
         drawRuedaPc(P, V, M * TRtraseras);
         drawRuedaPc(P, V, M * Spec * TRtraseras);
     } else {
-        drawRueda(P, V, M * TRdelanteras);
-        drawRueda(P, V, M * Spec * TRdelanteras);
-        drawRueda(P, V, M * TRtraseras);
-        drawRueda(P, V, M * Spec * TRtraseras);
+        glm::mat4 R= glm::rotate(I, glm::radians(rotRuedaBus), glm::vec3(-1, 0, 0));
+        drawRueda(P, V, M * TRdelanteras*R);
+        drawRueda(P, V, M * Spec * TRdelanteras*R);
+        drawRueda(P, V, M * TRtraseras*R);
+        drawRueda(P, V, M * Spec * TRtraseras*R);
     }
 
 }
@@ -2098,6 +2159,7 @@ void funTimer(int value) {
                 npcControl[i] = 0.0;
             }
         }
+        rotRuedaNpc += 5.0;
     }
     npcControl[npcDir] = npcTimer;
 
@@ -2127,7 +2189,7 @@ void funTimer(int value) {
                 }
             }
         }
-
+        rotRuedaBus += 5.0;
         if (busParada) {
             busParada = false;
             busStart = !busStart;   // Parar rutina
