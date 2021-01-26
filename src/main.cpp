@@ -34,7 +34,8 @@ void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M);
-
+void drawAlcantarillas(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawAlcantarilla(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M);
@@ -43,6 +44,7 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawRestauranteT(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawParqueT(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
@@ -51,9 +53,9 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 
-void drawChasisUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M);
-void drawChasisTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M);
-void drawChasisDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawChasisUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
+void drawChasisTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
+void drawChasisDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 
 void drawLucesPosicion(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 void drawLucesPosicionDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
@@ -125,7 +127,14 @@ Texture   backgroundNight;
 Texture   backgroundNightEmissive;
 Texture   paintY;
 Texture   paintR;
-Texture   paintSpecular;
+Texture   paintG;
+Texture   paintB;
+Texture   paintD;
+Texture   paintW;
+Texture   paintNormal;
+Texture   manhole;
+Texture   manholeSpecular;
+Texture   manholeNormal;
 
 // Luces y materiales
 #define   NCOCHES  3
@@ -178,6 +187,9 @@ Textures  texSoil;
 Textures  texBackgroundDay;
 Textures  texBackgroundNight;
 Textures  texPaint;
+Textures  texPaintPc;
+Textures  texManhole;
+
 
 // Viewport
 int w = 800;
@@ -228,6 +240,7 @@ bool  cocheOff  = true;
 bool  camMode   = true;
 bool  busStart  = false;
 bool  busParada  = false;
+int   colorCoche = 0;
 
 int main(int argc, char** argv) {
 
@@ -292,16 +305,11 @@ void funInit() {
     tire.initModel("resources/models/tire.obj");
 
  // Texturas
-    geometric.initTexture("resources/textures/geometric.png");
     gravel.initTexture("resources/textures/gravel.png");
     marble.initTexture("resources/textures/marble.png");
     none.initTexture("resources/textures/none.png");
-    speckles.initTexture("resources/textures/speckles.png");
-    tile.initTexture("resources/textures/tile.png");
-    tileNormal.initTexture("resources/textures/tileNormal.png");
     brick.initTexture("resources/textures/brick.jpg");
     brickNormal.initTexture("resources/textures/brickNormal.jpg");
-    wheel.initTexture("resources/textures/wheel.jpg");
     asphalt.initTexture("resources/textures/asphalt.jpg");
     brick2.initTexture("resources/textures/brick2.tif");
     brick2Normal.initTexture("resources/textures/brick2Normal.tif");
@@ -332,14 +340,20 @@ void funInit() {
     decoratedIron.initTexture("resources/textures/decoratedIron.tif");
     tireRubber.initTexture("resources/textures/tire.tif");
     tireNormal.initTexture("resources/textures/tireNormal.tif");
-    window.initTexture("resources/textures/window.png");
     soil.initTexture("resources/textures/soil.tif");
     backgroundDay.initTexture("resources/textures/backgroundDay.jpg");
     backgroundNight.initTexture("resources/textures/backgroundNight.jpg");
     backgroundNightEmissive.initTexture("resources/textures/backgroundNightEmissive.jpg");
     paintY.initTexture("resources/textures/paintY.tif");
+    paintB.initTexture("resources/textures/paintB.tif");
+    paintG.initTexture("resources/textures/paintG.tif");
     paintR.initTexture("resources/textures/paintR.tif");
-    paintSpecular.initTexture("resources/textures/paintSpecular.tif");
+    paintD.initTexture("resources/textures/paintD.tif");
+    paintW.initTexture("resources/textures/paintW.tif");
+    paintNormal.initTexture("resources/textures/paintNormal.tif");
+    manhole.initTexture("resources/textures/manhole.tif");
+    manholeSpecular.initTexture("resources/textures/manholeSpecular.tif");
+    manholeNormal.initTexture("resources/textures/manholeNormal.tif");
 
 
     // Luces Globales
@@ -531,12 +545,6 @@ void funInit() {
     }
 
  // Texturas
-    texWheel.diffuse    = wheel.getTexture();
-    texWheel.specular   = none.getTexture();
-    texWheel.emissive   = none.getTexture();
-    texWheel.normal     = 0;
-    texWheel.shininess  = 10.0;
-
     texBrick.diffuse    = brick.getTexture();
     texBrick.specular   = none.getTexture();
     texBrick.emissive   = none.getTexture();
@@ -669,6 +677,18 @@ void funInit() {
     texPaint.normal   = 0;
     texPaint.shininess= 10.0;
 
+    texPaintPc.diffuse  = paintW.getTexture();
+    texPaintPc.specular = none.getTexture();
+    texPaintPc.emissive = none.getTexture();
+    texPaintPc.normal   = 0;
+    texPaintPc.shininess= 10.0;
+
+    texManhole.diffuse  = manhole.getTexture();
+    texManhole.specular = manholeSpecular.getTexture();
+    texManhole.emissive = none.getTexture();
+    texManhole.normal   = manholeNormal.getTexture();
+    texManhole.shininess= 10.0;
+
 }
 
 void funReshape(int wnew, int hnew) {
@@ -752,12 +772,29 @@ void funDisplay() {
     drawCarretera(P,V,I);
     drawAsfalto(P,V,I);
     drawFarolas(P,V,I);
+    drawAlcantarillas(P,V,I);
 
     // Dibujar Coches
     glm::mat4 Tcoche = glm::translate(I,glm::vec3(faroX, 0.05, faroZ));
     glm::mat4 Rcoche = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0));
 
     // Coche Seleccionado
+    // Cambiar el color del coche en funcion de colorCoche
+    switch (colorCoche) {
+        case 0: texPaintPc.diffuse = paintW.getTexture();
+                break;
+        case 1: texPaintPc.diffuse = paintD.getTexture();
+                break;
+        case 2: texPaintPc.diffuse = paintY.getTexture();
+                break;
+        case 3: texPaintPc.diffuse = paintR.getTexture();
+                break;
+        case 4: texPaintPc.diffuse = paintG.getTexture();
+                break;
+        case 5: texPaintPc.diffuse = paintB.getTexture();
+                break;
+    }
+
     switch (cocheSeleccionado) {
         case 0:  drawUtilitario(P,V,Tcoche*Rcoche, true);  break;
         case 1:  drawTodoterreno(P,V,Tcoche*Rcoche, true); break;
@@ -768,7 +805,7 @@ void funDisplay() {
     // Coche npc
     glm::mat4 Tnpc = glm::translate(I,glm::vec3(npcControl[0]-npcControl[2], 0.05, npcControl[1]-npcControl[3]));
     glm::mat4 Rnpc = glm::rotate(I, glm::radians(npcRot), glm::vec3(0, -1, 0));
-    drawUtilitario(P,V,Tnpc*Rnpc, false);
+    drawDeportivo(P,V,Tnpc*Rnpc, false);
 
     //Autobus npc
     glm::mat4 Tbus = glm::translate(I,glm::vec3(npcBusControl[0]-npcBusControl[2]-7.0, 0.05, npcBusControl[1]-npcBusControl[3]-7.0));
@@ -789,12 +826,10 @@ void funDisplay() {
     drawRestaurante(P,V,I * TRestaurante);
 
     // Dibujar Transparencias
-    glm::mat4 TOficinaT = glm::translate(I,glm::vec3(-3.5,0,-3.8));
     drawOficinaT(P,V,I * TOficina);
-    glm::mat4 TParqueT = glm::translate(I,glm::vec3(3.5,0,-3.5));
     drawParqueT(P,V,I * TParque);
-    glm::mat4 TRestauranteT = glm::translate(I,glm::vec3(-3.5,0,3.8));
     drawRestauranteT(P,V,I * TRestaurante);
+    drawEdificioT(P,V,I * TEdificio);
 
     // Intercambiamos los buffers
     glutSwapBuffers();
@@ -962,6 +997,27 @@ void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectTex(cube, texRoad, P, V, M * R * T * S);
     drawObjectTex(cube, texRoad, P, V, M * Tizquierda * R * T * S);
     drawObjectTex(cube, texRoad, P, V, M * Tderecha * R * T * S);
+
+}
+
+void drawAlcantarillas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 Talc1 = glm::translate(I,glm::vec3(0.5, 0.05, 2.5));
+    drawAlcantarilla(P, V, Talc1);
+
+    glm::mat4 Talc2 = glm::translate(I,glm::vec3(-6.5, 0.05, 4.0));
+    drawAlcantarilla(P, V, Talc2);
+
+    glm::mat4 Talc3 = glm::translate(I,glm::vec3(6.5, 0.05, -5.5));
+    drawAlcantarilla(P, V, Talc3);
+
+}
+
+void drawAlcantarilla(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 S = glm::scale(I, glm::vec3(0.2, 0.005, 0.2));
+    glm::mat4 T = glm::translate(I, glm::vec3(0.0, 0.005, 0.0));
+    drawObjectTex(cube,texManhole,P,V,M*T*S);
 
 }
 
@@ -1262,23 +1318,26 @@ void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 TVentana44a = glm::translate(I, glm::vec3(-2.0 + 0.9, 0.7, -2.0 + 0.3));
 
     Material ventana = mluzVentana;
-    if (dia) {ventana.emissive = glm::vec4(0.3, 0.3, 0.3, 1.0);}
     Material materialesv[] = {ventana,mluzoff};
+
+    if (dia) {
+        ventana.emissive = glm::vec4(0.3, 0.3, 0.3, 1.0);
+    }
 
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
     glEnable(GL_CULL_FACE);
 
-        drawObjectMat(cube, materialesv[randomBooleanArray[0]] , P, V, M * TVentana1a * SVentanaa);
-        drawObjectMat(cube, materialesv[randomBooleanArray[1]] , P, V, M * TVentana2a * SVentanaa);
-        drawObjectMat(cube, materialesv[randomBooleanArray[2]] , P, V, M * TVentana3a * SVentanaa);
-        drawObjectMat(cube, materialesv[randomBooleanArray[3]] , P, V, M * TVentana4a * SVentanaa);
-        drawObjectMat(cube, materialesv[randomBooleanArray[0]] , P, V, M * TVentana1l * SVentanal);
-        drawObjectMat(cube, materialesv[randomBooleanArray[1]] , P, V, M * TVentana2l * SVentanal);
-        drawObjectMat(cube, materialesv[randomBooleanArray[2]] , P, V, M * TVentana3l * SVentanal);
-        drawObjectMat(cube, materialesv[randomBooleanArray[3]] , P, V, M * TVentana4l * SVentanal);
-        drawObjectMat(cube, materialesv[randomBooleanArray[4]] , P, V, M * TVentana11l * SVentanal);
-        drawObjectMat(cube, materialesv[randomBooleanArray[5]] , P, V, M * TVentana22l * SVentanal);
+        drawObjectMat(cube, materialesv[randomBooleanArray[0]], P, V, M * TVentana1a * SVentanaa);
+        drawObjectMat(cube, materialesv[randomBooleanArray[1]], P, V, M * TVentana2a * SVentanaa);
+        drawObjectMat(cube, materialesv[randomBooleanArray[2]], P, V, M * TVentana3a * SVentanaa);
+        drawObjectMat(cube, materialesv[randomBooleanArray[3]], P, V, M * TVentana4a * SVentanaa);
+        drawObjectMat(cube, materialesv[randomBooleanArray[0]], P, V, M * TVentana1l * SVentanal);
+        drawObjectMat(cube, materialesv[randomBooleanArray[1]], P, V, M * TVentana2l * SVentanal);
+        drawObjectMat(cube, materialesv[randomBooleanArray[2]], P, V, M * TVentana3l * SVentanal);
+        drawObjectMat(cube, materialesv[randomBooleanArray[3]], P, V, M * TVentana4l * SVentanal);
+        drawObjectMat(cube, materialesv[randomBooleanArray[4]], P, V, M * TVentana11l * SVentanal);
+        drawObjectMat(cube, materialesv[randomBooleanArray[5]], P, V, M * TVentana22l * SVentanal);
         drawObjectMat(cube, materialesv[randomBooleanArray[6]], P, V, M * TVentana33l * SVentanal);
         drawObjectMat(cube, materialesv[randomBooleanArray[7]], P, V, M * TVentana44l * SVentanal);
         drawObjectMat(cube, materialesv[randomBooleanArray[6]], P, V, M * TVentana33a * SVentanaa);
@@ -1287,6 +1346,7 @@ void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+
 }
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
@@ -1421,16 +1481,26 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tblateral444 = glm::translate(I, glm::vec3(2.75, 5.6, 0));
     drawObjectMat(cube, obsidian, P, V, M * Tblateral444 * Sblateral444);
 
- //Dibujar ventanas
-    glm::mat4 SInterior = glm::scale(I, glm::vec3(1.9, 3.2 , 1.9));
-    glm::mat4 TInterior = glm::translate(I, glm::vec3(0, 3.2, 0));
-    Material ventana = mluz;
-    if (dia) {
-        ventana.emissive = glm::vec4(0.3);
-        drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
-    } else {
-        drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
-    }
+}
+
+void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    //Dibujar ventanas
+
+        glm::mat4 SInterior = glm::scale(I, glm::vec3(1.9, 3.2 , 1.9));
+        glm::mat4 TInterior = glm::translate(I, glm::vec3(0, 3.2, 0));
+        Material ventana = mCristal;
+        if (dia) {
+            glEnable(GL_BLEND);
+            glDepthMask(GL_FALSE);
+            glEnable(GL_CULL_FACE);
+                drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
+            glDisable(GL_BLEND);
+            glDepthMask(GL_TRUE);
+            glDisable(GL_CULL_FACE);
+        } else {
+            ventana.emissive = glm::vec4(0.6, 0.6, 0.6, 1.0);
+            drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
+        }
 
 }
 
@@ -1562,7 +1632,7 @@ void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
     drawRuedasUtilitario(P,V,M, pc);
 
-    drawChasisUtilitario(P,V,M);
+    drawChasisUtilitario(P,V,M, pc);
 
     drawLucesPosicion(P,V,M, pc);
 
@@ -1575,18 +1645,21 @@ void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
 void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
+    Textures texBus = texPaint;
+    texBus.diffuse = paintG.getTexture();
+
     glm::mat4 S = scale(I, glm::vec3(0.65,0.35,2));
     glm::mat4 T = translate(I, glm::vec3(0,0.7,0));
-    drawObjectTex(cube,texPaint,P,V,M*T*S);
+    drawObjectTex(cube,texBus,P,V,M*T*S);
     glm::mat4 Slatd = scale(I, glm::vec3(0.05,0.35,1.75));
     glm::mat4 Tlatd = translate(I, glm::vec3(-0.60,1.35,0.25));
-    drawObjectTex(cube,texPaint,P,V,M*Tlatd*Slatd);
+    drawObjectTex(cube,texBus,P,V,M*Tlatd*Slatd);
     glm::mat4 Slati = scale(I, glm::vec3(0.05,0.35,1.75));
     glm::mat4 Tlati = translate(I, glm::vec3(0.60,1.35,0.25));
-    drawObjectTex(cube,texPaint,P,V,M*Tlati *Slati );
+    drawObjectTex(cube,texBus,P,V,M*Tlati *Slati );
     glm::mat4 Stecho = scale(I, glm::vec3(0.65,0.05,2));
     glm::mat4 Ttecho = translate(I, glm::vec3(0.0,1.7,0));
-    drawObjectTex(cube,texPaint,P,V,M*Ttecho *Stecho );
+    drawObjectTex(cube,texBus,P,V,M*Ttecho *Stecho );
     //ventanas
     glEnable(GL_POLYGON_OFFSET_FILL);
         glm::mat4 Slunat = scale(I, glm::vec3(0.65,0.35,0.05));
@@ -1604,14 +1677,14 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     //retrovisores
     glm::mat4 SSoporte = scale(I, glm::vec3(0.03,0.03,0.2));
     glm::mat4 TSoported = translate(I, glm::vec3(-0.6,1.725,-2));
-    drawObjectTex(cube,texPaint,P,V,M*TSoported *SSoporte );
+    drawObjectTex(cube,texBus,P,V,M*TSoported *SSoporte );
     glm::mat4 TSoportei = translate(I, glm::vec3(0.6,1.725,-2));
-    drawObjectTex(cube,texPaint,P,V,M*TSoportei *SSoporte );
+    drawObjectTex(cube,texBus,P,V,M*TSoportei *SSoporte );
     glm::mat4 SRetro = scale(I, glm::vec3(0.05,0.13,0.05));
     glm::mat4 TRetrod = translate(I, glm::vec3(-0.6,1.63,-2.2));
-    drawObjectTex(cube,texPaint,P,V,M*TRetrod *SRetro );
+    drawObjectTex(cube,texBus,P,V,M*TRetrod *SRetro );
     glm::mat4 TRetroi = translate(I, glm::vec3(0.6,1.63,-2.2));
-    drawObjectTex(cube,texPaint,P,V,M*TRetroi *SRetro );
+    drawObjectTex(cube,texBus,P,V,M*TRetroi *SRetro );
     glm::mat4 SEspejo = scale(I, glm::vec3(0.05,0.1,0.01));
     glm::mat4 TEspejod = translate(I, glm::vec3(-0.6,1.6,-2.15));
     drawObjectMat(cube,mCristal,P,V,M*TEspejod *SEspejo );
@@ -1673,7 +1746,7 @@ void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
     drawRuedasTodoterreno(P,V,M, pc);
 
-    drawChasisTodoterreno(P,V,M);
+    drawChasisTodoterreno(P,V,M, pc);
 
     drawLucesPosicion(P,V,M, pc);
 
@@ -1688,7 +1761,7 @@ void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
     drawRuedasDeportivo(P,V,M, pc);
 
-    drawChasisDeportivo(P,V,M);
+    drawChasisDeportivo(P,V,M, pc);
 
     drawLucesPosicionDeportivo(P,V,M, pc);
 
@@ -1725,17 +1798,24 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
 }
 
-void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
+
+    Textures texCoche;
+    if (pc) {
+        texCoche = texPaintPc;
+    } else {
+        texCoche = texPaint;
+    }
 
     //base turismo y todoterreno
     glm::mat4 S = scale(I, glm::vec3(0.4,0.15,0.8));
     glm::mat4 T = translate(I, glm::vec3(0,0.28,0));
-    drawObjectMat(cube,pSilver,P,V,M*T*S);
+    drawObjectTex(cube,texCoche,P,V,M*T*S);
 
     //coche normal familiar
     glm::mat4 Scab = scale(I, glm::vec3(0.38,0.15,0.55));
     glm::mat4 Tcab = translate(I, glm::vec3(0,0.58,0.2));
-    drawObjectMat(cube,pSilver,P,V,M*Tcab*Scab);
+    drawObjectTex(cube,texCoche,P,V,M*Tcab*Scab);
     glm::mat4 Scabt = scale(I, glm::vec3(0.36,0.13,0.01));
     glm::mat4 Tcabt = translate(I, glm::vec3(0,0.58,-0.36));
     drawObjectMat(cube,mCristal,P,V,M*Tcabt*Scabt);
@@ -1746,17 +1826,24 @@ void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectMat(cube,mCristal,P,V,M*Tcabli*Scabl);
 }
 
-void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
+
+    Textures texCoche;
+    if (pc) {
+        texCoche = texPaintPc;
+    } else {
+        texCoche = texPaint;
+    }
 
     //base turismo y todoterreno
     glm::mat4 S = scale(I, glm::vec3(0.4,0.2,0.8));
     glm::mat4 T = translate(I, glm::vec3(0,0.4,0));
-    drawObjectMat(cube,ruby,P,V,M*T*S);
+    drawObjectTex(cube,texCoche,P,V,M*T*S);
 
     //coche todoterreno
     glm::mat4 Scab = scale(I, glm::vec3(0.4,0.3,0.55));
     glm::mat4 Tcab = translate(I, glm::vec3(0,0.7,0.25));
-    drawObjectMat(cube,ruby,P,V,M*Tcab*Scab);
+    drawObjectTex(cube,texCoche,P,V,M*Tcab*Scab);
     glm::mat4 Scabt = scale(I, glm::vec3(0.39,0.19,0.01));
     glm::mat4 Tcabt = translate(I, glm::vec3(0,0.8,-0.31));
     drawObjectMat(cube,mCristal,P,V,M*Tcabt*Scabt);
@@ -1776,120 +1863,129 @@ void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectTex(tire, texTire, P, V, M * TR * Sr * Rr * Tr);
 }
 
-void drawChasisDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawChasisDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
+
+    Textures texCoche;
+    if (pc) {
+        texCoche = texPaintPc;
+    } else {
+        texCoche = texPaint;
+    }
 
     //base coche deportivo
     glm::mat4 S1 = scale(I, glm::vec3(0.4,0.02,0.78));
     glm::mat4 T1 = translate(I, glm::vec3(0,0.10,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T1*S1);
+    drawObjectTex(cube,texCoche,P,V,M*T1*S1);
 
     glm::mat4 S2 = scale(I, glm::vec3(0.4,0.02,0.82));
     glm::mat4 T2 = translate(I, glm::vec3(0,0.12,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T2*S2);
+    drawObjectTex(cube,texCoche,P,V,M*T2*S2);
 
     glm::mat4 S3 = scale(I, glm::vec3(0.4,0.02,0.84));
     glm::mat4 T3 = translate(I, glm::vec3(0,0.14,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T3*S3);
+    drawObjectTex(cube,texCoche,P,V,M*T3*S3);
 
     glm::mat4 S4 = scale(I, glm::vec3(0.4,0.02,0.88));
     glm::mat4 T4 = translate(I, glm::vec3(0,0.16,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T4*S4);
+    drawObjectTex(cube,texCoche,P,V,M*T4*S4);
 
-    glm::mat4 S5 = scale(I, glm::vec3(0.4,0.02,0.88));
-    glm::mat4 T5 = translate(I, glm::vec3(0,0.18,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T5*S5);
+    glEnable(GL_POLYGON_OFFSET_FILL);
+        glm::mat4 S5 = scale(I, glm::vec3(0.4,0.02,0.88));
+        glm::mat4 T5 = translate(I, glm::vec3(0,0.18,-0.15));
+        drawObjectMat(cube,obsidian,P,V,M*T5*S5);
 
-    glm::mat4 S6 = scale(I, glm::vec3(0.4,0.02,0.88));
-    glm::mat4 T6 = translate(I, glm::vec3(0,0.2,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T6*S6);
+        glm::mat4 S6 = scale(I, glm::vec3(0.4,0.02,0.88));
+        glm::mat4 T6 = translate(I, glm::vec3(0,0.2,-0.15));
+        drawObjectMat(cube,obsidian,P,V,M*T6*S6);
+    glDisable(GL_POLYGON_OFFSET_FILL);
 
     glm::mat4 S7 = scale(I, glm::vec3(0.4,0.02,0.84));
     glm::mat4 T7 = translate(I, glm::vec3(0,0.22,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T7*S7);
+    drawObjectTex(cube,texCoche,P,V,M*T7*S7);
 
     glm::mat4 S8 = scale(I, glm::vec3(0.4,0.02,0.80));
     glm::mat4 T8 = translate(I, glm::vec3(0,0.24,-0.15));
-    drawObjectMat(cube,pSilver,P,V,M*T8*S8);
+    drawObjectTex(cube,texCoche,P,V,M*T8*S8);
 
     glm::mat4 SFaro = scale(I, glm::vec3(0.05,0.05,0.05));
     glm::mat4 TFaro1 = translate(I, glm::vec3(0.3,0.3,-0.75));
-    drawObjectMat(cube,pSilver,P,V,M*TFaro1*SFaro);
+    drawObjectTex(cube,texCoche,P,V,M*TFaro1*SFaro);
     glm::mat4 TFaro2 = translate(I, glm::vec3(-0.3,0.3,-0.75));
-    drawObjectMat(cube,pSilver,P,V,M*TFaro2*SFaro);
+    drawObjectTex(cube,texCoche,P,V,M*TFaro2*SFaro);
 
     //cabina base
     glm::mat4 SCB1 = scale(I, glm::vec3(0.4,0.02,0.6));
     glm::mat4 TCB1 = translate(I, glm::vec3(0,0.26,0.02));
-    drawObjectMat(cube,pSilver,P,V,M*TCB1*SCB1);
+    drawObjectTex(cube,texCoche,P,V,M*TCB1*SCB1);
 
     glm::mat4 SCB2 = scale(I, glm::vec3(0.4,0.02,0.58));
     glm::mat4 TCB2 = translate(I, glm::vec3(0,0.28,0.03));
-    drawObjectMat(cube,pSilver,P,V,M*TCB2*SCB2);
+    drawObjectTex(cube,texCoche,P,V,M*TCB2*SCB2);
 
     //cabina
     glm::mat4 SC1 = scale(I, glm::vec3(0.4,0.02,0.55));
     glm::mat4 TC1 = translate(I, glm::vec3(0,0.3,0.04));
-    drawObjectMat(cube,pSilver,P,V,M*TC1*SC1);
+    drawObjectTex(cube,texCoche,P,V,M*TC1*SC1);
 
     glm::mat4 SC2 = scale(I, glm::vec3(0.38,0.02,0.53));
     glm::mat4 TC2 = translate(I, glm::vec3(0,0.32,0.04));
-    drawObjectMat(cube,pSilver,P,V,M*TC2*SC2);
+    drawObjectTex(cube,texCoche,P,V,M*TC2*SC2);
 
     glm::mat4 SC3 = scale(I, glm::vec3(0.36,0.02,0.51));
     glm::mat4 TC3 = translate(I, glm::vec3(0,0.34,0.04));
-    drawObjectMat(cube,pSilver,P,V,M*TC3*SC3);
+    drawObjectTex(cube,texCoche,P,V,M*TC3*SC3);
 
     glm::mat4 SC4 = scale(I, glm::vec3(0.34,0.02,0.49));
     glm::mat4 TC4 = translate(I, glm::vec3(0,0.36,0.04));
-    drawObjectMat(cube,pSilver,P,V,M*TC4*SC4);
+    drawObjectTex(cube,texCoche,P,V,M*TC4*SC4);
 
     glm::mat4 SC5 = scale(I, glm::vec3(0.32,0.02,0.47));
     glm::mat4 TC5 = translate(I, glm::vec3(0,0.38,0.04));
-    drawObjectMat(cube,pSilver,P,V,M*TC5*SC5);
+    drawObjectTex(cube,texCoche,P,V,M*TC5*SC5);
 
     glm::mat4 SC6 = scale(I, glm::vec3(0.3,0.02,0.45));
     glm::mat4 TC6 = translate(I, glm::vec3(0,0.4,0.04));
-    drawObjectMat(cube,pSilver,P,V,M*TC6*SC6);
+    drawObjectTex(cube,texCoche,P,V,M*TC6*SC6);
 
     //aleron base
     glm::mat4 SA = scale(I, glm::vec3(0.42,0.005,0.05));
     glm::mat4 TA = translate(I, glm::vec3(0,0.45,0.75));
-    drawObjectMat(cube,pSilver,P,V,M*TA*SA);
+    drawObjectMat(cube,obsidian,P,V,M*TA*SA);
 
     //aleron lados
     glm::mat4 SAT = scale(I, glm::vec3(0.005,0.02,0.04));
     glm::mat4 TAD1 = translate(I, glm::vec3(0.3,0.43,0.74));
-    drawObjectMat(cube,pSilver,P,V,M*TAD1*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD1*SAT);
     glm::mat4 TAD2 = translate(I, glm::vec3(0.3,0.41,0.72));
-    drawObjectMat(cube,pSilver,P,V,M*TAD2*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD2*SAT);
     glm::mat4 TAD3 = translate(I, glm::vec3(0.3,0.39,0.70));
-    drawObjectMat(cube,pSilver,P,V,M*TAD3*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD3*SAT);
     glm::mat4 TAD4 = translate(I, glm::vec3(0.3,0.37,0.68));
-    drawObjectMat(cube,pSilver,P,V,M*TAD4*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD4*SAT);
     glm::mat4 TAD5 = translate(I, glm::vec3(0.3,0.35,0.66));
-    drawObjectMat(cube,pSilver,P,V,M*TAD5*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD5*SAT);
     glm::mat4 TAD6 = translate(I, glm::vec3(0.3,0.33,0.64));
-    drawObjectMat(cube,pSilver,P,V,M*TAD6*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD6*SAT);
     glm::mat4 TAD7 = translate(I, glm::vec3(0.3,0.31,0.62));
-    drawObjectMat(cube,pSilver,P,V,M*TAD7*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD7*SAT);
     glm::mat4 TAD8 = translate(I, glm::vec3(0.3,0.29,0.6));
-    drawObjectMat(cube,pSilver,P,V,M*TAD8*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAD8*SAT);
     glm::mat4 TAI1 = translate(I, glm::vec3(-0.3,0.43,0.74));
-    drawObjectMat(cube,pSilver,P,V,M*TAI1*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI1*SAT);
     glm::mat4 TAI2 = translate(I, glm::vec3(-0.3,0.41,0.72));
-    drawObjectMat(cube,pSilver,P,V,M*TAI2*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI2*SAT);
     glm::mat4 TAI3 = translate(I, glm::vec3(-0.3,0.39,0.70));
-    drawObjectMat(cube,pSilver,P,V,M*TAI3*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI3*SAT);
     glm::mat4 TAI4 = translate(I, glm::vec3(-0.3,0.37,0.68));
-    drawObjectMat(cube,pSilver,P,V,M*TAI4*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI4*SAT);
     glm::mat4 TAI5 = translate(I, glm::vec3(-0.3,0.35,0.66));
-    drawObjectMat(cube,pSilver,P,V,M*TAI5*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI5*SAT);
     glm::mat4 TAI6 = translate(I, glm::vec3(-0.3,0.33,0.64));
-    drawObjectMat(cube,pSilver,P,V,M*TAI6*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI6*SAT);
     glm::mat4 TAI7 = translate(I, glm::vec3(-0.3,0.31,0.62));
-    drawObjectMat(cube,pSilver,P,V,M*TAI7*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI7*SAT);
     glm::mat4 TAI8 = translate(I, glm::vec3(-0.3,0.29,0.6));
-    drawObjectMat(cube,pSilver,P,V,M*TAI8*SAT);
+    drawObjectMat(cube,obsidian,P,V,M*TAI8*SAT);
 
 }
 
@@ -2108,6 +2204,9 @@ void funKeyboard(unsigned char key, int x, int y) {
         case 'p': case 'P': cocheOff = !cocheOff;
                             break;
         case 'c': case 'C': camMode = !camMode;
+                            break;
+        case 'v': case 'V': colorCoche++;
+                            if (colorCoche == 6) colorCoche = 0;
                             break;
         case 'b': case 'B': if (!busStart) busStart = !busStart;
                             break;
