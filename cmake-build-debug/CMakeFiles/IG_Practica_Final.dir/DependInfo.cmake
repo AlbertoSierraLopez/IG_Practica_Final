@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Model.cpp" "C:/Users/Aussar/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/Model.cpp.obj"
-  "C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Shaders.cpp" "C:/Users/Aussar/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj"
-  "C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/Texture.cpp" "C:/Users/Aussar/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj"
-  "C:/Users/Aussar/CLionProjects/IG_Practica_Final/src/main.cpp" "C:/Users/Aussar/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj"
+  "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Model.cpp" "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/Model.cpp.obj"
+  "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Shaders.cpp" "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/Shaders.cpp.obj"
+  "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/Texture.cpp" "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/Texture.cpp.obj"
+  "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/src/main.cpp" "C:/Users/gm.nogales/CLionProjects/IG_Practica_Final/cmake-build-debug/CMakeFiles/IG_Practica_Final.dir/src/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

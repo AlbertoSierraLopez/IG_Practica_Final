@@ -52,7 +52,8 @@ void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 void drawPatin(glm::mat4 P, glm::mat4 V, glm::mat4 M);
-void drawHelice(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawHeliceCola(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawHeliceSuperior(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc);
 
@@ -212,6 +213,7 @@ float faroZ    = 0.0;
 float rotRueda = 0.0;
 float rotRuedaBus = 0.0;
 float rotRuedaNpc = 0.0;
+float rotHelice = 0.0;
 
 float rotAstro = 0.0;
 int   speed    = 500;
@@ -225,7 +227,13 @@ float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
 int npcBusDir     = 0;     // Indice del array npcBusControl[]
 float npcBusRot   = 90.0;
 float npcBusControl[4] = {10.5, 0.0, 0.0, 0.0};
+//
 //                         X    Z   -X   -Z
+float helicopterx = 3.5;
+float helicoptery = 7.5;
+float helicopterz = 3.8;
+float rotHely = 0.0;
+float rotHelx = 0.0;
 
 // Ventanas aleatoriamente iluminadas
 #define     NVENTANAS 14
@@ -245,9 +253,11 @@ std::string coches[NCOCHESTIPO] = {"Utilitario", "Todoterreno", "Deportivo"};
 int cocheSeleccionado = 0;
 bool  dia       = true;
 bool  cocheOff  = true;
-bool  camMode   = true;
+bool  camHeli = false;
 bool  busStart  = false;
 bool  busParada  = false;
+bool  heliStart = false;
+int  camMode   = 0;
 int   colorCoche = 0;
 
 int main(int argc, char** argv) {
@@ -730,30 +740,55 @@ void funDisplay() {
     glm::vec3 lookat;
     glm::vec3 up;
 
-    if (camMode) {
-        // Vista Diorama
-        float x = 15.0f*glm::cos(glm::radians(alphaY))*glm::sin(glm::radians(alphaX));
-        float y = 15.0f*glm::sin(glm::radians(alphaY)) + 10.0;
-        float z = 15.0f*glm::cos(glm::radians(alphaY))*glm::cos(glm::radians(alphaX));
+        switch (camMode){
+            case 0: {
 
-        pos = glm::vec3(  x,   y,   z);
-        //lookat = glm::vec3(0.0, 0.0, 0.0);
-        lookat = glm::vec3(3.5, 7.5, 3.5);
-        up = glm::vec3(0.0, 1.0, 0.0);
-    } else {
-        // Vista 1ª Persona
-        glm::vec4 camPos = iniCamPos;
-        camPos = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camPos;
-        camPos.x += faroX;
-        camPos.z += faroZ;
+                // Vista Diorama
+                float x = 15.0f * glm::cos(glm::radians(alphaY)) * glm::sin(glm::radians(alphaX));
+                float y = 15.0f * glm::sin(glm::radians(alphaY)) + 10.0;
+                float z = 15.0f * glm::cos(glm::radians(alphaY)) * glm::cos(glm::radians(alphaX));
 
-        glm::vec4 camDir = iniCamDir;
-        camDir = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camDir;
+                pos = glm::vec3(x, y, z);
+                lookat = glm::vec3(0.0, 0.0, 0.0);
+                //lookat = glm::vec3(3.5, 7.5, 3.5);
+                up = glm::vec3(0.0, 1.0, 0.0);
+            }
+            break;
+            case 1: {
 
-        pos = glm::vec3(camPos.x, camPos.y, camPos.z);
-        lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
-        up = glm::vec3(0.0, 1.0, 0.0);
-    }
+                // Vista 1ª Persona
+                glm::vec4 camPos = iniCamPos;
+                camPos = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camPos;
+                camPos.x += faroX;
+                camPos.z += faroZ;
+
+                glm::vec4 camDir = iniCamDir;
+                camDir = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camDir;
+
+                pos = glm::vec3(camPos.x, camPos.y, camPos.z);
+                lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
+                up = glm::vec3(0.0, 1.0, 0.0);
+            }
+            break;
+            case 2: {
+                //helicoptero?
+                glm::vec4 camPos = iniCamPos;
+                camPos = glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) * camPos;
+                camPos.x += helicopterx;
+                camPos.z += helicopterz;
+                camPos.y += helicoptery;
+
+                glm::vec4 camDir = iniCamDir;
+                camDir = glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) *
+                         glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0)) * camDir;
+
+
+                pos = glm::vec3(camPos.x, camPos.y, camPos.z);
+                lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
+                up = glm::vec3(0.0, 1.0, 0.0);
+            }
+            break;
+        }
 
     // Matriz V
     glm::mat4 V = glm::lookAt(pos, lookat, up);
@@ -766,7 +801,7 @@ void funDisplay() {
     glm::mat4 SB = glm::scale(I, glm::vec3(10.0));
     glm::mat4 TB = glm::translate(I, glm::vec3(0.0, 5.0, 0.0));
     glm::mat4 RB = glm::rotate(I, glm::radians(45.0f), glm::vec3(0, 1, 0));
-    if (!camMode) {
+    if (camMode!=0) {
         if (dia) {
             drawObjectTex(sphere, texBackgroundDay, P, V, TB * SB * RB);
         } else {
@@ -834,6 +869,11 @@ void funDisplay() {
 
     glm::mat4 TRestaurante = glm::translate(I,glm::vec3(-3.5,0,3.8));
     drawRestaurante(P,V,I * TRestaurante);
+
+    glm::mat4 Th = glm::translate(I, glm::vec3(helicopterx, helicoptery, helicopterz));
+    glm::mat4 Rheli = glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0));
+    glm::mat4 Rhelx = glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0));
+    drawHelicoptero(P, V, I * Th * Rheli * Rhelx);
 
     // Dibujar Transparencias
     drawOficinaT(P,V,I * TOficina);
@@ -1492,8 +1532,7 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectMat(cube, obsidian, P, V, M * Tblateral444 * Sblateral444);
 
 
-    glm::mat4 Th = glm::translate(I, glm::vec3(0.0, 7.5, 0.0));
-    drawHelicoptero(P, V, M * Th);
+
 
 }
 
@@ -1543,8 +1582,13 @@ void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawPatin(P,V, M * Tpatin * Rpatin);
     drawPatin(P,V, M * glm::scale(I, glm::vec3(-1.0, 1.0, 1.0)) * Tpatin * Rpatin);
 
-    //drawHelice(P,V,I);
-    //drawHelice(P,V,I);
+    //rotacion helices
+    glm::mat4 R = glm::rotate(I, glm::radians(rotHelice), glm::vec3(0, -1, 0));
+    glm::mat4 THeliceS = glm::translate(I, glm::vec3(0, 0.95, 0.1));
+    drawHeliceSuperior(P,V,M*THeliceS*R);
+    glm::mat4 Rc = glm::rotate(I, glm::radians(rotHelice), glm::vec3(-1, 0, 0));
+    glm::mat4 THeliceC = glm::translate(I, glm::vec3(-0.01, 0.18, 2.15));
+    drawHeliceCola(P,V,M*THeliceC*Rc);
 
 }
 
@@ -1553,6 +1597,7 @@ void drawPatin(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Sbarra = glm::scale(I, glm::vec3(0.02, 0.5, 0.02));
     glm::mat4 Tbarrad = glm::translate(I, glm::vec3(0.0, 0.5, 0.3));
     drawObjectMat(cylinder,obsidian,P,V,M*Tbarrad*Sbarra);
+
 
     glm::mat4 Tbarrat = glm::translate(I, glm::vec3(0.0, 0.5, -0.3));
     drawObjectMat(cylinder,obsidian,P,V,M*Tbarrat*Sbarra);
@@ -1563,10 +1608,37 @@ void drawPatin(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 }
 
-void drawHelice(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+void drawHeliceCola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    glm::mat4 R = glm::rotate(I, glm::radians(90.0f), glm::vec3(0, 0, 1));
+    glm::mat4 Scentro = glm::scale(I, glm::vec3(0.02, 0.04, 0.02));
+    glm::mat4 Tcentro = glm::translate(I, glm::vec3(0.0, 0.04, 0));
+    drawObjectMat(cylinder,obsidian,P,V,M*R*Tcentro*Scentro);
 
+    glm::mat4 Sunion = glm::scale(I, glm::vec3(0.01, 0.03, 0.03));
+    glm::mat4 Tunion = glm::translate(I, glm::vec3(-0.05, 0, 0.05));
+    drawObjectMat(cube,obsidian,P,V,M*Tunion*Sunion);
+    drawObjectMat(cube,obsidian,P,V,M*glm::scale(I, glm::vec3(1.0, 1.0, -1.0))*Tunion*Sunion);
+
+    glm::mat4 Shelice = glm::scale(I, glm::vec3(0.01, 0.05, 0.07));
+    glm::mat4 Thelice = glm::translate(I, glm::vec3(-0.05, 0, 0.12));
+    drawObjectMat(cube,obsidian,P,V,M*Thelice*Shelice);
+    drawObjectMat(cube,obsidian,P,V,M*glm::scale(I, glm::vec3(1.0, 1.0, -1.0))*Thelice*Shelice);
 }
+void drawHeliceSuperior(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    glm::mat4 Scentro = glm::scale(I, glm::vec3(0.03, 0.05, 0.03));
+    glm::mat4 Tcentro = glm::translate(I, glm::vec3(0.0, 0.05, 0));
+    drawObjectMat(cylinder,obsidian,P,V,M*Tcentro*Scentro);
 
+    glm::mat4 Sunion = glm::scale(I, glm::vec3(0.03, 0.01, 0.06));
+    glm::mat4 Tunion = glm::translate(I, glm::vec3(0.0, 0.06, 0.09));
+    drawObjectMat(cube,obsidian,P,V,M*Tunion*Sunion);
+    drawObjectMat(cube,obsidian,P,V,M*glm::scale(I, glm::vec3(1.0, 1.0, -1.0))*Tunion*Sunion);
+
+    glm::mat4 Shelice = glm::scale(I, glm::vec3(0.1, 0.01, 0.7));
+    glm::mat4 Thelice = glm::translate(I, glm::vec3(0.0, 0.06, 0.79));
+    drawObjectMat(cube,obsidian,P,V,M*Thelice*Shelice);
+    drawObjectMat(cube,obsidian,P,V,M*glm::scale(I, glm::vec3(1.0, 1.0, -1.0))*Thelice*Shelice);
+}
 void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 Sbase   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
@@ -2266,21 +2338,48 @@ void funKeyboard(unsigned char key, int x, int y) {
                   break;
         case 'p': case 'P': cocheOff = !cocheOff;
                             break;
-        case 'c': case 'C': camMode = !camMode;
+        case 'c': case 'C': camMode++;
                             break;
         case 'v': case 'V': colorCoche++;
                             if (colorCoche == 6) colorCoche = 0;
                             break;
         case 'b': case 'B': if (!busStart) busStart = !busStart;
                             break;
+        case 'h': case 'H': heliStart = !heliStart;
+                            break;
+        case 'w': case 'W': if(heliStart){
+                helicopterx -= 0.1 * sinf(glm::radians(rotHely));
+                helicopterz -= 0.1 * cosf(glm::radians(rotHely));
+                helicoptery += 0.1 * sinf(glm::radians(rotHelx));
+            }
+            break;
+        case 's': case 'S': if(heliStart){
+                helicopterx += 0.1 * sinf(glm::radians(rotHely));
+                helicopterz += 0.1 * cosf(glm::radians(rotHely));
+                helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
+        }
+            break;
+        case 'a': case 'A': if(heliStart)  rotHely += 5.0f;
+            break;
+        case 'd': case 'D': if(heliStart)  rotHely -= 5.0f;
+            break;
+        case 'q': case 'Q': if(heliStart) rotHelx += 0.5;
+            break;
+        case 'e': case 'E': if(heliStart) rotHelx -= 0.5f;
+            break;
         case ' ': cocheSeleccionado++;
                   break;
     }
-
+    if(camMode>2) camMode = 0;
     if (cocheSeleccionado > 2) {
         cocheSeleccionado = 0;
     }
-
+    if (helicopterx  >  7.5) helicopterx =  7.5;
+    if (helicopterx  < -7.5) helicopterx  = -7.5;
+    if (helicopterz  >  7.5) helicopterz =  7.5;
+    if (helicopterz  < -7.5) helicopterz  = -7.5;
+    if (helicoptery  >  10.0) helicoptery =  10.0;
+    if (helicoptery  < 0.0) helicoptery  = 0.35;
     glutPostRedisplay();
 
 }
@@ -2358,6 +2457,9 @@ void funTimer(int value) {
         }
     }
 
+    if (heliStart){
+        rotHelice += 10.0;
+    }
     rotAstro += 5.0;
     if (rotAstro > 360.0) rotAstro = 0.0;
 
