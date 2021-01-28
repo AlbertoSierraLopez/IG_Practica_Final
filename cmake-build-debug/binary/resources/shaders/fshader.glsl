@@ -35,7 +35,7 @@ struct Textures {
 uniform vec3     ucpos;
 uniform Light    ulightG;
 uniform Light    ulightP[1+NFAROLAS];
-uniform Light    ulightF[NCOCHES*2];
+uniform Light    ulightF[NCOCHES*2+1];
 
 uniform Material umaterial;
 uniform Textures utextures;
@@ -78,7 +78,7 @@ void main() {
     vec3 color = material.emissive.rgb + ulightG.ambient * material.ambient.rgb;
 //  for(int i=0; i<NLD; i++) color += funDirectional(ulightD[i],material,N,V);
     for(int i=0; i<1+NFAROLAS; i++) color += funPositional (ulightP[i],material,N,V);
-    for(int i=0; i<NCOCHES*2; i++) color += funFocal      (ulightF[i],material,N,V);
+    for(int i=0; i<NCOCHES*2+1; i++) color += funFocal      (ulightF[i],material,N,V);
 
     outColor = vec4(color, material.diffuse.a);
 

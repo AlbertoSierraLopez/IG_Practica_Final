@@ -147,7 +147,7 @@ Texture   manholeNormal;
 
 Light     lightG;
 Light     lightP[1+NFAROLAS];
-Light     lightF[NCOCHES*2];
+Light     lightF[NCOCHES*2+1];
 Light     lightSol;
 Light     lightLuna;
 Light     lightFarola;
@@ -455,6 +455,25 @@ void funInit() {
     lightF[1].c0          = 1.000;
     lightF[1].c1          = 0.090;
     lightF[1].c2          = 0.032;
+    for(int i = 2;i<6;i++){
+        if(i % 2 == 0){
+            lightF[i] = lightF[0];
+        }else{
+            lightF[i] = lightF[1];
+        }
+    }
+
+    // Faro Helicoptero
+    lightF[6].position    = glm::vec3(0.0, -0.70, -0.101);
+    lightF[6].direction   = glm::vec3( 0.0, -0.7, -5.0);
+    lightF[6].ambient     = glm::vec3( 0.0,  0.0,  0.0);
+    lightF[6].diffuse     = glm::vec3(  0.0,  0.0,  0.0);
+    lightF[6].specular    = glm::vec3( 0.0,  0.0,  0.0);
+    lightF[6].innerCutOff = 10.0;
+    lightF[6].outerCutOff = lightF[0].innerCutOff + 3.0;
+    lightF[6].c0          = 1.000;
+    lightF[6].c1          = 0.090;
+    lightF[6].c2          = 0.032;
 
  // Materiales
     mluz.ambient   = glm::vec4(0.0, 0.0, 0.0, 0.3);
@@ -749,8 +768,8 @@ void funDisplay() {
                 float z = 15.0f * glm::cos(glm::radians(alphaY)) * glm::cos(glm::radians(alphaX));
 
                 pos = glm::vec3(x, y, z);
-                lookat = glm::vec3(0.0, 0.0, 0.0);
-                //lookat = glm::vec3(3.5, 7.5, 3.5);
+                //lookat = glm::vec3(0.0, 0.0, 0.0);
+                lookat = glm::vec3(3.5, 7.5, 3.5);
                 up = glm::vec3(0.0, 1.0, 0.0);
             }
             break;
@@ -1001,7 +1020,21 @@ void setLights(glm::mat4 P, glm::mat4 V) {
 
         shaders.setLight("ulightF["+toString(i)+"]",lFaro);
     }
+    //foco helicoptero
 
+    // Luz
+    Light lFoco = lightF[6];
+    // Posicion
+    lFoco.position =  glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) *glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0)) * glm::vec4(lFoco.position, 1.0);
+
+    lFoco.position.x += helicopterx;
+    lFoco.position.z += helicopterz;
+    lFoco.position.y += helicoptery;
+
+    // Direccion
+    lFoco.direction =  glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) * glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0)) *glm::vec4(lFoco.direction, 1.0);
+
+    shaders.setLight("ulightF["+toString(6)+"]",lFoco);
 }
 
 void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -1558,9 +1591,9 @@ void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //datos cono para trabajar con el en (0,0,0)
     glm::mat4 TCono   = glm::translate(I, glm::vec3(0, 2.09996962547, 0));
-
+    //cuerpo helicoptero
     glm::mat4 Sh = glm::scale(I, glm::vec3(0.3, 0.3, 0.5));
     drawObjectTex(sphere, texBlueMetal, P, V, M * Sh);
 
@@ -1568,21 +1601,41 @@ void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Trotor = glm::translate(I, glm::vec3(0.0, 0.59, 0.1));
     drawObjectTex(cone,texBlueMetal,P,V,M*Trotor*Srotor*TCono);
 
+
+    //motor debajo de cola
+    glm::mat4 Smotor = glm::scale(I, glm::vec3(0.3, 0.15, 0.1));
+    glm::mat4 Tmotor = glm::translate(I, glm::vec3(0.0, -0.1, 0.9));
+    drawObjectTex(cube,texIron,P,V,M*Tmotor*Smotor);
+
+    glm::mat4 STubo = glm::scale(I, glm::vec3(0.07, 0.07, 0.08));
+    glm::mat4 TTubo = glm::translate(I, glm::vec3(0.0, -0.1, 1.1));
+    drawObjectTex(cylinder,texIron,P,V,M*TTubo*STubo);
+    //cola helicoptero
     glm::mat4 Scola = glm::scale(I, glm::vec3(0.3/d_cono, 1.5/a_cono, 0.3/d_cono));
     glm::mat4 Tcola = glm::translate(I, glm::vec3(0.0, 0.18, 0.85));
     glm::mat4 Rcola = glm::rotate(I, glm::radians(90.0f), glm::vec3(1, 0, 0));
     drawObjectTex(cone,texBlueMetal,P,V,M*Tcola*Rcola*Scola*TCono);
-
     glm::mat4 Saleron = glm::scale(I, glm::vec3(0.01, 0.2, 0.05));
     glm::mat4 Taleron = glm::translate(I, glm::vec3(0.03, 0.25, 2.1));
     drawObjectTex(cube,texBlueMetal,P,V,M*Taleron*Saleron);
-
+    //patines
     glm::mat4 Rpatin = glm::rotate(I, glm::radians(30.0f), glm::vec3(0, 0, -1));
     glm::mat4 Tpatin = glm::translate(I, glm::vec3(-0.6, -0.9, 0.0));
     drawPatin(P,V, M * Tpatin * Rpatin);
     drawPatin(P,V, M * glm::scale(I, glm::vec3(-1.0, 1.0, 1.0)) * Tpatin * Rpatin);
+    //foco
+    glm::mat4 Ssoporte = glm::scale(I, glm::vec3(0.05, 0.04, 0.05));
+    glm::mat4 Tsoporte = glm::translate(I, glm::vec3(0.0, -0.62, 0));
+    drawObjectMat(cylinder,obsidian,P,V,M*Tsoporte*Ssoporte);
+    glm::mat4 SFoco = glm::scale(I, glm::vec3(0.08, 0.1, 0.08));
+    glm::mat4 TFoco = glm::translate(I, glm::vec3(0.0, -0.70, 0));
+    glm::mat4 RFoco = glm::rotate(I, glm::radians(90.0f), glm::vec3(1, 0, 0));
+    drawObjectMat(cylinder,obsidian,P,V,M*TFoco*RFoco*SFoco);
+    glm::mat4 Scristal = glm::scale(I, glm::vec3(0.07, 0.001, 0.07));
+    glm::mat4 Tcristal = glm::translate(I, glm::vec3(0.0, -0.70, -0.101));
+    drawObjectMat(cylinder,mluz,P,V,M*Tcristal*RFoco*Scristal);
 
-    //rotacion helices
+    //rotacion helices y helices superior y cola
     glm::mat4 R = glm::rotate(I, glm::radians(rotHelice), glm::vec3(0, -1, 0));
     glm::mat4 THeliceS = glm::translate(I, glm::vec3(0, 0.95, 0.1));
     drawHeliceSuperior(P,V,M*THeliceS*R);
@@ -2359,6 +2412,14 @@ void funKeyboard(unsigned char key, int x, int y) {
                 helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
         }
             break;
+        case 'l':               // Variar la intensidad de la luz direccional
+            lightF[6].diffuse += glm::vec3(0.1);
+            lightF[6].specular += glm::vec3(0.1);
+            break;
+        case 'L':
+            lightF[6].diffuse -= glm::vec3(0.1);
+            lightF[6].specular -= glm::vec3(0.1);
+            break;
         case 'a': case 'A': if(heliStart)  rotHely += 5.0f;
             break;
         case 'd': case 'D': if(heliStart)  rotHely -= 5.0f;
@@ -2370,6 +2431,8 @@ void funKeyboard(unsigned char key, int x, int y) {
         case ' ': cocheSeleccionado++;
                   break;
     }
+    if(lightF[6].diffuse.x>2.55){ lightF[6].diffuse = glm::vec3(2.55); lightF[6].specular= glm::vec3(2.55);}
+    if(lightF[6].diffuse.x<0.0) { lightF[6].diffuse = glm::vec3(0.0); lightF[6].specular= glm::vec3(0.0);}
     if(camMode>2) camMode = 0;
     if (cocheSeleccionado > 2) {
         cocheSeleccionado = 0;
@@ -2458,7 +2521,7 @@ void funTimer(int value) {
     }
 
     if (heliStart){
-        rotHelice += 10.0;
+        rotHelice += 100.0;
     }
     rotAstro += 5.0;
     if (rotAstro > 360.0) rotAstro = 0.0;
