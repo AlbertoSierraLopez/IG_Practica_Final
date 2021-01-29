@@ -215,7 +215,7 @@ float rotRuedaNpc = 0.0;
 float rotHelice = 0.0;
 
 float rotAstro = 0.0;
-int   speed    = 100;
+int   speed    = 500;
 
 int   npcDir    = 1;     // Indice del array npcControl[]
 float npcTimer  = 0.0;   // Temporizador, va anclado a la longitud de las carreteras (7)
