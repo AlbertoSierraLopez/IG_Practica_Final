@@ -381,7 +381,7 @@ void funInit() {
     helipad.initTexture("resources/textures/helipad.png");
 
 
-    // Luces Globales
+ // Luces Globales
     lightG.ambient        = glm::vec3(0.9, 0.9, 0.9);
 
  // Luces Posicionales
@@ -393,7 +393,7 @@ void funInit() {
     lightSol.c0 = 0.4;
     lightSol.c1 = 0.035;
     lightSol.c2 = 0.005;
-    // Luna
+ // Luna
     lightLuna.position  = glm::vec3(-16.0,0.0, 0.0);
     lightLuna.ambient   = glm::vec3(1.94, 1.97,2.04);
     lightLuna.diffuse   = glm::vec3(1.94, 1.97,2.04);
@@ -402,7 +402,7 @@ void funInit() {
     lightLuna.c1 = 0.18;
     lightLuna.c2 = 0.08;
 
-    // Farola
+ // Farolas
     lightFarola.position  = glm::vec3(0.0, 2.46, 0.0);
     lightFarola.ambient   = glm::vec3(1.23, 1.025, 0.695);
     lightFarola.diffuse   = glm::vec3(1.23, 1.025, 0.695);
@@ -439,7 +439,7 @@ void funInit() {
         lightP[13].position = glm::vec3(-6.0, 2.46, 1.0);
 
  // Luces Focales
-    // Faro Derecho
+ // Faro Derecho
     lightF[0].position    = glm::vec3(0.3,  0.3,  -0.8);
     lightF[0].direction   = glm::vec3( 0.0, -0.575, -3.0);
     lightF[0].ambient     = glm::vec3( 0.0,  0.0,  0.0);
@@ -469,7 +469,7 @@ void funInit() {
         }
     }
 
-    // Faro Helicoptero
+ // Foco Helicoptero
     lightF[6].position    = glm::vec3(0.0, -0.70, -0.101);
     lightF[6].direction   = glm::vec3( 0.0, -0.7, -5.0);
     lightF[6].ambient     = glm::vec3( 0.0,  0.0,  0.0);
@@ -757,9 +757,9 @@ void funDisplay() {
     glm::vec3 pos;
     glm::vec3 lookat;
     glm::vec3 up;
-
+//Cambio de vistas
     switch (camMode){
-        case 0: {
+        case 0: { 
             // Vista Diorama
             float x = 15.0f * glm::cos(glm::radians(alphaY)) * glm::sin(glm::radians(alphaX));
             float y = 15.0f * glm::sin(glm::radians(alphaY)) + 10.0;
@@ -767,11 +767,10 @@ void funDisplay() {
 
             pos = glm::vec3(x, y, z);
             lookat = glm::vec3(0.0, 0.0, 0.0);              // Centrar en coche
-            //lookat = glm::vec3(3.5, 7.5, 3.5);   // Centrar en helicóptero
             up = glm::vec3(0.0, 1.0, 0.0);
         }
         break;
-        case 1: {
+        case 1: { 
             // Vista 1ª Persona Coche
             glm::vec4 camPos = iniCamPos;
             camPos = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camPos;
@@ -884,7 +883,7 @@ void funDisplay() {
     glm::mat4 Rhelx = glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0));
     drawHelicoptero(P, V, I * Th * Rheli * Rhelx);
 
-    // Dibujar Transparencias
+    // Dibujar Transparencias de los edificios
     drawOficinaT(P,V,I * TOficina);
     drawParqueT(P,V,I * TParque);
     drawRestauranteT(P,V,I * TRestaurante);
@@ -1028,16 +1027,16 @@ void setLights(glm::mat4 P, glm::mat4 V) {
 }
 
 void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Esta funcion dibuja el sol y la luna en sus ciclos respectivos
     Light lAstro;
     Textures tAstro;
     float scale = 0.0;
 
-    if (dia) {
+    if (dia) { //Cuando es de día dibujamos el sol y la luna la dejamos oculta
         lAstro = lightSol;
         tAstro = texSun;
         scale = 1.0;
-    } else {
+    } else { //Cuando acaba el día dibujamos la noche y esocondemos el sol
         lAstro = lightLuna;
         tAstro = texMoon;
         scale = 0.25;
@@ -1051,7 +1050,7 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawNubes(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Dibujamos algunas nubes en el cielo para dar realismo
     glm::mat4 S  = glm::scale(I, glm::vec3(0.00025, 0.00025, 0.00025));
     glm::mat4 T1 = glm::translate(I, glm::vec3(0.0, 10.0, -8.0));
     glm::mat4 T2 = glm::translate(I, glm::vec3(0.0, 9.0, 7.0));
@@ -1077,7 +1076,7 @@ void drawBackground(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Creamos 6 carreteras creando una cuadricula en la que se moveran los vehiculos
     glm::mat4 S = glm::scale(I, glm::vec3(8.0, 0.025, 1.0));
     glm::mat4 T = glm::translate(I, glm::vec3(0.0, 0.025, 0.0));
     glm::mat4 R = glm::rotate(I, glm::radians(90.0f), glm::vec3(0, 1, 0));
@@ -1101,7 +1100,7 @@ void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawAlcantarillas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Dibujamos algunas alcantarillas en algunos puntos de la carretera
     glm::mat4 Talc1 = glm::translate(I,glm::vec3(0.5, 0.05, 2.5));
     drawAlcantarilla(P, V, Talc1);
 
@@ -1114,7 +1113,7 @@ void drawAlcantarillas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawAlcantarilla(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Dibuja la Alcantarilla
     glm::mat4 S = glm::scale(I, glm::vec3(0.2, 0.005, 0.2));
     glm::mat4 T = glm::translate(I, glm::vec3(0.0, 0.005, 0.0));
     drawObjectTex(cube,texManhole,P,V,M*T*S);
@@ -1122,12 +1121,12 @@ void drawAlcantarilla(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
-
+    //Elemento de la cuadricula ubicado arriba a la derecha desde la perspectiva inicial
     glm::mat4 S = glm::scale(I, glm::vec3(2.5, 0.025, 2.5));
     glm::mat4 T = glm::translate(I, glm::vec3(0.0, 0.025, 0.0));
     drawObjectTex(cube,texGrass,P,V,M*T*S);
 
-    // Parada de bus
+    // Parada de bus, aqui empieza y termina el ciclo del autobus
     glm::mat4 RTecho = glm::rotate(I, glm::radians(180.0f), glm::vec3(1, 0, 0));
     glm::mat4 STecho = glm::scale(I, glm::vec3(1.0, 0.05 , 0.6));
     glm::mat4 TTecho = glm::translate(I, glm::vec3(0, 1.3, -2.0));
@@ -1152,7 +1151,7 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     glm::mat4 TPapelerab = glm::translate(I, glm::vec3(1, 0.1, -2));
     drawObjectTex(cube, texIron, P, V, M * TPapelerab * SPapelerab * RTecho);
 
-    // columpio
+    // Tobogan
     glm::mat4 Rescalerita  = glm::rotate(I, glm::radians(-35.0f),glm::vec3(1,0,0));
     glm::mat4 Sescalerita = glm::scale(I, glm::vec3(0.01, 0.45 , 0.01));
     glm::mat4 Tescaleritad = glm::translate(I, glm::vec3(-1.71, 0.44, 0.85));
@@ -1196,7 +1195,7 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     glm::mat4 TDtobogani = glm::translate(I, glm::vec3(-1.29, 0.51, -0.05));
     drawObjectTex(cube, texBlueMetal, P, V, M * TDtobogani  * Rtobogan * Stobogan);
 
-    //banco
+    //Banco
     glm::mat4 SBanbase = glm::scale(I, glm::vec3(0.21, 0.01 , 0.01));
     glm::mat4 TBanbased = glm::translate(I, glm::vec3(1.51, 0.40, 0.50));
     drawObjectMat(cylinder, obsidian, P, V, M * TBanbased  * SBanbase);
@@ -1226,7 +1225,7 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
 }
 
 void drawParqueT(glm::mat4 P, glm::mat4 V, glm::mat4 M){
-
+    //Esta funcion dibuja las transparencias del parque, los critales de la parada de autobus
     // Cristales
     glm::mat4 RTecho = glm::rotate(I, glm::radians(180.0f), glm::vec3(1, 0, 0));
     glEnable(GL_BLEND);
@@ -1248,7 +1247,7 @@ void drawParqueT(glm::mat4 P, glm::mat4 V, glm::mat4 M){
 }
 
 void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Dibujamos varias farolas a lo largo del diorama
     glm::mat4 TOficina = glm::translate(I, glm::vec3(-1.0, 0.0, -1.0));
     glm::mat4 TOficina2 = glm::translate(I, glm::vec3(-1.0, 0.0, -6.0));
     glm::mat4 TOficina3 = glm::translate(I, glm::vec3(-6.0, 0.0, -1.0));
@@ -1262,6 +1261,7 @@ void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 TRestaurante      = glm::translate(I, glm::vec3(-1.0, 0.0, 1.0));
     glm::mat4 TRestaurante2      = glm::translate(I, glm::vec3(-1.0, 0.0, 6.0));
     glm::mat4 TRestaurante3      = glm::translate(I, glm::vec3(-6.0, 0.0, 1.0));
+    //dibujamos 3 farolas por cuadricula y una farola extra en el centro del parque
     drawFarola(P,V,M * TOficina);
     drawFarola(P,V,M * TOficina2);
     drawFarola(P,V,M * TOficina3);
@@ -1279,7 +1279,7 @@ void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //funcion para dibujar una farola
     glm::mat4 Spie   = glm::scale(I, glm::vec3(0.07, 0.1, 0.07));
     glm::mat4 Tpie = glm::translate(I, glm::vec3(0, 0.1, 0));
     drawObjectTex(cylinder,texIron,P,V,M*Tpie*Spie);
@@ -1307,7 +1307,8 @@ void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 Sfarol  = glm::scale(I, glm::vec3(0.045, 0.05, 0.045));
     glm::mat4 Tfarol  = glm::translate(I, glm::vec3(0.0, 2.46, 0.0));
-
+    
+    //de dia las luces estan apagadas
     Material farola = mluz;
     if (dia) {farola.emissive *= 0.3;}
     drawObjectMat(cube,farola,P,V,M*Tfarol*Sfarol);
@@ -1315,7 +1316,7 @@ void drawFarola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+        //modelo de carretera
         glm::mat4 Sc = glm::scale(I, glm::vec3(8.0, 0.1, 8.0));
         glm::mat4 Tc = glm::translate(I, glm::vec3(0.0, -0.1, 0.0));
         drawObjectTex(cube, texSoil, P, V, M * Tc * Sc);
@@ -1323,7 +1324,8 @@ void drawAsfalto(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Elemento de la cuadricula ubicado arriba a la izquierda desde la perspectiva inicial 
+    //Creamos el edificio usando pisos con textura de madera y columnas y paredes con textura de piedra
     // Offset a la planta de madera para que no se solapen la madera y la piedra
     glEnable(GL_POLYGON_OFFSET_FILL);
         glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
@@ -1375,7 +1377,7 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectTex(cube, texStone, P, V, M * TColumna111D * SColumnaD);
     drawObjectTex(cube, texStone, P, V, M * TColumna222D * SColumnaD);
 
-    // Cartel
+    // Cartel en el techo
     glm::mat4 SCartel   = glm::scale(I, glm::vec3(1.5, 1.0, 0.05));
     glm::mat4 TCartel = glm::translate(I, glm::vec3(2.0 - 2.0, 3.8, 2.0 - 0.5));
     drawObjectTex(cube, texNeon, P, V, M * TCartel * SCartel);
@@ -1400,7 +1402,7 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //dibujamos las ventanas transparentes de la Oficina
     // Ventanas
     glm::mat4 SVentanaa   = glm::scale(I, glm::vec3(0.5, 0.5, 0.2));
     glm::mat4 SVentanal   = glm::scale(I, glm::vec3(0.2, 0.5, 0.5));
@@ -1421,8 +1423,8 @@ void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     Material ventana = mluzVentana;
     Material materialesv[] = {ventana,mluzoff};
-
-    if (dia) {  // De día se pinta la ventana de cristal sí o sí
+    
+    if (dia) {  // De día ninguna de las ventanas emite luz
         materialesv[0] = mluzoff;
         materialesv[1] = mluzoff;
     }
@@ -1451,10 +1453,11 @@ void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    // elemento situado en la cuadricula en la parte inferior derecha desde la perspectiva inicial
+    //Dibujamos los pisos del Hotel
     glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
     glm::mat4 T   = glm::translate(I, glm::vec3(0, 0.1, 0));
-
+    
     glm::mat4 TP1 = glm::translate(I, glm::vec3(0, 1.3, 0));
     glm::mat4 TP2 = glm::translate(I, glm::vec3(0, 2.6, 0));
     glm::mat4 TP3 = glm::translate(I, glm::vec3(0, 3.9, 0));
@@ -1586,7 +1589,7 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //dibujamos los elementos transparentes del hotel: un cubo dentro del Hotel, este cubo representa todas las ventanas y el helipuerto
     //Dibujar ventanas
     glm::mat4 SInterior = glm::scale(I, glm::vec3(1.9, 3.2 , 1.9));
     glm::mat4 TInterior = glm::translate(I, glm::vec3(0, 3.2, 0));
@@ -1604,7 +1607,7 @@ void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
         drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
     }
 
-    // Dibujar helipuerto
+    // Dibujar helipuerto 
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
         glm::mat4 Shel = glm::scale(I, glm::vec3(1.5, 1.0, 1.5));
@@ -1618,7 +1621,7 @@ void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
 void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
-    //datos cono para trabajar con él en (0,0,0)
+    //datos cono para trabajar con él cono en (0,0,0)
     glm::mat4 TCono   = glm::translate(I, glm::vec3(0, 2.09996962547, 0));
 
     //cuerpo helicoptero
@@ -1662,7 +1665,7 @@ void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tcristal = glm::translate(I, glm::vec3(0.0, -0.70, -0.101));
     drawObjectMat(cylinder,mluz,P,V,M*Tcristal*RFoco*Scristal);
 
-    //rotacion helices y helices superior y cola
+    //helices superior y cola
     glm::mat4 R = glm::rotate(I, glm::radians(rotHelice), glm::vec3(0, -1, 0));
     glm::mat4 THeliceS = glm::translate(I, glm::vec3(0, 0.95, 0.1));
     drawHeliceSuperior(P,V,M*THeliceS*R);
@@ -1673,7 +1676,7 @@ void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawPatin(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //dibujamos el patin que servira para ambos patines del helicoptero
     glm::mat4 Sbarra = glm::scale(I, glm::vec3(0.02, 0.5, 0.02));
     glm::mat4 Tbarrad = glm::translate(I, glm::vec3(0.0, 0.5, 0.3));
     drawObjectMat(cylinder,obsidian,P,V,M*Tbarrad*Sbarra);
@@ -1689,6 +1692,7 @@ void drawPatin(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawHeliceCola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+    //dibujamos la helice del rotor de cola
     glm::mat4 R = glm::rotate(I, glm::radians(90.0f), glm::vec3(0, 0, 1));
     glm::mat4 Scentro = glm::scale(I, glm::vec3(0.02, 0.04, 0.02));
     glm::mat4 Tcentro = glm::translate(I, glm::vec3(0.0, 0.04, 0));
@@ -1706,7 +1710,7 @@ void drawHeliceCola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawHeliceSuperior(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    // dibujamos la helice superior del helicoptero
     glm::mat4 Scentro = glm::scale(I, glm::vec3(0.03, 0.05, 0.03));
     glm::mat4 Tcentro = glm::translate(I, glm::vec3(0.0, 0.05, 0));
     drawObjectMat(cylinder,obsidian,P,V,M*Tcentro*Scentro);
@@ -1724,11 +1728,11 @@ void drawHeliceSuperior(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Elemento situado en la cuadricula en la parte inferior izquierda desde la perspectiva inicial
     glm::mat4 Sbase   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
     glm::mat4 Tbase   = glm::translate(I, glm::vec3(0, 0.1, 0));
     drawObjectTex(cube,texConcrete,P,V,M*Tbase*Sbase);
-
+    //evitamos Z fighting entre el techo y las paredes de cristal
     glEnable(GL_POLYGON_OFFSET_FILL);
         glm::mat4 Stecho  = glm::scale(I, glm::vec3(2.0, 0.1, 2.2));
         glm::mat4 Ttecho   = glm::translate(I, glm::vec3(0, 2.1, 0.1));
@@ -1746,7 +1750,7 @@ void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Sbarra   = glm::scale(I, glm::vec3(1.3, 0.4, 0.1));
     glm::mat4 Tbarra   = glm::translate(I, glm::vec3(0.5, 0.6, 1.3));
     drawObjectTex(cube,texConcrete,P,V,M*Tbarra*Sbarra);
-
+    //Asientos de la barra
     glm::mat4 Sasiento   = glm::scale(I, glm::vec3(0.08, 0.05, 0.08));
     glm::mat4 Tasiento   = glm::translate(I, glm::vec3(1.0, 0.65, 1.0));
     drawObjectMat(cylinder,ruby,P,V,M*Tasiento*Sasiento);
@@ -1811,7 +1815,7 @@ void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawRestauranteT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //Dibujamos los elementos tranparentes del Restaurante: las paredes y los carteles
     // Cristalera
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
@@ -1848,7 +1852,7 @@ void drawRestauranteT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    //dibujamos un coche de aspecto comun
     drawRuedasUtilitario(P,V,M, pc);
 
     drawChasisUtilitario(P,V,M, pc);
@@ -1863,7 +1867,7 @@ void drawUtilitario(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 }
 
 void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //esta funcion dibuja el autobus que realiza la vuelta alrededor del diorama, empezando y terminando en su parada
     Textures texBus = texPaint;
     texBus.diffuse = paintG.getTexture();
 
@@ -1879,7 +1883,7 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Stecho = scale(I, glm::vec3(0.65,0.05,2));
     glm::mat4 Ttecho = translate(I, glm::vec3(0.0,1.7,0));
     drawObjectTex(cube,texBus,P,V,M*Ttecho *Stecho );
-    //ventanas
+    //ventanas, no son tranparentes 
     glEnable(GL_POLYGON_OFFSET_FILL);
         glm::mat4 Slunat = scale(I, glm::vec3(0.65,0.35,0.05));
         glm::mat4 Tlunat = translate(I, glm::vec3(0.0,1.35,1.95));
@@ -1943,7 +1947,7 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tdera = translate(I, glm::vec3(0.5,0.7,2));
     glm::mat4 Tizqa = translate(I, glm::vec3(-0.5,0.7,2));
     glm::mat4 Sf = scale(I, glm::vec3(0.1/2.0,0.08/2.0,0.01/2.0));
-
+    //de dia las luces traseras estan apagadas
     Material luzPos = mluzRed;
     if (dia) {
         luzPos.emissive = glm::vec4(luzPos.emissive.x * 0.6, luzPos.emissive.y * 0.6, luzPos.emissive.z * 0.6, 1.0);
@@ -1963,7 +1967,7 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    //dibujamos un coche similar a un todoterreno
     drawRuedasTodoterreno(P,V,M, pc);
 
     drawChasisTodoterreno(P,V,M, pc);
@@ -1978,7 +1982,7 @@ void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 }
 
 void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    //dibujamos un coche similar a un deportivo
     drawRuedasDeportivo(P,V,M, pc);
 
     drawChasisDeportivo(P,V,M, pc);
@@ -1993,7 +1997,7 @@ void drawDeportivo(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 }
 
 void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    //dibujamos los faros que iran en los coches
     glm::mat4 T = glm::translate(I,glm::vec3(0.0, lightF[index].position.y, 0.0));
     glm::mat4 S = glm::scale(I,glm::vec3(0.1/2.0, 0.1/2.0, 0.01/2.0));
     glm::mat4 Rini = glm::rotate(I, glm::radians(90.0f), glm::vec3(-1, 0, 0));
@@ -2002,6 +2006,7 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
     bool condicion;
     // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
+   
     if (pc) {
         condicion = lucesCocheOff;
     } else {
@@ -2019,7 +2024,7 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 }
 
 void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    //Funcion que dibuja el coche de aspecto comun
     Textures texCoche;
     if (pc) {
         texCoche = texPaintPc;
@@ -2027,7 +2032,7 @@ void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
         texCoche = texPaint;
     }
 
-    //base turismo y todoterreno
+    //base coche comun
     glm::mat4 S = scale(I, glm::vec3(0.4,0.15,0.8));
     glm::mat4 T = translate(I, glm::vec3(0,0.28,0));
     drawObjectTex(cube,texCoche,P,V,M*T*S);
@@ -2047,7 +2052,7 @@ void drawChasisUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 }
 
 void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    //funcion que dibuja el coche con aspecto de todoterreno
     Textures texCoche;
     if (pc) {
         texCoche = texPaintPc;
@@ -2084,7 +2089,7 @@ void drawChasisTodoterreno (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 }
 
 void drawChasisDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    //funcion que dibuja el coche con aspecto de deportivo
     Textures texCoche;
     if (pc) {
         texCoche = texPaintPc;
@@ -2108,7 +2113,7 @@ void drawChasisDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
     glm::mat4 S4 = scale(I, glm::vec3(0.4,0.02,0.88));
     glm::mat4 T4 = translate(I, glm::vec3(0,0.16,-0.15));
     drawObjectTex(cube,texCoche,P,V,M*T4*S4);
-
+    //tiene dos lineas negras en horizontal
     glEnable(GL_POLYGON_OFFSET_FILL);
         glm::mat4 S5 = scale(I, glm::vec3(0.4,0.02,0.88));
         glm::mat4 T5 = translate(I, glm::vec3(0,0.18,-0.15));
@@ -2210,7 +2215,7 @@ void drawChasisDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 }
 
 void drawLucesPosicion (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
-
+    
     glm::mat4 Sf = scale(I, glm::vec3(0.1/2.0,0.08/2.0,0.01/2.0));
 
     //luces traseras turismo
@@ -2265,7 +2270,7 @@ void drawLucesPosicionDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc)
 
 void drawRuedasUtilitario (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
-    //ruedas turismo
+    //ruedas coche comun
     glm::mat4 TRtraseras = translate(I, glm::vec3(0.4, 0.15, 0.6));
     glm::mat4 TRdelanteras = translate(I, glm::vec3(0.4, 0.15, -0.4));
 
@@ -2364,7 +2369,7 @@ void drawRueda(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 }
 
 void drawObjectMat(Model model, Material material, glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //funcion para dibujar objetos con materiales
     shaders.setMat4("uN"  ,glm::transpose(glm::inverse(M)));
     shaders.setMat4("uM"  ,M);
     shaders.setMat4("uPVM",P*V*M);
@@ -2375,7 +2380,7 @@ void drawObjectMat(Model model, Material material, glm::mat4 P, glm::mat4 V, glm
 }
 
 void drawObjectTex(Model model, Textures textures, glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-
+    //funcion para dibujar objetos con texturas
     shaders.setMat4("uN"  ,glm::transpose(glm::inverse(M)));
     shaders.setMat4("uM"  ,M);
     shaders.setMat4("uPVM",P*V*M);
@@ -2388,10 +2393,13 @@ void drawObjectTex(Model model, Textures textures, glm::mat4 P, glm::mat4 V, glm
 }
 
 void funSpecial(int key, int x, int y) {
-
+    //funcion para habilitar uso de teclas especiales
     switch(key) {
+        // movimiento del coche con las feclas del teclado
+        //las flecha derecha he izquierda rotan el coche en la direccion indicada
         case GLUT_KEY_LEFT:  rotY += 5.0f;   break;
         case GLUT_KEY_RIGHT: rotY -= 5.0f;   break;
+        //flechas arriba y abajo para mover el coche alante o atras respectivamente
         case GLUT_KEY_UP:    faroX -= 0.1 * sinf(glm::radians(rotY));
                              faroZ -= 0.1 * cosf(glm::radians(rotY));
                              rotRueda += 5.0;
@@ -2402,7 +2410,7 @@ void funSpecial(int key, int x, int y) {
                              break;
     }
 
-    // Límites exteriores de la ciudad
+    // Límites exteriores de la ciudad para evitar que el coche salga del diorama
     if (faroX >  7.5) faroX =  7.5;
     if (faroX < -7.5) faroX = -7.5;
     if (faroZ >  7.5) faroZ =  7.5;
@@ -2413,30 +2421,40 @@ void funSpecial(int key, int x, int y) {
 }
 
 void funKeyboard(unsigned char key, int x, int y) {
-
-    switch(key) {
+    //funcion que habilita el uso de teclas
+    switch(key) {  
+        //reiniciamos el ciclo de la noche
         case 'n': case 'N': rotAstro = 180.0;
                             dia = false;
                             break;
-        case 'i': case 'I': cocheNPCOff = !cocheNPCOff;
-                            break;
-        case 'o': case 'O': tiempoOff = !tiempoOff;
-                            break;
+        //reiniciamos el ciclo del día 
         case 'm': case 'M': rotAstro = 0.0;
                             dia = true;
+                            break;    
+        //paramos el movimiento del coche automatico
+        case 'i': case 'I': cocheNPCOff = !cocheNPCOff;
                             break;
+        //paramos el movimiento de los elementos ambientales: sol/luna y nubes
+        case 'o': case 'O': tiempoOff = !tiempoOff;
+                            break;
+        //enciende o apaga las luces del coche central
         case 'p': case 'P': lucesCocheOff = !lucesCocheOff;
                             break;
+        //cambia el modo de visualizacion: vista del diorama, vista desde el coche central o vista desde el helicoptero
         case 'c': case 'C': camMode++;
                             break;
+        //cambiamos el color del cohe central
         case 'v': case 'V': colorCoche++;
                             if (colorCoche == 6) colorCoche = 0;
                             break;
+        //inicia el ciclo del autobus
         case 'b': case 'B': if (!busStart) busStart = !busStart;
                             break;
-        case 'h': case 'H': heliStart = !heliStart; // Arrancar helicóptero
+        // Arrancar helicóptero
+        case 'h': case 'H': heliStart = !heliStart; 
                             break;
-        case 'w': case 'W': if(heliStart){          // El helicóptero sólo se mueve si está arrancado
+        // El helicóptero sólo se mueve si está arrancado W y S para mover alante o atras el helicoptero
+        case 'w': case 'W': if(heliStart){          
                                 helicopterx -= 0.1 * sinf(glm::radians(rotHely));
                                 helicopterz -= 0.1 * cosf(glm::radians(rotHely));
                                 helicoptery += 0.1 * sinf(glm::radians(rotHelx));
@@ -2448,8 +2466,18 @@ void funKeyboard(unsigned char key, int x, int y) {
                                 helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
                             }
                             break;
-        case 'l':           // Variar la intensidad del foco del helicóptero
-                            if(heliStart) {
+       //la A y la D rotan el helicoptero a izquierda o derecha
+        case 'a': case 'A': if(heliStart)  rotHely += 5.0f;
+                            break;
+        case 'd': case 'D': if(heliStart)  rotHely -= 5.0f;
+                            break;
+        //la Q y la E rotan el helicoptero hacia arriba o hacia abajo
+        case 'q': case 'Q': if(heliStart) rotHelx += 0.5;
+                            break;
+        case 'e': case 'E': if(heliStart) rotHelx -= 0.5f;
+                            break;
+         // Variar la intensidad del foco del helicóptero
+        case 'l':           if(heliStart) {
                                 lightF[6].diffuse += glm::vec3(0.1);
                                 lightF[6].specular += glm::vec3(0.1);
                             }
@@ -2459,15 +2487,8 @@ void funKeyboard(unsigned char key, int x, int y) {
                                 lightF[6].specular -= glm::vec3(0.1);
                             }
                             break;
-        case 'a': case 'A': if(heliStart)  rotHely += 5.0f;
-                            break;
-        case 'd': case 'D': if(heliStart)  rotHely -= 5.0f;
-                            break;
-        case 'q': case 'Q': if(heliStart) rotHelx += 0.5;
-                            break;
-        case 'e': case 'E': if(heliStart) rotHelx -= 0.5f;
-                            break;
-        case ' ':           cocheSeleccionado++;    // El jugador cambia de modelo de coche
+        // El jugador cambia de modelo del coche central
+        case ' ':           cocheSeleccionado++;    
                             break;
     }
 
@@ -2475,9 +2496,9 @@ void funKeyboard(unsigned char key, int x, int y) {
     if(lightF[6].diffuse.x>2.55){ lightF[6].diffuse = glm::vec3(2.55); lightF[6].specular= glm::vec3(2.55);}
     if(lightF[6].diffuse.x<0.0) { lightF[6].diffuse = glm::vec3(0.0); lightF[6].specular= glm::vec3(0.0);}
 
-
+    //reiniciamos el tipo de vision
     if(camMode > 2) camMode = 0;
-
+    //reiniciamos el modelo del coche
     if (cocheSeleccionado > 2) cocheSeleccionado = 0;
 
     // Límites al movimiento del helicóptero
@@ -2493,7 +2514,7 @@ void funKeyboard(unsigned char key, int x, int y) {
 }
 
 void funMouse(int button, int state, int x, int y) {
-
+    //funcion para cambiar el fovy con la rueda del raton
     switch(button) {
         case 3: fovy  -= fovy > 10.0f  ? 1.0f : 0.0f; break;
         case 4: fovy  += fovy < 110.0f ? 1.0f : 0.0f; break;
@@ -2504,7 +2525,7 @@ void funMouse(int button, int state, int x, int y) {
 }
 
 void funMotion(int x, int y) {
-
+    //funcion para mover la camara con el movimiento del raton cuando estamos en la vista general del diorama. En vista desde el coche o desde el helicoptero no funciona
     float limY = 89.0;
     alphaX = 90.0*(2.0*x/(float)w - 1.0);
     alphaY = 90.0*(1.0 - 2.0*y/(float)h);
@@ -2516,8 +2537,8 @@ void funMotion(int x, int y) {
 }
 
 void funTimer(int value) {
-
-    // Rutina NPC
+    //funcion que simula el paso del tiempo y los eventos ligados al tiempo
+    // Rutina ciche NPC en la que se recorre toda la carretera
     if (!cocheNPCOff) {
         npcTimer += 1.0;
         npcControl[npcDir]++;
@@ -2549,7 +2570,7 @@ void funTimer(int value) {
         }
     }
 
-    // Ventanas aleatorias cada 8 seg
+    // Ventanas aleatorias cada 8 seg de la Oficina
     tmpVentanas++;
     if (tmpVentanas == 8){
         for (int i = 0; i < NVENTANAS; i++) {
@@ -2558,7 +2579,7 @@ void funTimer(int value) {
         tmpVentanas = 0;
     }
 
-    // Rutina Bus
+    // Rutina Bus que recorre el exterior del diorama empezando y acabando en su parada
     if (busStart) {
         npcBusControl[npcBusDir] += 0.5;
 
@@ -2593,6 +2614,7 @@ void funTimer(int value) {
     if (!tiempoOff) {
         rotAstro += 5.0;
         if (rotAstro > 360.0) rotAstro = 0.0;
+        //cambio entre el dia y la noche
         if (rotAstro < 180.0) {
             dia = true;
         } else {
