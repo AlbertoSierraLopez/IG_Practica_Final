@@ -138,6 +138,7 @@ Texture   manholeSpecular;
 Texture   manholeNormal;
 Texture   cloud;
 Texture   cloudNormal;
+Texture   cloudEmissive;
 
 // Luces y materiales
 #define   NCOCHES  3
@@ -245,13 +246,16 @@ glm::vec4 iniCamDir = glm::vec4(0.0, 0.5, -60.0, 1.0);
 
 // Controles y Mundo
 int cocheSeleccionado = 0;
-bool  dia       = true;
-bool  cocheOff  = true;
-bool  busStart  = false;
-bool  busParada  = false;
-bool  heliStart = false;
-int   camMode   = 0;
-int   colorCoche = 0;
+bool  dia         = true;
+bool  lucesCocheOff  = true;
+bool  busStart    = false;
+bool  busParada   = false;
+bool  heliStart   = false;
+int   camMode     = 0;
+int   colorCoche  = 0;
+bool  cocheNPCOff = false;
+bool  tiempoOff   = false;
+int   tmpVentanas = 0;
 
 int main(int argc, char** argv) {
 
@@ -369,6 +373,7 @@ void funInit() {
     manholeNormal.initTexture("resources/textures/manholeNormal.tif");
     cloud.initTexture("resources/textures/cloud.jpg");
     cloudNormal.initTexture("resources/textures/cloudNormal.png");
+    cloudEmissive.initTexture("resources/textures/cloudEmissive.jpg");
 
 
     // Luces Globales
@@ -706,7 +711,7 @@ void funInit() {
 
     texCloud.diffuse  = cloud.getTexture();
     texCloud.specular = none.getTexture();
-    texCloud.emissive = none.getTexture();
+    texCloud.emissive = cloudEmissive.getTexture();
     texCloud.normal   = cloudNormal.getTexture();
     texCloud.shininess= 10.0;
 
@@ -927,7 +932,7 @@ void setLights(glm::mat4 P, glm::mat4 V) {
         lFaro.direction =  glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * glm::vec4(lFaro.direction, 1.0);
 
         // Intensidad
-        if (cocheOff) {
+        if (lucesCocheOff) {
             lFaro.diffuse  = glm::vec3(0.0);
             lFaro.specular = glm::vec3(0.0);
         }
@@ -1359,7 +1364,7 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectTex(cube, texStone, P, V, M * TColumna111D * SColumnaD);
     drawObjectTex(cube, texStone, P, V, M * TColumna222D * SColumnaD);
 
-    // Decoracion techo
+    // Cartel
     glm::mat4 SCartel   = glm::scale(I, glm::vec3(1.5, 1.0, 0.05));
     glm::mat4 TCartel = glm::translate(I, glm::vec3(2.0 - 2.0, 3.8, 2.0 - 0.5));
     drawObjectTex(cube, texNeon, P, V, M * TCartel * SCartel);
@@ -1406,13 +1411,14 @@ void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     Material ventana = mluzVentana;
     Material materialesv[] = {ventana,mluzoff};
 
-    if (dia) {
-        ventana.emissive = glm::vec4(0.3, 0.3, 0.3, 1.0);
+    if (dia) {  // De día se pinta la ventana de cristal sí o sí
+        materialesv[0] = mluzoff;
+        materialesv[1] = mluzoff;
     }
 
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
-    glEnable(GL_CULL_FACE); // Las ventanas se encienden y apagan de forma aleatoria
+    glEnable(GL_CULL_FACE); // Las ventanas se encienden o se apagan de forma aleatoria
         drawObjectMat(cube, materialesv[randomBooleanArray[0]], P, V, M * TVentana1a * SVentanaa);
         drawObjectMat(cube, materialesv[randomBooleanArray[1]], P, V, M * TVentana2a * SVentanaa);
         drawObjectMat(cube, materialesv[randomBooleanArray[2]], P, V, M * TVentana3a * SVentanaa);
@@ -1976,7 +1982,7 @@ void drawFaro(int index, glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
     bool condicion;
     // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
     if (pc) {
-        condicion = cocheOff;
+        condicion = lucesCocheOff;
     } else {
         condicion = dia;
     }
@@ -2195,7 +2201,7 @@ void drawLucesPosicion (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
     bool condicion;
     // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
     if (pc) {
-        condicion = cocheOff;
+        condicion = lucesCocheOff;
     } else {
         condicion = dia;
     }
@@ -2222,7 +2228,7 @@ void drawLucesPosicionDeportivo (glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc)
     bool condicion;
     // Si el coche es el pc, se enciende según un botón, si es npc, según la hora
     if (pc) {
-        condicion = cocheOff;
+        condicion = lucesCocheOff;
     } else {
         condicion = dia;
     }
@@ -2391,10 +2397,14 @@ void funKeyboard(unsigned char key, int x, int y) {
         case 'n': case 'N': rotAstro = 180.0;
                             dia = false;
                             break;
+        case 'i': case 'I': cocheNPCOff = !cocheNPCOff;
+                            break;
+        case 'o': case 'O': tiempoOff = !tiempoOff;
+                            break;
         case 'm': case 'M': rotAstro = 0.0;
                             dia = true;
                             break;
-        case 'p': case 'P': cocheOff = !cocheOff;
+        case 'p': case 'P': lucesCocheOff = !lucesCocheOff;
                             break;
         case 'c': case 'C': camMode++;
                             break;
@@ -2406,24 +2416,27 @@ void funKeyboard(unsigned char key, int x, int y) {
         case 'h': case 'H': heliStart = !heliStart; // Arrancar helicóptero
                             break;
         case 'w': case 'W': if(heliStart){          // El helicóptero sólo se mueve si está arrancado
-                            helicopterx -= 0.1 * sinf(glm::radians(rotHely));
-                            helicopterz -= 0.1 * cosf(glm::radians(rotHely));
-                            helicoptery += 0.1 * sinf(glm::radians(rotHelx));
+                                helicopterx -= 0.1 * sinf(glm::radians(rotHely));
+                                helicopterz -= 0.1 * cosf(glm::radians(rotHely));
+                                helicoptery += 0.1 * sinf(glm::radians(rotHelx));
                             }
                             break;
         case 's': case 'S': if(heliStart){
-                            helicopterx += 0.1 * sinf(glm::radians(rotHely));
-                            helicopterz += 0.1 * cosf(glm::radians(rotHely));
-                            helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
+                                helicopterx += 0.1 * sinf(glm::radians(rotHely));
+                                helicopterz += 0.1 * cosf(glm::radians(rotHely));
+                                helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
                             }
                             break;
         case 'l':           // Variar la intensidad del foco del helicóptero
-                            lightF[6].diffuse += glm::vec3(0.1);
-                            lightF[6].specular += glm::vec3(0.1);
+                            if(heliStart) {
+                                lightF[6].diffuse += glm::vec3(0.1);
+                                lightF[6].specular += glm::vec3(0.1);
+                            }
                             break;
-        case 'L':
-                            lightF[6].diffuse -= glm::vec3(0.1);
-                            lightF[6].specular -= glm::vec3(0.1);
+        case 'L':           if(heliStart) {
+                                lightF[6].diffuse -= glm::vec3(0.1);
+                                lightF[6].specular -= glm::vec3(0.1);
+                            }
                             break;
         case 'a': case 'A': if(heliStart)  rotHely += 5.0f;
                             break;
@@ -2484,27 +2497,31 @@ void funMotion(int x, int y) {
 void funTimer(int value) {
 
     // Rutina NPC
-    npcTimer += 1.0;
-    if (npcTimer > 7.0) {   // Toca girar
-        npcTimer = 0.0;
-        npcRot += 90.0;
-        npcDir += 1;
-        if (npcDir > 3) {   // Se ha hecho un giro completo
-            npcDir = 0;
-            // Reiniciar npcControl
-            for (int i = 0; i < 4; i++) {
-                npcControl[i] = 0.0;
+    if (!cocheNPCOff) {
+        npcTimer += 1.0;
+        if (npcTimer > 7.0) {   // Toca girar
+            npcTimer = 0.0;
+            npcRot += 90.0;
+            npcDir += 1;
+            if (npcDir > 3) {   // Se ha hecho un giro completo
+                npcDir = 0;
+                // Reiniciar npcControl
+                for (int i = 0; i < 4; i++) {
+                    npcControl[i] = 0.0;
+                }
             }
+            rotRuedaNpc += 5.0;
         }
-        rotRuedaNpc += 5.0;
+        npcControl[npcDir] = npcTimer;
     }
-    npcControl[npcDir] = npcTimer;
 
-    // Ventanas aleatorias cada 7 seg
-    if (npcTimer == 0){
+    // Ventanas aleatorias cada 8 seg
+    tmpVentanas++;
+    if (tmpVentanas == 8){
         for (int i = 0; i < NVENTANAS; i++) {
             randomBooleanArray[i] = rand() % 2;
         }
+        tmpVentanas = 0;
     }
 
     // Rutina Bus
@@ -2539,17 +2556,19 @@ void funTimer(int value) {
     }
 
     // Orbitar astros
-    rotAstro += 5.0;
-    if (rotAstro > 360.0) rotAstro = 0.0;
-    if (rotAstro < 180.0) {
-        dia = true;
-    } else {
-        dia = false;
-    }
+    if (!tiempoOff) {
+        rotAstro += 5.0;
+        if (rotAstro > 360.0) rotAstro = 0.0;
+        if (rotAstro < 180.0) {
+            dia = true;
+        } else {
+            dia = false;
+        }
 
-    // Mover nubes
-    rotNube += 5.0;
-    if (rotNube > 360.0) rotNube = 0.0;
+        // Mover nubes
+        rotNube += 5.0;
+        if (rotNube > 360.0) rotNube = 0.0;
+    }
 
     glutPostRedisplay();
     glutTimerFunc(speed, funTimer, 0);
