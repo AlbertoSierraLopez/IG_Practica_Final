@@ -139,6 +139,7 @@ Texture   manholeNormal;
 Texture   cloud;
 Texture   cloudNormal;
 Texture   cloudEmissive;
+Texture   helipad;
 
 // Luces y materiales
 #define   NCOCHES  3
@@ -191,6 +192,7 @@ Textures  texPaint;
 Textures  texPaintPc;
 Textures  texManhole;
 Textures  texCloud;
+Textures  texHelipad;
 
 //  Dimensiones Cono
 float a_cono = 2.75455951691 + 2.09996962547;   // Parte positiva + parte negativa (no está alineado)
@@ -376,6 +378,7 @@ void funInit() {
     cloud.initTexture("resources/textures/cloud.jpg");
     cloudNormal.initTexture("resources/textures/cloudNormal.png");
     cloudEmissive.initTexture("resources/textures/cloudEmissive.jpg");
+    helipad.initTexture("resources/textures/helipad.png");
 
 
     // Luces Globales
@@ -716,6 +719,12 @@ void funInit() {
     texCloud.emissive = cloudEmissive.getTexture();
     texCloud.normal   = cloudNormal.getTexture();
     texCloud.shininess= 10.0;
+
+    texHelipad.diffuse  = helipad.getTexture();
+    texHelipad.specular = none.getTexture();
+    texHelipad.emissive = none.getTexture();
+    texHelipad.normal   = 0;
+    texHelipad.shininess= 10.0;
 
 }
 
@@ -1594,6 +1603,16 @@ void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
         ventana.emissive = glm::vec4(0.55, 0.55, 0.45, 1.0);
         drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
     }
+
+    // Dibujar helipuerto
+    glEnable(GL_BLEND);
+    glDepthMask(GL_FALSE);
+        glm::mat4 Shel = glm::scale(I, glm::vec3(1.5, 1.0, 1.5));
+        glm::mat4 Thel = glm::translate(I, glm::vec3(0, 6.61, 0));
+        glm::mat4 Rhel = glm::rotate(I, glm::radians(90.0f), glm::vec3(0, 1, 0));
+    drawObjectTex(plane, texHelipad, P, V, M * Thel * Shel * Rhel);
+    glDisable(GL_BLEND);
+    glDepthMask(GL_TRUE);
 
 }
 
