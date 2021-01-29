@@ -88,13 +88,7 @@ Model clouds;
 
 // Texturas (imagenes)
 Texture   gravel;
-Texture   marble;
 Texture   none;
-Texture   brick;
-Texture   brickNormal;
-Texture   asphalt;
-Texture   brick2;
-Texture   brick2Normal;
 Texture   moon;
 Texture   moonNormal;
 Texture   neon;
@@ -159,17 +153,11 @@ Material  mluzVentana;
 Material  mluzRed;
 Material  mSol;
 Material  mLuna;
-Material  gold;
 Material  ruby;
-Material  emmerald;
 Material  obsidian;
 Material  wPlastic;
-Material  pSilver;
 Material  mCristal;
 
-Textures  texBrick;
-Textures  texBrick2;
-Textures  texAsphalt;
 Textures  texRoad;
 Textures  texGrass;
 Textures  texIron;
@@ -327,13 +315,7 @@ void funInit() {
 
  // Texturas
     gravel.initTexture("resources/textures/gravel.png");
-    marble.initTexture("resources/textures/marble.png");
     none.initTexture("resources/textures/none.png");
-    brick.initTexture("resources/textures/brick.jpg");
-    brickNormal.initTexture("resources/textures/brickNormal.jpg");
-    asphalt.initTexture("resources/textures/asphalt.jpg");
-    brick2.initTexture("resources/textures/brick2.tif");
-    brick2Normal.initTexture("resources/textures/brick2Normal.tif");
     grass.initTexture("resources/textures/grass.tif");
     grassNormal.initTexture("resources/textures/grassNormal.tif");
     iron.initTexture("resources/textures/iron.tif");
@@ -524,18 +506,6 @@ void funInit() {
     ruby.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.0);
     ruby.shininess = 76.8;
 
-    gold.ambient   = glm::vec4(0.247250, 0.199500, 0.074500, 1.00);
-    gold.diffuse   = glm::vec4(0.751640, 0.606480, 0.226480, 1.00);
-    gold.specular  = glm::vec4(0.628281, 0.555802, 0.366065, 1.00);
-    gold.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
-    gold.shininess = 51.2;
-
-    emmerald.ambient   = glm::vec4( 0.0215f, 0.1745f, 0.0215f, 0.55f );
-    emmerald.diffuse   = glm::vec4(0.07568f, 0.61424f, 0.07568f, 0.55f);
-    emmerald.specular  = glm::vec4(0.633f, 0.727811f, 0.633f, 0.55f );
-    emmerald.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
-    emmerald.shininess =  76.8f;
-
     // Obsidian
     obsidian.ambient   = glm::vec4(0.05375f, 0.05f, 0.06625f, 0.82f);
     obsidian.diffuse   = glm::vec4(0.18275f, 0.17f, 0.22525f, 0.82f);
@@ -550,13 +520,6 @@ void funInit() {
     wPlastic.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.0f);
     wPlastic.shininess = 32.0f ;
 
-    // Polished Silver
-    pSilver.ambient   = glm::vec4(0.23125f, 0.23125f, 0.23125f, 1.0f);
-    pSilver.diffuse   = glm::vec4(0.2775f, 0.2775f, 0.2775f, 1.0f);
-    pSilver.specular  = glm::vec4(0.773911f, 0.773911f, 0.773911f, 1.0f);
-    pSilver.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.0f);
-    pSilver.shininess = 89.6f ;
-
     // Cristal
     mCristal.ambient   = glm::vec4(0.2f, 0.2f, 0.3f, 0.3f);
     mCristal.diffuse   = glm::vec4(0.2f, 0.2f, 0.3f, 0.3f);
@@ -570,24 +533,6 @@ void funInit() {
     }
 
  // Texturas
-    texBrick.diffuse    = brick.getTexture();
-    texBrick.specular   = none.getTexture();
-    texBrick.emissive   = none.getTexture();
-    texBrick.normal     = brickNormal.getTexture();
-    texBrick.shininess  = 10.0;
-
-    texBrick2.diffuse    = brick2.getTexture();
-    texBrick2.specular   = none.getTexture();
-    texBrick2.emissive   = none.getTexture();
-    texBrick2.normal     = brick2Normal.getTexture();
-    texBrick2.shininess  = 10.0;
-
-    texAsphalt.diffuse  = asphalt.getTexture();
-    texAsphalt.specular = none.getTexture();
-    texAsphalt.emissive = none.getTexture();
-    texAsphalt.normal   = 0;
-    texAsphalt.shininess= 10.0;
-
     texRoad.diffuse  = road.getTexture();
     texRoad.specular = none.getTexture();
     texRoad.emissive = none.getTexture();
@@ -2614,7 +2559,7 @@ void funTimer(int value) {
     if (!tiempoOff) {
         rotAstro += 5.0;
         if (rotAstro > 360.0) rotAstro = 0.0;
-        //cambio entre el dia y la noche
+        // Cambio entre el dia y la noche
         if (rotAstro < 180.0) {
             dia = true;
         } else {
