@@ -85,16 +85,11 @@ Model cone;
 Model tire;
 
 // Texturas (imagenes)
-Texture   geometric;
 Texture   gravel;
 Texture   marble;
 Texture   none;
-Texture   speckles;
-Texture   tile;
-Texture   tileNormal;
 Texture   brick;
 Texture   brickNormal;
-Texture   wheel;
 Texture   asphalt;
 Texture   brick2;
 Texture   brick2Normal;
@@ -125,7 +120,6 @@ Texture   blueMetal;
 Texture   decoratedIron;
 Texture   tireRubber;
 Texture   tireNormal;
-Texture   window;
 Texture   soil;
 Texture   backgroundDay;
 Texture   backgroundNight;
@@ -146,8 +140,9 @@ Texture   manholeNormal;
 #define   NFAROLAS 13
 
 Light     lightG;
-Light     lightP[1+NFAROLAS];
-Light     lightF[NCOCHES*2+1];
+//Light   lightD;
+Light     lightP[1+NFAROLAS];   // +1 por el sol
+Light     lightF[NCOCHES*2+1];  // +1 por el foco del helicóptero
 Light     lightSol;
 Light     lightLuna;
 Light     lightFarola;
@@ -160,16 +155,12 @@ Material  mSol;
 Material  mLuna;
 Material  gold;
 Material  ruby;
-Material  cyan;
-Material  polishedBronze;
 Material  emmerald;
-Material  xgreen;
 Material  obsidian;
 Material  wPlastic;
 Material  pSilver;
 Material  mCristal;
 
-Textures  texWheel;
 Textures  texBrick;
 Textures  texBrick2;
 Textures  texAsphalt;
@@ -198,7 +189,7 @@ Textures  texManhole;
 
 //  Dimensiones Cono
 float a_cono = 2.75455951691 + 2.09996962547;   // Parte positiva + parte negativa (no está alineado)
-float d_cono = 2.68700575829 * 2; // 2 * radio
+float d_cono = 2.68700575829 * 2;               // 2 * radio
 
 // Viewport
 int w = 800;
@@ -227,8 +218,8 @@ float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
 int npcBusDir     = 0;     // Indice del array npcBusControl[]
 float npcBusRot   = 90.0;
 float npcBusControl[4] = {10.5, 0.0, 0.0, 0.0};
-//
 //                         X    Z   -X   -Z
+
 float helicopterx = 3.5;
 float helicoptery = 7.5;
 float helicopterz = 3.8;
@@ -240,24 +231,21 @@ float rotHelx = 0.0;
 int randomBooleanArray[NVENTANAS];
 
 // Cámara
-// Diorama
+//  Diorama
 float alphaX =  0.0;
 float alphaY =  0.0;
-// 1ª Persona
+//  1ª Persona
 glm::vec4 iniCamPos = glm::vec4(0.0, 0.5, -0.75, 1.0);
-glm::vec4 iniCamDir = glm::vec4(0.0, 0.5, -50.0, 1.0);
+glm::vec4 iniCamDir = glm::vec4(0.0, 0.5, -60.0, 1.0);
 
 // Controles y Mundo
-#define     NCOCHESTIPO 3
-std::string coches[NCOCHESTIPO] = {"Utilitario", "Todoterreno", "Deportivo"};
 int cocheSeleccionado = 0;
 bool  dia       = true;
 bool  cocheOff  = true;
-bool  camHeli = false;
 bool  busStart  = false;
 bool  busParada  = false;
 bool  heliStart = false;
-int  camMode   = 0;
+int   camMode   = 0;
 int   colorCoche = 0;
 
 int main(int argc, char** argv) {
@@ -524,30 +512,11 @@ void funInit() {
     gold.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
     gold.shininess = 51.2;
 
-    cyan.ambient   = glm::vec4(0.0f,0.05f,0.05f,1.0f);
-    cyan.diffuse   = glm::vec4(0.4f,0.5f,0.5f,1.0f );
-    cyan.specular  = glm::vec4(0.04f,0.7f,0.7f,1.0f );
-    cyan.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
-    cyan.shininess = 10.0f;
-
-    polishedBronze.ambient   = glm::vec4(0.25f, 0.148f, 0.06475f, 1.0f );
-    polishedBronze.diffuse   = glm::vec4(0.4f, 0.2368f, 0.1036f, 1.0f);
-    polishedBronze.specular  = glm::vec4(0.774597f, 0.458561f, 0.200621f, 1.0f );
-    polishedBronze.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
-    polishedBronze.shininess =  76.8f;
-
     emmerald.ambient   = glm::vec4( 0.0215f, 0.1745f, 0.0215f, 0.55f );
     emmerald.diffuse   = glm::vec4(0.07568f, 0.61424f, 0.07568f, 0.55f);
     emmerald.specular  = glm::vec4(0.633f, 0.727811f, 0.633f, 0.55f );
     emmerald.emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
     emmerald.shininess =  76.8f;
-
-    // X
-    xgreen.ambient   = glm::vec4(0.011750,0.174500 , 0.011750, 0.55);
-    xgreen.diffuse   = glm::vec4(0.041360,0.614240 , 0.041360, 0.55);
-    xgreen.specular  = glm::vec4(0.626959, 0.727811, 0.626959, 0.55);
-    xgreen .emissive  = glm::vec4(0.000000, 0.000000, 0.000000, 1.00);
-    xgreen .shininess = 56.8;
 
     // Obsidian
     obsidian.ambient   = glm::vec4(0.05375f, 0.05f, 0.06625f, 0.82f);
@@ -759,55 +728,53 @@ void funDisplay() {
     glm::vec3 lookat;
     glm::vec3 up;
 
-        switch (camMode){
-            case 0: {
+    switch (camMode){
+        case 0: {
+            // Vista Diorama
+            float x = 15.0f * glm::cos(glm::radians(alphaY)) * glm::sin(glm::radians(alphaX));
+            float y = 15.0f * glm::sin(glm::radians(alphaY)) + 10.0;
+            float z = 15.0f * glm::cos(glm::radians(alphaY)) * glm::cos(glm::radians(alphaX));
 
-                // Vista Diorama
-                float x = 15.0f * glm::cos(glm::radians(alphaY)) * glm::sin(glm::radians(alphaX));
-                float y = 15.0f * glm::sin(glm::radians(alphaY)) + 10.0;
-                float z = 15.0f * glm::cos(glm::radians(alphaY)) * glm::cos(glm::radians(alphaX));
-
-                pos = glm::vec3(x, y, z);
-                //lookat = glm::vec3(0.0, 0.0, 0.0);
-                lookat = glm::vec3(3.5, 7.5, 3.5);
-                up = glm::vec3(0.0, 1.0, 0.0);
-            }
-            break;
-            case 1: {
-
-                // Vista 1ª Persona
-                glm::vec4 camPos = iniCamPos;
-                camPos = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camPos;
-                camPos.x += faroX;
-                camPos.z += faroZ;
-
-                glm::vec4 camDir = iniCamDir;
-                camDir = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camDir;
-
-                pos = glm::vec3(camPos.x, camPos.y, camPos.z);
-                lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
-                up = glm::vec3(0.0, 1.0, 0.0);
-            }
-            break;
-            case 2: {
-                //helicoptero?
-                glm::vec4 camPos = iniCamPos;
-                camPos = glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) * camPos;
-                camPos.x += helicopterx;
-                camPos.z += helicopterz;
-                camPos.y += helicoptery;
-
-                glm::vec4 camDir = iniCamDir;
-                camDir = glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) *
-                         glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0)) * camDir;
-
-
-                pos = glm::vec3(camPos.x, camPos.y, camPos.z);
-                lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
-                up = glm::vec3(0.0, 1.0, 0.0);
-            }
-            break;
+            pos = glm::vec3(x, y, z);
+            lookat = glm::vec3(0.0, 0.0, 0.0);              // Centrar en coche
+            //lookat = glm::vec3(3.5, 7.5, 3.5);   // Centrar en helicóptero
+            up = glm::vec3(0.0, 1.0, 0.0);
         }
+        break;
+        case 1: {
+            // Vista 1ª Persona Coche
+            glm::vec4 camPos = iniCamPos;
+            camPos = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camPos;
+            camPos.x += faroX;
+            camPos.z += faroZ;
+
+            glm::vec4 camDir = iniCamDir;
+            camDir = glm::rotate(I, glm::radians(rotY), glm::vec3(0, 1, 0)) * camDir;
+
+            pos = glm::vec3(camPos.x, camPos.y, camPos.z);
+            lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
+            up = glm::vec3(0.0, 1.0, 0.0);
+        }
+        break;
+        case 2: {
+            //Vista 1ª Persona Helicoptero
+            glm::vec4 camPos = iniCamPos;
+            camPos = glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) * camPos;
+            camPos.x += helicopterx;
+            camPos.z += helicopterz;
+            camPos.y += helicoptery;
+
+            glm::vec4 camDir = iniCamDir;
+            camDir = glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) *
+                     glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0)) * camDir;
+
+
+            pos = glm::vec3(camPos.x, camPos.y, camPos.z);
+            lookat = glm::vec3(camDir.x, camDir.y, camDir.z);
+            up = glm::vec3(0.0, 1.0, 0.0);
+        }
+        break;
+    }
 
     // Matriz V
     glm::mat4 V = glm::lookAt(pos, lookat, up);
@@ -817,16 +784,8 @@ void funDisplay() {
     setLights(P,V);
 
     // Dibujar Fondo
-    glm::mat4 SB = glm::scale(I, glm::vec3(10.0));
-    glm::mat4 TB = glm::translate(I, glm::vec3(0.0, 5.0, 0.0));
-    glm::mat4 RB = glm::rotate(I, glm::radians(45.0f), glm::vec3(0, 1, 0));
     if (camMode!=0) {
-        if (dia) {
-            drawObjectTex(sphere, texBackgroundDay, P, V, TB * SB * RB);
-        } else {
-            drawObjectTex(sphere, texBackgroundNight, P, V, TB * SB * RB);
-        }
-
+        drawBackground(P, V, I);
     }
 
     // Dibujamos la escena
@@ -1026,7 +985,6 @@ void setLights(glm::mat4 P, glm::mat4 V) {
     Light lFoco = lightF[6];
     // Posicion
     lFoco.position =  glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) *glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0)) * glm::vec4(lFoco.position, 1.0);
-
     lFoco.position.x += helicopterx;
     lFoco.position.z += helicopterz;
     lFoco.position.y += helicoptery;
@@ -1035,6 +993,7 @@ void setLights(glm::mat4 P, glm::mat4 V) {
     lFoco.direction =  glm::rotate(I, glm::radians(rotHely), glm::vec3(0, 1, 0)) * glm::rotate(I, glm::radians(rotHelx), glm::vec3(1, 0, 0)) *glm::vec4(lFoco.direction, 1.0);
 
     shaders.setLight("ulightF["+toString(6)+"]",lFoco);
+
 }
 
 void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -1057,6 +1016,22 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 T = glm::translate(I, lAstro.position);
     glm::mat4 R = glm::rotate(I, glm::radians(rotAstro), glm::vec3(0, 0, 1));
     drawObjectTex(sphere, tAstro, P, V, M*R*T*S);
+
+}
+
+void drawBackground(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    // El fondo es una esfera grande que envuelve el diorama
+    glm::mat4 SB = glm::scale(I, glm::vec3(10.0));
+    glm::mat4 TB = glm::translate(I, glm::vec3(0.0, 5.0, 0.0));
+    glm::mat4 RB = glm::rotate(I, glm::radians(45.0f), glm::vec3(0, 1, 0));
+
+    if (dia) {  // El día tiene un fondo
+        drawObjectTex(sphere, texBackgroundDay, P, V, TB * SB * RB);
+    } else {    // Y la noche otro
+        drawObjectTex(sphere, texBackgroundNight, P, V, TB * SB * RB);
+    }
+
 }
 
 void drawCarretera(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
@@ -1206,9 +1181,8 @@ void drawParque(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     glm::mat4 TBancor = glm::translate(I, glm::vec3(1.7, 0.71, 0));
     drawObjectTex(cube, texWood, P, V, M * TBancor  * SBancor);
 
-
-
 }
+
 void drawParqueT(glm::mat4 P, glm::mat4 V, glm::mat4 M){
 
     // Cristales
@@ -1230,6 +1204,7 @@ void drawParqueT(glm::mat4 P, glm::mat4 V, glm::mat4 M){
     glDisable(GL_BLEND);
 
 }
+
 void drawFarolas(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 TOficina = glm::translate(I, glm::vec3(-1.0, 0.0, -1.0));
@@ -1381,7 +1356,9 @@ void drawOficina(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectTex(cube, texDoor, P, V, M * TPuerta * SPuerta);
 
 }
+
 void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
     // Ventanas
     glm::mat4 SVentanaa   = glm::scale(I, glm::vec3(0.5, 0.5, 0.2));
     glm::mat4 SVentanal   = glm::scale(I, glm::vec3(0.2, 0.5, 0.5));
@@ -1409,8 +1386,7 @@ void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
-    glEnable(GL_CULL_FACE);
-
+    glEnable(GL_CULL_FACE); // Las ventanas se encienden y apagan de forma aleatoria
         drawObjectMat(cube, materialesv[randomBooleanArray[0]], P, V, M * TVentana1a * SVentanaa);
         drawObjectMat(cube, materialesv[randomBooleanArray[1]], P, V, M * TVentana2a * SVentanaa);
         drawObjectMat(cube, materialesv[randomBooleanArray[2]], P, V, M * TVentana3a * SVentanaa);
@@ -1425,12 +1401,12 @@ void drawOficinaT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
         drawObjectMat(cube, materialesv[randomBooleanArray[7]], P, V, M * TVentana44l * SVentanal);
         drawObjectMat(cube, materialesv[randomBooleanArray[6]], P, V, M * TVentana33a * SVentanaa);
         drawObjectMat(cube, materialesv[randomBooleanArray[7]], P, V, M * TVentana44a * SVentanaa);
-
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 
 }
+
 void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 S   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
@@ -1564,35 +1540,34 @@ void drawEdificio(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Tblateral444 = glm::translate(I, glm::vec3(2.75, 5.6, 0));
     drawObjectMat(cube, obsidian, P, V, M * Tblateral444 * Sblateral444);
 
-
-
-
 }
 
 void drawEdificioT(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-    //Dibujar ventanas
 
-        glm::mat4 SInterior = glm::scale(I, glm::vec3(1.9, 3.2 , 1.9));
-        glm::mat4 TInterior = glm::translate(I, glm::vec3(0, 3.2, 0));
-        Material ventana = mCristal;
-        if (dia) {
-            glEnable(GL_BLEND);
-            glDepthMask(GL_FALSE);
-            glEnable(GL_CULL_FACE);
-                drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
-            glDisable(GL_BLEND);
-            glDepthMask(GL_TRUE);
-            glDisable(GL_CULL_FACE);
-        } else {
-            ventana.emissive = glm::vec4(0.6, 0.6, 0.6, 1.0);
+    //Dibujar ventanas
+    glm::mat4 SInterior = glm::scale(I, glm::vec3(1.9, 3.2 , 1.9));
+    glm::mat4 TInterior = glm::translate(I, glm::vec3(0, 3.2, 0));
+    Material ventana = mCristal;
+    if (dia) {  // De día son transparentes
+        glEnable(GL_BLEND);
+        glDepthMask(GL_FALSE);
+        glEnable(GL_CULL_FACE);
             drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
-        }
+        glDisable(GL_BLEND);
+        glDepthMask(GL_TRUE);
+        glDisable(GL_CULL_FACE);
+    } else {    // De noche emiten luz
+        ventana.emissive = glm::vec4(0.55, 0.55, 0.45, 1.0);
+        drawObjectMat(cube, ventana, P, V, M * TInterior * SInterior);
+    }
 
 }
 
 void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
-    //datos cono para trabajar con el en (0,0,0)
+
+    //datos cono para trabajar con él en (0,0,0)
     glm::mat4 TCono   = glm::translate(I, glm::vec3(0, 2.09996962547, 0));
+
     //cuerpo helicoptero
     glm::mat4 Sh = glm::scale(I, glm::vec3(0.3, 0.3, 0.5));
     drawObjectTex(sphere, texBlueMetal, P, V, M * Sh);
@@ -1600,7 +1575,6 @@ void drawHelicoptero(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Srotor = glm::scale(I, glm::vec3(0.2/d_cono, 0.4/a_cono, 0.3/d_cono));
     glm::mat4 Trotor = glm::translate(I, glm::vec3(0.0, 0.59, 0.1));
     drawObjectTex(cone,texBlueMetal,P,V,M*Trotor*Srotor*TCono);
-
 
     //motor debajo de cola
     glm::mat4 Smotor = glm::scale(I, glm::vec3(0.3, 0.15, 0.1));
@@ -1677,7 +1651,9 @@ void drawHeliceCola(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawObjectMat(cube,obsidian,P,V,M*Thelice*Shelice);
     drawObjectMat(cube,obsidian,P,V,M*glm::scale(I, glm::vec3(1.0, 1.0, -1.0))*Thelice*Shelice);
 }
+
 void drawHeliceSuperior(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
     glm::mat4 Scentro = glm::scale(I, glm::vec3(0.03, 0.05, 0.03));
     glm::mat4 Tcentro = glm::translate(I, glm::vec3(0.0, 0.05, 0));
     drawObjectMat(cylinder,obsidian,P,V,M*Tcentro*Scentro);
@@ -1691,7 +1667,9 @@ void drawHeliceSuperior(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 Thelice = glm::translate(I, glm::vec3(0.0, 0.06, 0.79));
     drawObjectMat(cube,obsidian,P,V,M*Thelice*Shelice);
     drawObjectMat(cube,obsidian,P,V,M*glm::scale(I, glm::vec3(1.0, 1.0, -1.0))*Thelice*Shelice);
+
 }
+
 void drawRestaurante(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
 
     glm::mat4 Sbase   = glm::scale(I, glm::vec3(2.0, 0.1, 2.0));
@@ -1930,6 +1908,7 @@ void drawAutobus(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     drawFaro(1,P,V,M*Sfaro*izq, false);
 
 }
+
 void drawTodoterreno(glm::mat4 P, glm::mat4 V, glm::mat4 M, bool pc) {
 
     drawRuedasTodoterreno(P,V,M, pc);
@@ -2384,11 +2363,11 @@ void funKeyboard(unsigned char key, int x, int y) {
 
     switch(key) {
         case 'n': case 'N': rotAstro = 180.0;
-                  dia = false;
-                  break;
+                            dia = false;
+                            break;
         case 'm': case 'M': rotAstro = 0.0;
-                  dia = true;
-                  break;
+                            dia = true;
+                            break;
         case 'p': case 'P': cocheOff = !cocheOff;
                             break;
         case 'c': case 'C': camMode++;
@@ -2398,51 +2377,57 @@ void funKeyboard(unsigned char key, int x, int y) {
                             break;
         case 'b': case 'B': if (!busStart) busStart = !busStart;
                             break;
-        case 'h': case 'H': heliStart = !heliStart;
+        case 'h': case 'H': heliStart = !heliStart; // Arrancar helicóptero
                             break;
-        case 'w': case 'W': if(heliStart){
-                helicopterx -= 0.1 * sinf(glm::radians(rotHely));
-                helicopterz -= 0.1 * cosf(glm::radians(rotHely));
-                helicoptery += 0.1 * sinf(glm::radians(rotHelx));
-            }
-            break;
+        case 'w': case 'W': if(heliStart){          // El helicóptero sólo se mueve si está arrancado
+                            helicopterx -= 0.1 * sinf(glm::radians(rotHely));
+                            helicopterz -= 0.1 * cosf(glm::radians(rotHely));
+                            helicoptery += 0.1 * sinf(glm::radians(rotHelx));
+                            }
+                            break;
         case 's': case 'S': if(heliStart){
-                helicopterx += 0.1 * sinf(glm::radians(rotHely));
-                helicopterz += 0.1 * cosf(glm::radians(rotHely));
-                helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
-        }
-            break;
-        case 'l':               // Variar la intensidad de la luz direccional
-            lightF[6].diffuse += glm::vec3(0.1);
-            lightF[6].specular += glm::vec3(0.1);
-            break;
+                            helicopterx += 0.1 * sinf(glm::radians(rotHely));
+                            helicopterz += 0.1 * cosf(glm::radians(rotHely));
+                            helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
+                            }
+                            break;
+        case 'l':           // Variar la intensidad de la luz direccional
+                            lightF[6].diffuse += glm::vec3(0.1);
+                            lightF[6].specular += glm::vec3(0.1);
+                            break;
         case 'L':
-            lightF[6].diffuse -= glm::vec3(0.1);
-            lightF[6].specular -= glm::vec3(0.1);
-            break;
+                            lightF[6].diffuse -= glm::vec3(0.1);
+                            lightF[6].specular -= glm::vec3(0.1);
+                            break;
         case 'a': case 'A': if(heliStart)  rotHely += 5.0f;
-            break;
+                            break;
         case 'd': case 'D': if(heliStart)  rotHely -= 5.0f;
-            break;
+                            break;
         case 'q': case 'Q': if(heliStart) rotHelx += 0.5;
-            break;
+                            break;
         case 'e': case 'E': if(heliStart) rotHelx -= 0.5f;
-            break;
-        case ' ': cocheSeleccionado++;
-                  break;
+                            break;
+        case ' ':           cocheSeleccionado++;    // El jugador cambia de modelo de coche
+                            break;
     }
+
+    // Límites de intensidad de la luz del foco helicóptero
     if(lightF[6].diffuse.x>2.55){ lightF[6].diffuse = glm::vec3(2.55); lightF[6].specular= glm::vec3(2.55);}
     if(lightF[6].diffuse.x<0.0) { lightF[6].diffuse = glm::vec3(0.0); lightF[6].specular= glm::vec3(0.0);}
-    if(camMode>2) camMode = 0;
-    if (cocheSeleccionado > 2) {
-        cocheSeleccionado = 0;
-    }
+
+
+    if(camMode > 2) camMode = 0;
+
+    if (cocheSeleccionado > 2) cocheSeleccionado = 0;
+
+    // Límites al movimiento del helicóptero
     if (helicopterx  >  7.5) helicopterx =  7.5;
     if (helicopterx  < -7.5) helicopterx  = -7.5;
     if (helicopterz  >  7.5) helicopterz =  7.5;
     if (helicopterz  < -7.5) helicopterz  = -7.5;
     if (helicoptery  >  10.0) helicoptery =  10.0;
     if (helicoptery  < 0.0) helicoptery  = 0.35;
+
     glutPostRedisplay();
 
 }
@@ -2450,9 +2435,10 @@ void funKeyboard(unsigned char key, int x, int y) {
 void funMouse(int button, int state, int x, int y) {
 
     switch(button) {
-        case 3: fovy  -= fovy> 10.0f ? 1.0f : 0.0f; break;
-        case 4: fovy  += fovy<110.0f ? 1.0f : 0.0f; break;
+        case 3: fovy  -= fovy > 10.0f  ? 1.0f : 0.0f; break;
+        case 4: fovy  += fovy < 110.0f ? 1.0f : 0.0f; break;
     }
+
     glutPostRedisplay();
 
 }
@@ -2464,13 +2450,14 @@ void funMotion(int x, int y) {
     alphaY = 90.0*(1.0 - 2.0*y/(float)h);
     if(alphaY<-limY) alphaY = -limY;
     if(alphaY> limY) alphaY =  limY;
+
     glutPostRedisplay();
 
 }
 
 void funTimer(int value) {
 
-    // npc
+    // Rutina NPC
     npcTimer += 1.0;
     if (npcTimer > 7.0) {   // Toca girar
         npcTimer = 0.0;
@@ -2494,7 +2481,7 @@ void funTimer(int value) {
         }
     }
 
-    // bus
+    // Rutina Bus
     if (busStart) {
         npcBusControl[npcBusDir] += 0.5;
 
@@ -2520,12 +2507,14 @@ void funTimer(int value) {
         }
     }
 
+    // Rotar hélices helicóptero
     if (heliStart){
         rotHelice += 100.0;
     }
+
+    // Orbitar astros
     rotAstro += 5.0;
     if (rotAstro > 360.0) rotAstro = 0.0;
-
     if (rotAstro < 180.0) {
         dia = true;
     } else {
