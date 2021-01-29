@@ -213,12 +213,14 @@ float rotRuedaNpc = 0.0;
 float rotHelice = 0.0;
 
 float rotAstro = 0.0;
-int   speed    = 500;
+int   speed    = 100;
 
-int npcDir     = 0;     // Indice del array npcControl[]
-float npcTimer = 0.0;   // Temporizador, va anclado a la longitud de las carreteras (7)
-float npcRot   = 90.0;
-float npcControl[4] = {0.0, 0.0, 0.0, 0.0};
+int   npcDir    = 1;     // Indice del array npcControl[]
+float npcTimer  = 0.0;   // Temporizador, va anclado a la longitud de las carreteras (7)
+float npcRot    = 180.0;
+int   giroCoche = 0;
+int   contGiros = 0;
+float npcControl[4] = {7.0, 0.0, 0.0, 0.0};
 //                      X    Z   -X   -Z
 
 int npcBusDir     = 0;     // Indice del array npcBusControl[]
@@ -2499,20 +2501,33 @@ void funTimer(int value) {
     // Rutina NPC
     if (!cocheNPCOff) {
         npcTimer += 1.0;
-        if (npcTimer > 7.0) {   // Toca girar
+        npcControl[npcDir]++;
+        if ((giroCoche < 2 && npcTimer == 7.0) || (giroCoche == 2 && npcTimer == 14.0)) {   // Toca girar
+            giroCoche++;
+            contGiros++;
+            if (giroCoche == 3) giroCoche = 0;
+
             npcTimer = 0.0;
             npcRot += 90.0;
+
             npcDir += 1;
             if (npcDir > 3) {   // Se ha hecho un giro completo
                 npcDir = 0;
-                // Reiniciar npcControl
-                for (int i = 0; i < 4; i++) {
+            }
+        }
+        rotRuedaNpc += 5.0;
+
+        if (contGiros == 12) {
+            contGiros = 0;
+            // Reiniciar npcControl
+            for (int i = 0; i < 4; i++) {
+                if (i == 0) {
+                    npcControl[i] = 7.0;
+                } else {
                     npcControl[i] = 0.0;
                 }
             }
-            rotRuedaNpc += 5.0;
         }
-        npcControl[npcDir] = npcTimer;
     }
 
     // Ventanas aleatorias cada 8 seg
