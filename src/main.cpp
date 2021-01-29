@@ -87,7 +87,6 @@ Model tire;
 Model clouds;
 
 // Texturas (imagenes)
-Texture   gravel;
 Texture   none;
 Texture   moon;
 Texture   moonNormal;
@@ -314,7 +313,6 @@ void funInit() {
     clouds.initModel("resources/models/clouds.obj");
 
  // Texturas
-    gravel.initTexture("resources/textures/gravel.png");
     none.initTexture("resources/textures/none.png");
     grass.initTexture("resources/textures/grass.tif");
     grassNormal.initTexture("resources/textures/grassNormal.tif");
