@@ -27,6 +27,7 @@ void funTimer(int value);
 void setLights(glm::mat4 P, glm::mat4 V);
 
 void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M);
+void drawNubes(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
 void drawBackground(glm::mat4 P, glm::mat4 V, glm::mat4 M);
 
@@ -83,6 +84,7 @@ Model cylinder;
 Model cube;
 Model cone;
 Model tire;
+Model clouds;
 
 // Texturas (imagenes)
 Texture   gravel;
@@ -134,6 +136,8 @@ Texture   paintNormal;
 Texture   manhole;
 Texture   manholeSpecular;
 Texture   manholeNormal;
+Texture   cloud;
+Texture   cloudNormal;
 
 // Luces y materiales
 #define   NCOCHES  3
@@ -185,7 +189,7 @@ Textures  texBackgroundNight;
 Textures  texPaint;
 Textures  texPaintPc;
 Textures  texManhole;
-
+Textures  texCloud;
 
 //  Dimensiones Cono
 float a_cono = 2.75455951691 + 2.09996962547;   // Parte positiva + parte negativa (no está alineado)
@@ -199,6 +203,7 @@ int h = 600;
 float fovy   = 60.0;
 
 float rotY     = 0.0;
+float rotNube  = 0.0;
 float faroX    = 0.0;
 float faroZ    = 0.0;
 float rotRueda = 0.0;
@@ -310,6 +315,7 @@ void funInit() {
     cube.initModel("resources/models/cube.obj");
     cone.initModel("resources/models/cone.obj");
     tire.initModel("resources/models/tire.obj");
+    clouds.initModel("resources/models/clouds.obj");
 
  // Texturas
     gravel.initTexture("resources/textures/gravel.png");
@@ -361,6 +367,8 @@ void funInit() {
     manhole.initTexture("resources/textures/manhole.tif");
     manholeSpecular.initTexture("resources/textures/manholeSpecular.tif");
     manholeNormal.initTexture("resources/textures/manholeNormal.tif");
+    cloud.initTexture("resources/textures/cloud.jpg");
+    cloudNormal.initTexture("resources/textures/cloudNormal.png");
 
 
     // Luces Globales
@@ -696,6 +704,12 @@ void funInit() {
     texManhole.normal   = manholeNormal.getTexture();
     texManhole.shininess= 10.0;
 
+    texCloud.diffuse  = cloud.getTexture();
+    texCloud.specular = none.getTexture();
+    texCloud.emissive = none.getTexture();
+    texCloud.normal   = cloudNormal.getTexture();
+    texCloud.shininess= 10.0;
+
 }
 
 void funReshape(int wnew, int hnew) {
@@ -790,6 +804,7 @@ void funDisplay() {
 
     // Dibujamos la escena
     drawAstro(P, V, I);
+    drawNubes(P, V, I);
 
     // Dibujar Carreteras
     drawCarretera(P,V,I);
@@ -1016,6 +1031,17 @@ void drawAstro(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
     glm::mat4 T = glm::translate(I, lAstro.position);
     glm::mat4 R = glm::rotate(I, glm::radians(rotAstro), glm::vec3(0, 0, 1));
     drawObjectTex(sphere, tAstro, P, V, M*R*T*S);
+
+}
+
+void drawNubes(glm::mat4 P, glm::mat4 V, glm::mat4 M) {
+
+    glm::mat4 S  = glm::scale(I, glm::vec3(0.00025, 0.00025, 0.00025));
+    glm::mat4 T1 = glm::translate(I, glm::vec3(0.0, 10.0, -8.0));
+    glm::mat4 T2 = glm::translate(I, glm::vec3(0.0, 9.0, 7.0));
+    glm::mat4 R  = glm::rotate(I, glm::radians(rotNube), glm::vec3(0, 1, 0));
+    drawObjectTex(clouds, texCloud, P, V, M * R * T1 * S);
+    drawObjectTex(clouds, texCloud, P, V, M * R * T2 * S);
 
 }
 
@@ -2391,7 +2417,7 @@ void funKeyboard(unsigned char key, int x, int y) {
                             helicoptery -= 0.1 * sinf(glm::radians(rotHelx));
                             }
                             break;
-        case 'l':           // Variar la intensidad de la luz direccional
+        case 'l':           // Variar la intensidad del foco del helicóptero
                             lightF[6].diffuse += glm::vec3(0.1);
                             lightF[6].specular += glm::vec3(0.1);
                             break;
@@ -2421,12 +2447,12 @@ void funKeyboard(unsigned char key, int x, int y) {
     if (cocheSeleccionado > 2) cocheSeleccionado = 0;
 
     // Límites al movimiento del helicóptero
-    if (helicopterx  >  7.5) helicopterx =  7.5;
-    if (helicopterx  < -7.5) helicopterx  = -7.5;
-    if (helicopterz  >  7.5) helicopterz =  7.5;
-    if (helicopterz  < -7.5) helicopterz  = -7.5;
-    if (helicoptery  >  10.0) helicoptery =  10.0;
-    if (helicoptery  < 0.0) helicoptery  = 0.35;
+    if (helicopterx  >  7.5) helicopterx  =  7.5;
+    if (helicopterx  <  -7.5) helicopterx = -7.5;
+    if (helicopterz  >  7.5) helicopterz  =  7.5;
+    if (helicopterz  <  -7.5) helicopterz = -7.5;
+    if (helicoptery  >  10.0) helicoptery = 10.0;
+    if (helicoptery  <  0.0) helicoptery  = 0.35;
 
     glutPostRedisplay();
 
@@ -2520,6 +2546,10 @@ void funTimer(int value) {
     } else {
         dia = false;
     }
+
+    // Mover nubes
+    rotNube += 5.0;
+    if (rotNube > 360.0) rotNube = 0.0;
 
     glutPostRedisplay();
     glutTimerFunc(speed, funTimer, 0);
